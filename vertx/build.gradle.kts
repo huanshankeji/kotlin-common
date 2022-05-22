@@ -1,16 +1,28 @@
+import com.huanshankeji.CommonDependencies
+
 plugins {
-    id("kotlin-jvm-conventions")
+    id("jvm-conventions")
+}
+
+java {
+    registerFeature("vertxWeb") {
+        usingSourceSet(sourceSets["main"])
+    }
+    registerFeature("vertxSqlClient") {
+        usingSourceSet(sourceSets["main"])
+    }
 }
 
 dependencies {
-    implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
-    implementation("io.vertx:vertx-core")
-    implementation("io.vertx:vertx-web")
-    implementation("io.vertx:vertx-sql-client")
-    implementation("io.vertx:vertx-lang-kotlin")
-    implementation("io.vertx:vertx-lang-kotlin-coroutines")
+    with(CommonDependencies.Vertx) {
+        implementation(platform(stackDepchain()))
+        implementation(module("core"))
+        "vertxWebImplementation"(module("web"))
+        "vertxSqlClientImplementation"(module("sql-client"))
+        implementation(module("lang-kotlin"))
+        implementation(module("lang-kotlin-coroutines"))
+    }
 
-    // TODO: use Maven coordinates?
     implementation(project(":core"))
     implementation(project(":coroutines"))
 }

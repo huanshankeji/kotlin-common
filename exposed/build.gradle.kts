@@ -1,7 +1,9 @@
+import com.huanshankeji.CommonDependencies
+
 plugins {
-    id("kotlin-jvm-conventions")
+    id("jvm-conventions")
 }
 
 dependencies {
-    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation(CommonDependencies.Exposed.core())
 }

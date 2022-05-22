@@ -1,14 +1,14 @@
-import com.huanshankeji.kotlinx
+import com.huanshankeji.CommonDependencies
 
 plugins {
-    id("kotlin-multiplatform-conventions")
+    id("multiplatform-conventions")
 }
 
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(kotlinx("coroutines-core", kotlinxCoroutinesVersion))
+                implementation(CommonDependencies.Kotlinx.Coroutines.core())
             }
         }
     }

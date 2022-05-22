@@ -1,5 +1,5 @@
 plugins {
-    id("kotlin-multiplatform-conventions")
+    id("multiplatform-conventions")
 }
 
 kotlin.sourceSets.all {
