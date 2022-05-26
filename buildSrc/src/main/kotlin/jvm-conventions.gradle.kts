@@ -1,4 +1,5 @@
 plugins {
-    id("com.huanshankeji.kotlin-jvm-library-default-maven-publish-conventions")
-    id("common-conventions")
+    id("common-conventions-before")
+    id("com.huanshankeji.kotlin-jvm-library-sonatype-ossrh-publish-conventions")
+    id("common-conventions-after")
 }
