@@ -8,6 +8,10 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+/**
+ * Launch a coroutine and converts it into a [Future]
+ * that completes when the suspended function returns and fails if it throws.
+ */
 fun <T> CoroutineScope.coroutineToFuture(
     context: CoroutineContext = EmptyCoroutineContext,
     start: CoroutineStart = CoroutineStart.DEFAULT,
