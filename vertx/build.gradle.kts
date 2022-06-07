@@ -37,7 +37,6 @@ dependencies {
         //testImplementation("io.vertx", "vertx-web", classifier = "tests") // This does not work well.
         testImplementation(moduleWithoutVersion("web-client"))
     }
-    testImplementation(project(":net"))
 }
 
 kotlin.sourceSets["test"].languageSettings {

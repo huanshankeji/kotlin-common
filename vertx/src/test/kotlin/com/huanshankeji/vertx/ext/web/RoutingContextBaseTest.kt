@@ -1,7 +1,6 @@
 package com.huanshankeji.vertx.ext.web
 
 import com.huanshankeji.kotlin.use
-import com.huanshankeji.net.LOCALHOST
 import com.huanshankeji.vertx.VertxBaseTest
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
@@ -38,7 +37,7 @@ abstract class RoutingContextBaseTest : VertxBaseTest() {
         httpServer.use({
             val port = httpServer.actualPort()
             WebClient.create(vertx).use({
-                assertEquals(500, it.get(port, LOCALHOST, "").send().await().statusCode())
+                assertEquals(500, it.get(port, null, "").send().await().statusCode())
             }, { close() })
         }, { close().await() })
     }
