@@ -68,4 +68,20 @@ class VertxCoroutineTest : VertxBaseTest() {
             }
         } >= BLOCKCING_DURATION)
     }
+
+    @Test
+    fun `test coroutineToFuture`() = runTest {
+        assertTrue(measureVirtualTime {
+            coroutineToFuture {
+                delay(DEFAULT_SLEEP_OR_DELAY_DURATION)
+            }.await()
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
+
+        assertTrue(measureTimeMillis {
+            coroutineToFuture {
+                @Suppress("BlockingMethodInNonBlockingContext")
+                (Thread.sleep(DEFAULT_SLEEP_OR_DELAY_DURATION))
+            }.await()
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
+    }
 }
