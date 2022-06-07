@@ -47,26 +47,22 @@ class VertxCoroutineTest : VertxBaseTest() {
         assertClosed(vertx)
     }
 
-    companion object {
-        private const val BLOCKCING_DURATION = DEFAULT_SLEEP_OR_DELAY_DURATION
-    }
-
     @Test
     fun `test awaitExecuteBlocking`() = runTest {
         assertTrue(measureTimeMillis {
             vertx.awaitExecuteBlocking {
-                Thread.sleep(BLOCKCING_DURATION)
+                Thread.sleep(DEFAULT_SLEEP_OR_DELAY_DURATION)
             }
-        } >= BLOCKCING_DURATION)
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 
     @Test
     fun `test awaitSuspendExecuteBlocking`() = runTest {
         assertTrue(measureVirtualTime {
             vertx.awaitSuspendExecuteBlocking {
-                delay(BLOCKCING_DURATION)
+                delay(DEFAULT_SLEEP_OR_DELAY_DURATION)
             }
-        } >= BLOCKCING_DURATION)
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 
     @Test
