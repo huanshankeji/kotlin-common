@@ -6,7 +6,7 @@ import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.coroutines.CoroutineVerticle
 import kotlinx.coroutines.launch
 
-interface ExtendedCoroutineVerticleI : CoroutineVerticleI {
+interface ExtendedWebCoroutineVerticleI : CoroutineVerticleI {
     /**
      * Like [Route.handler] but with a suspend function as [requestHandler].
      */
@@ -20,7 +20,7 @@ interface ExtendedCoroutineVerticleI : CoroutineVerticleI {
         coroutineHandler { ctx -> ctx.checkedRun { requestHandler(ctx) } }
 }
 
-abstract class ExtendedCoroutineVerticle : CoroutineVerticle(), ExtendedCoroutineVerticleI {
+abstract class ExtendedWebCoroutineVerticle : CoroutineVerticle(), ExtendedWebCoroutineVerticleI {
     /**
      * The inline version of [coroutineHandler],
      * which might be slightly faster but can also make the stack trace difficult to debug.
