@@ -1,6 +1,7 @@
-package com.huanshankeji.vertx.kotlin.coroutines
+package com.huanshankeji.vertx.kotlin.coroutines.ext.web
 
 import com.huanshankeji.vertx.ext.web.checkedRun
+import com.huanshankeji.vertx.kotlin.coroutines.CoroutineVerticleI
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.coroutines.CoroutineVerticle
