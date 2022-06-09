@@ -1,4 +1,4 @@
-package com.huanshankeji.vertx.kotlin.coroutines
+package com.huanshankeji.vertx.kotlin.coroutines.ext.web
 
 import com.huanshankeji.kotlin.use
 import com.huanshankeji.vertx.VertxBaseTest

@@ -11,8 +11,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
+import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 //@RunWith(VertxUnitRunner::class)
@@ -48,24 +50,42 @@ class VertxCoroutineTest : VertxBaseTest() {
     }
 
     companion object {
-        private const val BLOCKCING_DURATION = DEFAULT_SLEEP_OR_DELAY_DURATION
+        private val resultValue = Random.nextInt()
     }
 
     @Test
     fun `test awaitExecuteBlocking`() = runTest {
         assertTrue(measureTimeMillis {
-            vertx.awaitExecuteBlocking {
-                Thread.sleep(BLOCKCING_DURATION)
-            }
-        } >= BLOCKCING_DURATION)
+            assertEquals(resultValue, vertx.awaitExecuteBlocking {
+                Thread.sleep(DEFAULT_SLEEP_OR_DELAY_DURATION)
+                resultValue
+            })
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 
     @Test
     fun `test awaitSuspendExecuteBlocking`() = runTest {
         assertTrue(measureVirtualTime {
-            vertx.awaitSuspendExecuteBlocking {
-                delay(BLOCKCING_DURATION)
-            }
-        } >= BLOCKCING_DURATION)
+            assertEquals(resultValue, vertx.awaitSuspendExecuteBlocking {
+                delay(DEFAULT_SLEEP_OR_DELAY_DURATION)
+                resultValue
+            })
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
+    }
+
+    @Test
+    fun `test coroutineToFuture`() = runTest {
+        assertTrue(measureVirtualTime {
+            coroutineToFuture {
+                delay(DEFAULT_SLEEP_OR_DELAY_DURATION)
+            }.await()
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
+
+        assertTrue(measureTimeMillis {
+            coroutineToFuture {
+                @Suppress("BlockingMethodInNonBlockingContext")
+                Thread.sleep(DEFAULT_SLEEP_OR_DELAY_DURATION)
+            }.await()
+        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 }
