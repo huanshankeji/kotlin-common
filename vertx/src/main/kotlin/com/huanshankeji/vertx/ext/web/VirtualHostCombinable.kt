@@ -14,7 +14,7 @@ interface SingleVirtualHostVerticle : VirtualHostCombinable, Verticle {
 
     val virtualHost: String
 
-    fun subRouter(): Router = Router.router(vertx).apply { routes() }
+    fun subRouter(): Router = Router.router(vertx).apply { virtualHostSubRouter() }
 
-    fun Router.routes()
+    fun Router.virtualHostSubRouter()
 }
