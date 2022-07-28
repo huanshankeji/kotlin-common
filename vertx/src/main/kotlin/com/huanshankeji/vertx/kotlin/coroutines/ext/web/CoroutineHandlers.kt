@@ -9,15 +9,13 @@ import kotlinx.coroutines.launch
 /**
  * Like [Route.handler] but with a suspend function as [requestHandler].
  */
-fun CoroutineScope.coroutineHandler(): Route.(suspend (RoutingContext) -> Unit) -> Unit =
-    { requestHandler ->
-        handler { launch { requestHandler(it) } }
-    }
+context(CoroutineScope, Route)
+fun coroutineHandler(requestHandler: suspend (RoutingContext) -> Unit): Route =
+    handler { launch { requestHandler(it) } }
 
 /**
  * Like [coroutineHandler] and calls [RoutingContext.fail] if a [Throwable] is thrown in [requestHandler].
  */
-fun CoroutineScope.checkedCoroutineHandler(): Route.(suspend (RoutingContext) -> Unit) -> Unit =
-    { requestHandler ->
-        (coroutineHandler()) { ctx -> ctx.checkedRun { requestHandler(ctx) } }
-    }
+context(CoroutineScope, Route)
+fun checkedCoroutineHandler(requestHandler: suspend (RoutingContext) -> Unit): Route =
+    coroutineHandler { ctx -> ctx.checkedRun { requestHandler(ctx) } }
