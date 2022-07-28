@@ -11,4 +11,5 @@ include(
     "ktor:client",
     "serialization",
     "vertx",
+    "vertx:with-context-receivers",
 )
