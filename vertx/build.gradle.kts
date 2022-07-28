@@ -1,5 +1,4 @@
-import com.huanshankeji.CommonDependencies
-import com.huanshankeji.DefaultVersions
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("jvm-conventions")
@@ -15,7 +14,7 @@ java {
 }
 
 dependencies {
-    with(CommonDependencies.Vertx) {
+    with(commonDependencies.vertx) {
         implementation(platformStackDepchain())
         implementation(moduleWithoutVersion("core"))
         "vertxWebImplementation"(moduleWithoutVersion("web"))
@@ -28,10 +27,12 @@ dependencies {
     implementation(project(":coroutines"))
 
     testImplementation(kotlin("test"))
-    testImplementation(CommonDependencies.Kotlinx.Coroutines.test())
-    testImplementation(platform("org.junit:junit-bom:${DefaultVersions.junitJupiter}"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    with(CommonDependencies.Vertx) {
+    testImplementation(commonDependencies.kotlinx.coroutines.test())
+    with(commonDependencies.orgJunit) {
+        testImplementation(platformBom())
+        testImplementation(jupiter.withoutVersion())
+    }
+    with(commonDependencies.vertx) {
         testImplementation(moduleWithoutVersion("unit"))
         testImplementation(moduleWithoutVersion("junit5"))
         //testImplementation("io.vertx", "vertx-web", classifier = "tests") // This does not work well.
@@ -42,4 +43,8 @@ dependencies {
 kotlin.sourceSets["test"].languageSettings {
     optIn("kotlin.RequiresOptIn")
     optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.freeCompilerArgs += "-Xcontext-receivers"
 }

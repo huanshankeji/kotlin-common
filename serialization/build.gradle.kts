@@ -1,15 +1,13 @@
-import com.huanshankeji.CommonDependencies
-
 plugins {
     id("multiplatform-conventions")
-    kotlin("plugin.serialization") version kotlinVersion
+    with(commonGradleClasspathDependencies.kotlin.serializationPlugin) { kotlin(moduleName) version version }
 }
 
 kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                with(CommonDependencies.Kotlinx.Serialization) {
+                with(commonDependencies.kotlinx.serialization) {
                     implementation(core())
                     implementation(protobuf())
                 }
