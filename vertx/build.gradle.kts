@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id("jvm-conventions")
 }
@@ -43,8 +41,4 @@ dependencies {
 kotlin.sourceSets["test"].languageSettings {
     optIn("kotlin.RequiresOptIn")
     optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs += "-Xcontext-receivers"
 }
