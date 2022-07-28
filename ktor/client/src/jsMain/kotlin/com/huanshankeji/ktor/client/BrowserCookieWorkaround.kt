@@ -1,5 +1,7 @@
 package com.huanshankeji.ktor.client
 
+// TODO: move to "com.huanshankeji.client.js" and possibly move to a new subproject.
+
 // see: https://youtrack.jetbrains.com/issue/KTOR-539#focus=Comments-27-4683851.0-0
 fun addCredentialsIncludeToFetch() =
     js(
