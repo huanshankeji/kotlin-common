@@ -62,3 +62,6 @@ fun <T> CoroutineScope.coroutineToFuture(
     }
     return promise.future()
 }
+
+suspend fun <T> List<Future<T>>.awaitAll() =
+    map { it.await() }
