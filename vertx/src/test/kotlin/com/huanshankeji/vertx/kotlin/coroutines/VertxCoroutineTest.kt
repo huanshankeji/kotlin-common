@@ -116,7 +116,10 @@ class VertxCoroutineTest : VertxBaseTest() {
         val promises = list.map { Promise.promise<Int>() }
         val futures = promises.map { it.future() }
         val firstFailIndex = list.random()
-        val secondFailIndex = (list - firstFailIndex).random()
+        val list2 = list - firstFailIndex
+        val laterFailIndex = list2.random()
+        val list3 = list2 - laterFailIndex
+        val noOpIndex = list3.random()
 
         awaitAll(
             async {
@@ -125,7 +128,7 @@ class VertxCoroutineTest : VertxBaseTest() {
             },
             async {
                 promises.asSequence().withIndex().shuffled()
-                    .filterNot { it.index == secondFailIndex }
+                    .filterNot { (index, _) -> index == laterFailIndex || index == noOpIndex }
                     .map { (index, promise) ->
                         async {
                             when (index) {
@@ -136,7 +139,7 @@ class VertxCoroutineTest : VertxBaseTest() {
                     }
                     .toList().awaitAll()
 
-                promises[secondFailIndex].fail(IntThrowable(secondFailIndex))
+                promises[laterFailIndex].fail(IntThrowable(laterFailIndex))
             }
         )
     }
