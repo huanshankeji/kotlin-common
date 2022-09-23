@@ -5,12 +5,15 @@ import java.util.*
 fun uLongBigEndianShiftOffset(index: Int): Int =
     (7 - index) * 8
 
+@ExperimentalUnsignedTypes
 fun ULong.toBigEndianUBytes(): UByteArray =
     (0 until 8).map { (this shr uLongBigEndianShiftOffset(it)).toUByte() }.toUByteArray()
 
+@ExperimentalUnsignedTypes
 fun Long.toBigEndianBytes(): ByteArray =
     toULong().toBigEndianUBytes().asByteArray()
 
+@ExperimentalUnsignedTypes
 fun UByteArray.bigEndianToULong(): ULong {
     require(size == 8)
     return asSequence()
@@ -18,6 +21,7 @@ fun UByteArray.bigEndianToULong(): ULong {
         .reduce { acc, long -> acc or long }
 }
 
+@ExperimentalUnsignedTypes
 fun ByteArray.bigEndianToLong(): Long =
     asUByteArray().bigEndianToULong().toLong()
 
