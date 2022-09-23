@@ -1,5 +1,3 @@
-import gradle.kotlin.dsl.accessors._b7c87b1c43d41c50877f5348a92b2360.githubPackagesPublish
-
 plugins {
     `maven-publish`
     id("com.huanshankeji.team.default-github-packages-publish")
