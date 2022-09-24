@@ -4,9 +4,12 @@ import com.huanshankeji.kotlinx.coroutines.test.measureVirtualTime
 import com.huanshankeji.test.DEFAULT_SLEEP_OR_DELAY_DURATION
 import com.huanshankeji.vertx.VertxBaseTest
 import io.vertx.core.AbstractVerticle
+import io.vertx.core.Promise
 import io.vertx.core.Vertx
 import io.vertx.core.impl.NoStackTraceThrowable
 import io.vertx.kotlin.coroutines.await
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.assertDoesNotThrow
@@ -51,6 +54,7 @@ class VertxCoroutineTest : VertxBaseTest() {
 
     companion object {
         private val resultValue = Random.nextInt()
+        private const val LIST_SIZE = 4
     }
 
     @Test
@@ -87,5 +91,56 @@ class VertxCoroutineTest : VertxBaseTest() {
                 Thread.sleep(DEFAULT_SLEEP_OR_DELAY_DURATION)
             }.await()
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
+    }
+
+    @Test
+    fun `test awaitAll of succeeded futures`() = runTest {
+        val list = List(LIST_SIZE) { it }
+        val promises = list.map { Promise.promise<Int>() }
+        val futures = promises.map { it.future() }
+        awaitAll(
+            async {
+                assertEquals(list, futures.awaitAll())
+            },
+            *promises.mapIndexed { index, promise ->
+                async { promise.complete(index) }
+            }.toTypedArray()
+        )
+    }
+
+    class IntThrowable(val value: Int) : Throwable()
+
+    @Test
+    fun `test awaitAll of futures containing failed futures`() = runTest {
+        val list = List(LIST_SIZE) { it }
+        val promises = list.map { Promise.promise<Int>() }
+        val futures = promises.map { it.future() }
+        val firstFailIndex = list.random()
+        val list2 = list - firstFailIndex
+        val laterFailIndex = list2.random()
+        val list3 = list2 - laterFailIndex
+        val noOpIndex = list3.random()
+
+        awaitAll(
+            async {
+                val throwable = assertThrows<IntThrowable> { futures.awaitAll() }
+                assertEquals(firstFailIndex, throwable.value)
+            },
+            async {
+                promises.asSequence().withIndex().shuffled()
+                    .filterNot { (index, _) -> index == laterFailIndex || index == noOpIndex }
+                    .map { (index, promise) ->
+                        async {
+                            when (index) {
+                                firstFailIndex -> promise.fail(IntThrowable(index))
+                                else -> promise.complete(index)
+                            }
+                        }
+                    }
+                    .toList().awaitAll()
+
+                promises[laterFailIndex].fail(IntThrowable(laterFailIndex))
+            }
+        )
     }
 }
