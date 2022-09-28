@@ -1,3 +1,5 @@
+import com.huanshankeji.cpnProject
+
 plugins {
     id("jvm-conventions")
 }
@@ -21,8 +23,8 @@ dependencies {
         implementation(moduleWithoutVersion("lang-kotlin-coroutines"))
     }
 
-    implementation(project(":core"))
-    implementation(project(":coroutines"))
+    implementation(cpnProject(project, ":core"))
+    implementation(cpnProject(project, ":coroutines"))
 
     testImplementation(kotlin("test"))
     testImplementation(commonDependencies.kotlinx.coroutines.test())
@@ -36,7 +38,7 @@ dependencies {
         //testImplementation("io.vertx", "vertx-web", classifier = "tests") // This does not work well.
         testImplementation(moduleWithoutVersion("web-client"))
     }
-    testImplementation(project(":net"))
+    testImplementation(cpnProject(project, ":net"))
 }
 
 kotlin.sourceSets["test"].languageSettings {
