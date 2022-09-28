@@ -1,3 +1,4 @@
+import com.huanshankeji.cpnProject
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -11,7 +12,7 @@ java {
 }
 
 dependencies {
-    implementation(project(":vertx"))
+    implementation(cpnProject(project, ":vertx"))
     with(commonDependencies.vertx) {
         implementation(platformStackDepchain())
         implementation(moduleWithoutVersion("core"))
