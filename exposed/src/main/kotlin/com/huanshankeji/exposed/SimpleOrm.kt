@@ -126,6 +126,9 @@ sealed class PropertyColumnMapping<Data : Any, PropertyValue>(val property: KPro
         //val nullabilityDependentColumn: Column<*>,
         val nestedMappings: ClassColumnMappings<NestedData & Any>
     ) : PropertyColumnMapping<Data, NestedData>(property)
+
+    class Skip<Data : Any, PropertyValue>(property: KProperty1<Data, PropertyValue>) :
+        PropertyColumnMapping<Data, PropertyValue>(property)
 }
 
 
@@ -250,6 +253,8 @@ fun <Data : Any> constructDataWithResultRow(
                     it.nestedMappings as ClassColumnMappings<Any>,
                     resultRow
                 )
+
+            is Skip -> null
         }
     }.toTypedArray())
 
@@ -271,6 +276,8 @@ fun <Data : Any> setUpdateBuilder(
                 }
                     ?: setUpdateBuilderToNulls(nestedMappings, updateBuilder)
             }
+
+            is Skip -> {}
         }
 }
 
@@ -278,9 +285,8 @@ fun ClassColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
     for (propertyColumnMapping in this)
         when (propertyColumnMapping) {
             is ExposedSqlPrimitive -> block(propertyColumnMapping.column)
-            is NestedClass -> {
-                propertyColumnMapping.nestedMappings.forEachColumn(block)
-            }
+            is NestedClass -> propertyColumnMapping.nestedMappings.forEachColumn(block)
+            is Skip -> {}
         }
 }
 
