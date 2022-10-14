@@ -1,64 +1,80 @@
 package com.huanshankeji.exposed
 
+import com.huanshankeji.exposed.OnDuplicateColumnPropertyNames.*
+import com.huanshankeji.exposed.PropertyColumnMapping.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.Alias
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import kotlin.reflect.KFunction
-import kotlin.reflect.KProperty1
+import kotlin.reflect.*
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.full.withNullability
 
 // Our own simple ORM implementation using reflection which should be adapted using annotation processors and code generation in the future.
 
 
-interface SimpleOrm<D : Any, T : Table> {
-    fun resultRowToData(resultRow: ResultRow): D
-    fun updateBuilderSetter(data: D): T.(UpdateBuilder<Number>) -> Unit
+interface SimpleOrm<Data : Any, TableT : Table> {
+    fun resultRowToData(resultRow: ResultRow): Data
+    fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<Number>) -> Unit
 }
 
-interface ReflectionBasedSimpleOrm<D : Any, T : Table> : SimpleOrm<D, T> {
-    val propertyAndColumnPairs: List<Pair<KProperty1<D, *>, Column<*>>>
-    val dPrimaryConstructor: KFunction<D>
-
-    override fun resultRowToData(resultRow: ResultRow): D {
-        val params = propertyAndColumnPairs.map { (_, tColumn) ->
-            resultRow[tColumn].let {
-                if (it is EntityID<*>) it.value else it
-            }
-        }
-        return dPrimaryConstructor.call(*params.toTypedArray())
+fun ResultRow.getValue(column: Column<*>): Any? =
+    this[column].let {
+        if (it is EntityID<*>) it.value else it
     }
 
-    override fun updateBuilderSetter(data: D): T.(UpdateBuilder<Number>) -> Unit = {
-        for ((dProperty, tColumn) in propertyAndColumnPairs)
+interface ReflectionBasedSimpleOrm<Data : Any, TableT : Table> : SimpleOrm<Data, TableT> {
+    val propertyAndColumnPairs: List<Pair<KProperty1<Data, *>, Column<*>>>
+    val dataPrimaryConstructor: KFunction<Data>
+
+    override fun resultRowToData(resultRow: ResultRow): Data {
+        val params = propertyAndColumnPairs.map { (_, column) -> resultRow.getValue(column) }
+        return dataPrimaryConstructor.call(*params.toTypedArray())
+    }
+
+    override fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<Number>) -> Unit = {
+        for ((property, column) in propertyAndColumnPairs)
             @Suppress("UNCHECKED_CAST")
-            it[tColumn as Column<Any?>] = dProperty(data)
+            it[column as Column<Any?>] = property(data)
     }
 }
 
-inline fun <reified D : Any, reified T : Table> reflectionBasedSimpleOrm(table: T): ReflectionBasedSimpleOrm<D, T> =
-    object : ReflectionBasedSimpleOrm<D, T> {
-        val dClass = D::class
-        override val dPrimaryConstructor = dClass.primaryConstructor!!
+inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleOrm(table: TableT): ReflectionBasedSimpleOrm<Data, TableT> =
+    object : ReflectionBasedSimpleOrm<Data, TableT> {
+        private val clazz = Data::class
         override val propertyAndColumnPairs = run {
             //require(dClass.isData)
-            val dMemberPropertyMap = dClass.memberProperties.associateBy { it.name }
-            val tMemberPropertyMap = T::class.memberProperties.associateBy { it.name }
-            dPrimaryConstructor.parameters.map {
+            val dataMemberPropertyMap = clazz.memberProperties.associateBy { it.name }
+            val columnMap = getColumnByPropertyNameMapWithTypeParameter(table)
+            dataPrimaryConstructor.parameters.map {
                 val name = it.name!!
-                dMemberPropertyMap.getValue(name) to tMemberPropertyMap.getValue(name)(table) as Column<*>
+                dataMemberPropertyMap.getValue(name) to columnMap.getValue(name)
             }
         }
+        override val dataPrimaryConstructor = clazz.primaryConstructor!!
     }
+
+@Suppress("UNCHECKED_CAST")
+fun <TableT : Table> getColumnProperties(clazz: KClass<TableT>): Sequence<KProperty1<TableT, Column<*>>> =
+    clazz.memberProperties.asSequence()
+        .filter { it.returnType.classifier == Column::class }
+            as Sequence<KProperty1<TableT, Column<*>>>
+
+fun <TableT : Table> getColumnPropertyByNameMap(clazz: KClass<TableT>): Map<String, KProperty1<TableT, Column<*>>> =
+    getColumnProperties(clazz).associateBy { it.name }
+
+inline fun <reified TableT : Table> getColumnByPropertyNameMapWithTypeParameter(table: TableT): Map<String, Column<*>> =
+    getColumnPropertyByNameMap(TableT::class)
+        .mapValues { it.value(table) }
 
 inline fun <reified D : Any, reified T : Table> reflectionBasedSimpleOrmForAlias(
     tableOrm: ReflectionBasedSimpleOrm<D, T>, alias: Alias<T>
 ): ReflectionBasedSimpleOrm<D, T> =
     object : ReflectionBasedSimpleOrm<D, T> {
-        override val dPrimaryConstructor = tableOrm.dPrimaryConstructor
+        override val dataPrimaryConstructor = tableOrm.dataPrimaryConstructor
         override val propertyAndColumnPairs = tableOrm.propertyAndColumnPairs.map { it.first to alias[it.second] }
     }
 
@@ -89,5 +105,195 @@ inline fun <D1 : Any, D2 : Any, D3 : Any> leftJoinResultRowToData(
         resultRowToData1(it),
         if (it[onColumn2] !== null) resultRowToData2(it) else null,
         if (it[onColumn3] !== null) resultRowToData3(it) else null
+    )
+}
+
+
+typealias PropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, *>>
+//typealias LessStrictlyTypedPropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, Any?>>
+/** In the order of the constructor arguments. */
+typealias ClassColumnMappings<Data> = PropertyColumnMappings<Data>
+
+sealed class PropertyColumnMapping<Data : Any, PropertyValue>(val property: KProperty1<Data, PropertyValue>) {
+    class SqlPrimitive<Data : Any, PrimitiveValue>(
+        property: KProperty1<Data, PrimitiveValue>,
+        val column: Column<PrimitiveValue>
+    ) : PropertyColumnMapping<Data, PrimitiveValue>(property)
+
+    class NestedClass<Data : Any, NestedData>(
+        property: KProperty1<Data, NestedData>,
+        //val nullabilityDependentColumn: Column<*>,
+        val nestedMappings: ClassColumnMappings<NestedData & Any>
+    ) : PropertyColumnMapping<Data, NestedData>(property)
+}
+
+
+// see: https://kotlinlang.org/docs/basic-types.html, https://www.postgresql.org/docs/current/datatype.html
+// Types that are commented out are not ensured to work yet.
+val defaultSqlNotNullPrimitiveTypes = listOf(
+    typeOf<Byte>(), typeOf<Short>(), typeOf<Int>(), typeOf<Long>(), /*typeOf<BigInteger>(),*/
+    typeOf<UByte>(), typeOf<UShort>(), typeOf<UInt>(), typeOf<ULong>(),
+    typeOf<Float>(), typeOf<Double>(), /*typeOf<BigDecimal>(),*/
+    typeOf<Boolean>(),
+    typeOf<ByteArray>(),
+    //typeOf<Char>(),
+    typeOf<String>(),
+    // types related to time and date
+)
+
+class ColumnWithPropertyName(val propertyName: String, val column: Column<*>)
+
+fun getColumnsWithPropertyNamesWithoutTypeParameter(
+    table: Table, clazz: KClass<out Table> = table::class
+): Sequence<ColumnWithPropertyName> =
+    getColumnProperties(clazz).map {
+        @Suppress("UNCHECKED_CAST")
+        ColumnWithPropertyName(it.name, (it as KProperty1<Any, Column<*>>)(table))
+    }
+
+enum class OnDuplicateColumnPropertyNames {
+    CHOOSE_FIRST, THROW
+}
+
+fun getColumnByPropertyNameMap(
+    tables: List<Table>,
+    onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST // defaults to `CHOOSE_FIRST` because there are very likely to be duplicate columns when joining table
+): Map<String, Column<*>> {
+    val columnsMap = tables.asSequence()
+        .flatMap { table -> getColumnsWithPropertyNamesWithoutTypeParameter(table) }
+        .groupBy { it.propertyName }
+    return columnsMap.mapValues {
+        it.value.run {
+            when (onDuplicateColumnPropertyNames) {
+                CHOOSE_FIRST -> first()
+                THROW -> single()
+            }
+                .column
+        }
+    }
+}
+
+
+fun <Data : Any> getDefaultClassColumnMappings(
+    clazz: KClass<Data>,
+    columnByPropertyNameMap: Map<String, Column<*>>,
+    customMappings: PropertyColumnMappings<Data> = listOf()
+): ClassColumnMappings<Data> {
+    val customMappingProperties = customMappings.asSequence().map { it.property }.toSet()
+    val dataMemberPropertyMap =
+        (clazz.memberProperties.toSet() - customMappingProperties).associateBy { it.name }
+
+    return clazz.primaryConstructor!!.parameters.map {
+        val name = it.name!!
+        val property = dataMemberPropertyMap[name]
+        val notNullType = it.type.withNullability(false)
+        @Suppress("UNCHECKED_CAST")
+        if (notNullType in defaultSqlNotNullPrimitiveTypes)
+            SqlPrimitive(property as KProperty1<Data, Any?>, columnByPropertyNameMap.getValue(name) as Column<Any?>)
+        else
+            NestedClass(
+                property as KProperty1<Data, Any?>,
+                getDefaultClassColumnMappings(
+                    notNullType.classifier as KClass<*>, columnByPropertyNameMap
+                ) as ClassColumnMappings<Any>
+            )
+    }
+}
+
+fun <Data : Any> getDefaultClassColumnMappings(
+    clazz: KClass<Data>,
+    tables: List<Table>,
+    customMappings: PropertyColumnMappings<Data> = listOf(),
+    onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
+): ClassColumnMappings<Data> =
+    getDefaultClassColumnMappings(
+        clazz, getColumnByPropertyNameMap(tables, onDuplicateColumnPropertyNames), customMappings
+    )
+
+interface GenericSimpleOrm<Data : Any> : SimpleOrm<Data, Table> {
+    val neededColumns: List<Column<*>>
+}
+
+/** Supports classes with nested composite class properties and multiple tables */
+class ReflectionBasedGenericSimpleOrm<Data : Any>(
+    val clazz: KClass<Data>,
+    val classColumnMappings: ClassColumnMappings<Data>,
+) : GenericSimpleOrm<Data> {
+    override val neededColumns = classColumnMappings.getNeededColumns()
+    override fun resultRowToData(resultRow: ResultRow): Data =
+        constructDataWithResultRow(clazz, classColumnMappings, resultRow)
+
+    override fun updateBuilderSetter(data: Data): Table.(UpdateBuilder<Number>) -> Unit = {
+        setUpdateBuilder(classColumnMappings, data, it)
+    }
+}
+
+fun <Data : Any> constructDataWithResultRow(
+    clazz: KClass<Data>, classColumnMappings: ClassColumnMappings<Data>, resultRow: ResultRow
+): Data =
+    clazz.primaryConstructor!!.call(*classColumnMappings.map {
+        when (it) {
+            is SqlPrimitive -> resultRow.getValue(it.column)
+            is NestedClass ->
+                // TODO: the nullable case is not implemented yet
+                @Suppress("UNCHECKED_CAST")
+                constructDataWithResultRow(
+                    it.property.returnType.classifier as KClass<Any>,
+                    it.nestedMappings as ClassColumnMappings<Any>,
+                    resultRow
+                )
+        }
+    }.toTypedArray())
+
+fun <Data : Any> setUpdateBuilder(
+    classColumnMappings: ClassColumnMappings<Data>, data: Data, updateBuilder: UpdateBuilder<Number>
+) {
+    for (propertyColumnMapping in classColumnMappings)
+        when (propertyColumnMapping) {
+            is SqlPrimitive ->
+                @Suppress("UNCHECKED_CAST")
+                updateBuilder[propertyColumnMapping.column as Column<Any?>] = propertyColumnMapping.property(data)
+
+            is NestedClass -> {
+                @Suppress("NAME_SHADOWING", "UNCHECKED_CAST")
+                val propertyColumnMapping = propertyColumnMapping as NestedClass<Data, Any?>
+                val nestedMappings = propertyColumnMapping.nestedMappings
+                propertyColumnMapping.property(data)?.let {
+                    setUpdateBuilder(nestedMappings, it, updateBuilder)
+                }
+                    ?: setUpdateBuilderToNulls(nestedMappings, updateBuilder)
+            }
+        }
+}
+
+fun ClassColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
+    for (propertyColumnMapping in this)
+        when (propertyColumnMapping) {
+            is SqlPrimitive -> block(propertyColumnMapping.column)
+            is NestedClass -> {
+                propertyColumnMapping.nestedMappings.forEachColumn(block)
+            }
+        }
+}
+
+fun <Data : Any> setUpdateBuilderToNulls(
+    classColumnMappings: ClassColumnMappings<Data>, updateBuilder: UpdateBuilder<Number>
+) =
+    classColumnMappings.forEachColumn {
+        @Suppress("UNCHECKED_CAST")
+        updateBuilder[it as Column<Any?>] = null
+    }
+
+fun ClassColumnMappings<*>.getNeededColumns(): List<Column<*>> =
+    buildList { forEachColumn { add(it) } }
+
+inline fun <reified Data : Any> reflectionBasedGenericSimpleOrm(
+    tables: List<Table>,
+    customMappings: PropertyColumnMappings<Data> = listOf(),
+    onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
+): ReflectionBasedGenericSimpleOrm<Data> {
+    val clazz = Data::class
+    return ReflectionBasedGenericSimpleOrm(
+        clazz, getDefaultClassColumnMappings(clazz, tables, customMappings, onDuplicateColumnPropertyNames)
     )
 }
