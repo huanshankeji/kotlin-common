@@ -182,7 +182,7 @@ fun getColumnByPropertyNameMap(
 fun <Data : Any> getDefaultClassColumnMappings(
     clazz: KClass<Data>,
     columnByPropertyNameMap: Map<String, Column<*>>,
-    customMappings: PropertyColumnMappings<Data> = listOf()
+    customMappings: PropertyColumnMappings<Data> = emptyList()
 ): ClassColumnMappings<Data> {
     val customMappingProperties = customMappings.asSequence().map { it.property }.toSet()
     val dataMemberPropertyMap =
@@ -211,7 +211,7 @@ fun <Data : Any> getDefaultClassColumnMappings(
 fun <Data : Any> getDefaultClassColumnMappings(
     clazz: KClass<Data>,
     tables: List<Table>,
-    customMappings: PropertyColumnMappings<Data> = listOf(),
+    customMappings: PropertyColumnMappings<Data> = emptyList(),
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
 ): ClassColumnMappings<Data> =
     getDefaultClassColumnMappings(
@@ -297,7 +297,7 @@ fun ClassColumnMappings<*>.getNeededColumns(): List<Column<*>> =
 
 inline fun <reified Data : Any> reflectionBasedGenericSimpleOrm(
     tables: List<Table>,
-    customMappings: PropertyColumnMappings<Data> = listOf(),
+    customMappings: PropertyColumnMappings<Data> = emptyList(),
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
 ): ReflectionBasedGenericSimpleOrm<Data> {
     val clazz = Data::class
