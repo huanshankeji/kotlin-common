@@ -9,6 +9,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.reflect.*
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.withNullability
@@ -115,7 +116,7 @@ typealias PropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, *>>
 typealias ClassColumnMappings<Data> = PropertyColumnMappings<Data>
 
 sealed class PropertyColumnMapping<Data : Any, PropertyValue>(val property: KProperty1<Data, PropertyValue>) {
-    class SqlPrimitive<Data : Any, PrimitiveValue>(
+    class ExposedSqlPrimitive<Data : Any, PrimitiveValue>(
         property: KProperty1<Data, PrimitiveValue>,
         val column: Column<PrimitiveValue>
     ) : PropertyColumnMapping<Data, PrimitiveValue>(property)
@@ -130,7 +131,7 @@ sealed class PropertyColumnMapping<Data : Any, PropertyValue>(val property: KPro
 
 // see: https://kotlinlang.org/docs/basic-types.html, https://www.postgresql.org/docs/current/datatype.html
 // Types that are commented out are not ensured to work yet.
-val defaultSqlNotNullPrimitiveTypes = listOf(
+val defaultNotNullExposedSqlPrimitiveTypes = listOf(
     typeOf<Byte>(), typeOf<Short>(), typeOf<Int>(), typeOf<Long>(), /*typeOf<BigInteger>(),*/
     typeOf<UByte>(), typeOf<UShort>(), typeOf<UInt>(), typeOf<ULong>(),
     typeOf<Float>(), typeOf<Double>(), /*typeOf<BigDecimal>(),*/
@@ -140,6 +141,10 @@ val defaultSqlNotNullPrimitiveTypes = listOf(
     typeOf<String>(),
     // types related to time and date
 )
+
+val enumType = typeOf<Enum<*>>()
+fun KType.notNullTypeIsExposedSqlPrimitiveType(): Boolean =
+    this in defaultNotNullExposedSqlPrimitiveTypes || isSubtypeOf(enumType)
 
 class ColumnWithPropertyName(val propertyName: String, val column: Column<*>)
 
@@ -188,8 +193,11 @@ fun <Data : Any> getDefaultClassColumnMappings(
         val property = dataMemberPropertyMap[name]
         val notNullType = it.type.withNullability(false)
         @Suppress("UNCHECKED_CAST")
-        if (notNullType in defaultSqlNotNullPrimitiveTypes)
-            SqlPrimitive(property as KProperty1<Data, Any?>, columnByPropertyNameMap.getValue(name) as Column<Any?>)
+        if (notNullType.notNullTypeIsExposedSqlPrimitiveType())
+            ExposedSqlPrimitive(
+                property as KProperty1<Data, Any?>,
+                columnByPropertyNameMap.getValue(name) as Column<Any?>
+            )
         else
             NestedClass(
                 property as KProperty1<Data, Any?>,
@@ -233,7 +241,7 @@ fun <Data : Any> constructDataWithResultRow(
 ): Data =
     clazz.primaryConstructor!!.call(*classColumnMappings.map {
         when (it) {
-            is SqlPrimitive -> resultRow.getValue(it.column)
+            is ExposedSqlPrimitive -> resultRow.getValue(it.column)
             is NestedClass ->
                 // TODO: the nullable case is not implemented yet
                 @Suppress("UNCHECKED_CAST")
@@ -250,7 +258,7 @@ fun <Data : Any> setUpdateBuilder(
 ) {
     for (propertyColumnMapping in classColumnMappings)
         when (propertyColumnMapping) {
-            is SqlPrimitive ->
+            is ExposedSqlPrimitive ->
                 @Suppress("UNCHECKED_CAST")
                 updateBuilder[propertyColumnMapping.column as Column<Any?>] = propertyColumnMapping.property(data)
 
@@ -269,7 +277,7 @@ fun <Data : Any> setUpdateBuilder(
 fun ClassColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
     for (propertyColumnMapping in this)
         when (propertyColumnMapping) {
-            is SqlPrimitive -> block(propertyColumnMapping.column)
+            is ExposedSqlPrimitive -> block(propertyColumnMapping.column)
             is NestedClass -> {
                 propertyColumnMapping.nestedMappings.forEachColumn(block)
             }
