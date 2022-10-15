@@ -19,7 +19,7 @@ import kotlin.reflect.full.withNullability
 
 interface SimpleOrm<Data : Any, TableT : Table> {
     fun resultRowToData(resultRow: ResultRow): Data
-    fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<Number>) -> Unit
+    fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<*>) -> Unit
 }
 
 fun ResultRow.getValue(column: Column<*>): Any? =
@@ -36,7 +36,7 @@ interface ReflectionBasedSimpleOrm<Data : Any, TableT : Table> : SimpleOrm<Data,
         return dataPrimaryConstructor.call(*params.toTypedArray())
     }
 
-    override fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<Number>) -> Unit = {
+    override fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<*>) -> Unit = {
         for ((property, column) in propertyAndColumnPairs)
             @Suppress("UNCHECKED_CAST")
             it[column as Column<Any?>] = property(data)
@@ -234,7 +234,7 @@ class ReflectionBasedGenericSimpleOrm<Data : Any>(
     override fun resultRowToData(resultRow: ResultRow): Data =
         constructDataWithResultRow(clazz, classColumnMappings, resultRow)
 
-    override fun updateBuilderSetter(data: Data): Table.(UpdateBuilder<Number>) -> Unit = {
+    override fun updateBuilderSetter(data: Data): Table.(UpdateBuilder<*>) -> Unit = {
         setUpdateBuilder(classColumnMappings, data, it)
     }
 }
@@ -259,7 +259,7 @@ fun <Data : Any> constructDataWithResultRow(
     }.toTypedArray())
 
 fun <Data : Any> setUpdateBuilder(
-    classColumnMappings: ClassColumnMappings<Data>, data: Data, updateBuilder: UpdateBuilder<Number>
+    classColumnMappings: ClassColumnMappings<Data>, data: Data, updateBuilder: UpdateBuilder<*>
 ) {
     for (propertyColumnMapping in classColumnMappings)
         when (propertyColumnMapping) {
@@ -291,7 +291,7 @@ fun ClassColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
 }
 
 fun <Data : Any> setUpdateBuilderToNulls(
-    classColumnMappings: ClassColumnMappings<Data>, updateBuilder: UpdateBuilder<Number>
+    classColumnMappings: ClassColumnMappings<Data>, updateBuilder: UpdateBuilder<*>
 ) =
     classColumnMappings.forEachColumn {
         @Suppress("UNCHECKED_CAST")
