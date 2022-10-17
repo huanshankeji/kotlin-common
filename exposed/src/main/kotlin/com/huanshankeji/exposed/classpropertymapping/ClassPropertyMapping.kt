@@ -18,7 +18,7 @@ import kotlin.reflect.full.withNullability
 typealias PropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, *>>
 //typealias LessStrictlyTypedPropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, Any?>>
 /** In the order of the constructor arguments. */
-typealias ClassColumnMappings<Data> = PropertyColumnMappings<Data>
+typealias ClassPropertyColumnMappings<Data> = PropertyColumnMappings<Data>
 
 sealed class PropertyColumnMapping<Data : Any, PropertyValue>(val property: KProperty1<Data, PropertyValue>) {
     class ExposedSqlPrimitive<Data : Any, PrimitiveValue>(
@@ -29,7 +29,7 @@ sealed class PropertyColumnMapping<Data : Any, PropertyValue>(val property: KPro
     class NestedClass<Data : Any, NestedData>(
         property: KProperty1<Data, NestedData>,
         //val nullabilityDependentColumn: Column<*>,
-        val nestedMappings: ClassColumnMappings<NestedData & Any>
+        val nestedMappings: ClassPropertyColumnMappings<NestedData & Any>
     ) : PropertyColumnMapping<Data, NestedData>(property)
 
     class Skip<Data : Any, PropertyValue>(property: KProperty1<Data, PropertyValue>) :
@@ -91,7 +91,7 @@ fun <Data : Any> getDefaultClassColumnMappings(
     clazz: KClass<Data>,
     columnByPropertyNameMap: Map<String, Column<*>>,
     customMappings: PropertyColumnMappings<Data> = emptyList()
-): ClassColumnMappings<Data> {
+): ClassPropertyColumnMappings<Data> {
     val customMappingProperties = customMappings.asSequence().map { it.property }.toSet()
     val dataMemberPropertyMap =
         (clazz.memberProperties.toSet() - customMappingProperties).associateBy { it.name }
@@ -111,7 +111,7 @@ fun <Data : Any> getDefaultClassColumnMappings(
                 property as KProperty1<Data, Any?>,
                 getDefaultClassColumnMappings(
                     notNullType.classifier as KClass<*>, columnByPropertyNameMap
-                ) as ClassColumnMappings<Any>
+                ) as ClassPropertyColumnMappings<Any>
             )
     }
 }
@@ -121,7 +121,7 @@ fun <Data : Any> getDefaultClassColumnMappings(
     tables: List<Table>,
     customMappings: PropertyColumnMappings<Data> = emptyList(),
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
-): ClassColumnMappings<Data> =
+): ClassPropertyColumnMappings<Data> =
     getDefaultClassColumnMappings(
         clazz, getColumnByPropertyNameMap(tables, onDuplicateColumnPropertyNames), customMappings
     )
@@ -133,21 +133,21 @@ interface ClassPropertyMapper<Data : Any> : SimpleClassPropertyMapper<Data, Tabl
 /** Supports classes with nested composite class properties and multiple tables */
 class ReflectionBasedClassPropertyMapper<Data : Any>(
     val clazz: KClass<Data>,
-    val classColumnMappings: ClassColumnMappings<Data>,
+    val classPropertyColumnMappings: ClassPropertyColumnMappings<Data>,
 ) : ClassPropertyMapper<Data> {
-    override val neededColumns = classColumnMappings.getNeededColumns()
+    override val neededColumns = classPropertyColumnMappings.getNeededColumns()
     override fun resultRowToData(resultRow: ResultRow): Data =
-        constructDataWithResultRow(clazz, classColumnMappings, resultRow)
+        constructDataWithResultRow(clazz, classPropertyColumnMappings, resultRow)
 
     override fun updateBuilderSetter(data: Data): Table.(UpdateBuilder<*>) -> Unit = {
-        setUpdateBuilder(classColumnMappings, data, it)
+        setUpdateBuilder(classPropertyColumnMappings, data, it)
     }
 }
 
 fun <Data : Any> constructDataWithResultRow(
-    clazz: KClass<Data>, classColumnMappings: ClassColumnMappings<Data>, resultRow: ResultRow
+    clazz: KClass<Data>, classPropertyColumnMappings: ClassPropertyColumnMappings<Data>, resultRow: ResultRow
 ): Data =
-    clazz.primaryConstructor!!.call(*classColumnMappings.map {
+    clazz.primaryConstructor!!.call(*classPropertyColumnMappings.map {
         when (it) {
             is ExposedSqlPrimitive -> resultRow.getValue(it.column)
             is NestedClass ->
@@ -155,7 +155,7 @@ fun <Data : Any> constructDataWithResultRow(
                 @Suppress("UNCHECKED_CAST")
                 constructDataWithResultRow(
                     it.property.returnType.classifier as KClass<Any>,
-                    it.nestedMappings as ClassColumnMappings<Any>,
+                    it.nestedMappings as ClassPropertyColumnMappings<Any>,
                     resultRow
                 )
 
@@ -164,9 +164,9 @@ fun <Data : Any> constructDataWithResultRow(
     }.toTypedArray())
 
 fun <Data : Any> setUpdateBuilder(
-    classColumnMappings: ClassColumnMappings<Data>, data: Data, updateBuilder: UpdateBuilder<*>
+    classPropertyColumnMappings: ClassPropertyColumnMappings<Data>, data: Data, updateBuilder: UpdateBuilder<*>
 ) {
-    for (propertyColumnMapping in classColumnMappings)
+    for (propertyColumnMapping in classPropertyColumnMappings)
         when (propertyColumnMapping) {
             is ExposedSqlPrimitive ->
                 @Suppress("UNCHECKED_CAST")
@@ -186,7 +186,7 @@ fun <Data : Any> setUpdateBuilder(
         }
 }
 
-fun ClassColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
+fun ClassPropertyColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
     for (propertyColumnMapping in this)
         when (propertyColumnMapping) {
             is ExposedSqlPrimitive -> block(propertyColumnMapping.column)
@@ -196,14 +196,14 @@ fun ClassColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
 }
 
 fun <Data : Any> setUpdateBuilderToNulls(
-    classColumnMappings: ClassColumnMappings<Data>, updateBuilder: UpdateBuilder<*>
+    classPropertyColumnMappings: ClassPropertyColumnMappings<Data>, updateBuilder: UpdateBuilder<*>
 ) =
-    classColumnMappings.forEachColumn {
+    classPropertyColumnMappings.forEachColumn {
         @Suppress("UNCHECKED_CAST")
         updateBuilder[it as Column<Any?>] = null
     }
 
-fun ClassColumnMappings<*>.getNeededColumns(): List<Column<*>> =
+fun ClassPropertyColumnMappings<*>.getNeededColumns(): List<Column<*>> =
     buildList { forEachColumn { add(it) } }
 
 inline fun <reified Data : Any> reflectionBasedClassPropertyMapper(
