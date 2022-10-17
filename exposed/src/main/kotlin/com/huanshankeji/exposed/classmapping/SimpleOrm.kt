@@ -1,7 +1,7 @@
-package com.huanshankeji.exposed
+package com.huanshankeji.exposed.classmapping
 
-import com.huanshankeji.exposed.OnDuplicateColumnPropertyNames.*
-import com.huanshankeji.exposed.PropertyColumnMapping.*
+import com.huanshankeji.exposed.classmapping.OnDuplicateColumnPropertyNames.*
+import com.huanshankeji.exposed.classmapping.PropertyColumnMapping.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.Alias
 import org.jetbrains.exposed.sql.Column
