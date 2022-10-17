@@ -17,7 +17,7 @@ import kotlin.reflect.full.withNullability
 // Our own class mapping implementation using reflection which should be adapted using annotation processors and code generation in the future.
 
 
-interface ClassPropertyMapper<Data : Any, TableT : Table> {
+interface SimpleClassPropertyMapper<Data : Any, TableT : Table> {
     fun resultRowToData(resultRow: ResultRow): Data
     fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<*>) -> Unit
 }
@@ -27,7 +27,9 @@ fun ResultRow.getValue(column: Column<*>): Any? =
         if (it is EntityID<*>) it.value else it
     }
 
-interface ReflectionBasedClassPropertyMapper<Data : Any, TableT : Table> : ClassPropertyMapper<Data, TableT> {
+/** Nested classes are not supported. */
+interface ReflectionBasedSimpleClassPropertyMapper<Data : Any, TableT : Table> :
+    SimpleClassPropertyMapper<Data, TableT> {
     val propertyAndColumnPairs: List<Pair<KProperty1<Data, *>, Column<*>>>
     val dataPrimaryConstructor: KFunction<Data>
 
@@ -43,8 +45,8 @@ interface ReflectionBasedClassPropertyMapper<Data : Any, TableT : Table> : Class
     }
 }
 
-inline fun <reified Data : Any, reified TableT : Table> reflectionBasedClassPropertyMapper(table: TableT): ReflectionBasedClassPropertyMapper<Data, TableT> =
-    object : ReflectionBasedClassPropertyMapper<Data, TableT> {
+inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleClassPropertyMapper(table: TableT): ReflectionBasedSimpleClassPropertyMapper<Data, TableT> =
+    object : ReflectionBasedSimpleClassPropertyMapper<Data, TableT> {
         private val clazz = Data::class
         override val propertyAndColumnPairs = run {
             //require(dClass.isData)
@@ -71,10 +73,10 @@ inline fun <reified TableT : Table> getColumnByPropertyNameMapWithTypeParameter(
     getColumnPropertyByNameMap(TableT::class)
         .mapValues { it.value(table) }
 
-inline fun <reified D : Any, reified T : Table> reflectionBasedClassPropertyMapperForAlias(
-    tableClassPropertyMapper: ReflectionBasedClassPropertyMapper<D, T>, alias: Alias<T>
-): ReflectionBasedClassPropertyMapper<D, T> =
-    object : ReflectionBasedClassPropertyMapper<D, T> {
+inline fun <reified D : Any, reified T : Table> reflectionBasedSimpleClassPropertyMapperForAlias(
+    tableClassPropertyMapper: ReflectionBasedSimpleClassPropertyMapper<D, T>, alias: Alias<T>
+): ReflectionBasedSimpleClassPropertyMapper<D, T> =
+    object : ReflectionBasedSimpleClassPropertyMapper<D, T> {
         override val dataPrimaryConstructor = tableClassPropertyMapper.dataPrimaryConstructor
         override val propertyAndColumnPairs =
             tableClassPropertyMapper.propertyAndColumnPairs.map { it.first to alias[it.second] }
@@ -222,15 +224,15 @@ fun <Data : Any> getDefaultClassColumnMappings(
         clazz, getColumnByPropertyNameMap(tables, onDuplicateColumnPropertyNames), customMappings
     )
 
-interface GenericClassPropertyMapper<Data : Any> : ClassPropertyMapper<Data, Table> {
+interface ClassPropertyMapper<Data : Any> : SimpleClassPropertyMapper<Data, Table> {
     val neededColumns: List<Column<*>>
 }
 
 /** Supports classes with nested composite class properties and multiple tables */
-class ReflectionBasedGenericClassPropertyMapper<Data : Any>(
+class ReflectionBasedClassPropertyMapper<Data : Any>(
     val clazz: KClass<Data>,
     val classColumnMappings: ClassColumnMappings<Data>,
-) : GenericClassPropertyMapper<Data> {
+) : ClassPropertyMapper<Data> {
     override val neededColumns = classColumnMappings.getNeededColumns()
     override fun resultRowToData(resultRow: ResultRow): Data =
         constructDataWithResultRow(clazz, classColumnMappings, resultRow)
@@ -302,13 +304,13 @@ fun <Data : Any> setUpdateBuilderToNulls(
 fun ClassColumnMappings<*>.getNeededColumns(): List<Column<*>> =
     buildList { forEachColumn { add(it) } }
 
-inline fun <reified Data : Any> reflectionBasedGenericClassPropertyMapper(
+inline fun <reified Data : Any> reflectionBasedClassPropertyMapper(
     tables: List<Table>,
     customMappings: PropertyColumnMappings<Data> = emptyList(),
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
-): ReflectionBasedGenericClassPropertyMapper<Data> {
+): ReflectionBasedClassPropertyMapper<Data> {
     val clazz = Data::class
-    return ReflectionBasedGenericClassPropertyMapper(
+    return ReflectionBasedClassPropertyMapper(
         clazz, getDefaultClassColumnMappings(clazz, tables, customMappings, onDuplicateColumnPropertyNames)
     )
 }
