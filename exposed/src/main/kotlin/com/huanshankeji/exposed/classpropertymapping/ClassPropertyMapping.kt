@@ -1,7 +1,7 @@
-package com.huanshankeji.exposed.classmapping
+package com.huanshankeji.exposed.classpropertymapping
 
-import com.huanshankeji.exposed.classmapping.OnDuplicateColumnPropertyNames.*
-import com.huanshankeji.exposed.classmapping.PropertyColumnMapping.*
+import com.huanshankeji.exposed.classpropertymapping.OnDuplicateColumnPropertyNames.*
+import com.huanshankeji.exposed.classpropertymapping.PropertyColumnMapping.*
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.Alias
 import org.jetbrains.exposed.sql.Column
@@ -14,10 +14,10 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.withNullability
 
-// Our own simple ORM implementation using reflection which should be adapted using annotation processors and code generation in the future.
+// Our own class mapping implementation using reflection which should be adapted using annotation processors and code generation in the future.
 
 
-interface SimpleOrm<Data : Any, TableT : Table> {
+interface ClassPropertyMapper<Data : Any, TableT : Table> {
     fun resultRowToData(resultRow: ResultRow): Data
     fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<*>) -> Unit
 }
@@ -27,7 +27,7 @@ fun ResultRow.getValue(column: Column<*>): Any? =
         if (it is EntityID<*>) it.value else it
     }
 
-interface ReflectionBasedSimpleOrm<Data : Any, TableT : Table> : SimpleOrm<Data, TableT> {
+interface ReflectionBasedClassPropertyMapper<Data : Any, TableT : Table> : ClassPropertyMapper<Data, TableT> {
     val propertyAndColumnPairs: List<Pair<KProperty1<Data, *>, Column<*>>>
     val dataPrimaryConstructor: KFunction<Data>
 
@@ -43,8 +43,8 @@ interface ReflectionBasedSimpleOrm<Data : Any, TableT : Table> : SimpleOrm<Data,
     }
 }
 
-inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleOrm(table: TableT): ReflectionBasedSimpleOrm<Data, TableT> =
-    object : ReflectionBasedSimpleOrm<Data, TableT> {
+inline fun <reified Data : Any, reified TableT : Table> reflectionBasedClassPropertyMapper(table: TableT): ReflectionBasedClassPropertyMapper<Data, TableT> =
+    object : ReflectionBasedClassPropertyMapper<Data, TableT> {
         private val clazz = Data::class
         override val propertyAndColumnPairs = run {
             //require(dClass.isData)
@@ -71,12 +71,13 @@ inline fun <reified TableT : Table> getColumnByPropertyNameMapWithTypeParameter(
     getColumnPropertyByNameMap(TableT::class)
         .mapValues { it.value(table) }
 
-inline fun <reified D : Any, reified T : Table> reflectionBasedSimpleOrmForAlias(
-    tableOrm: ReflectionBasedSimpleOrm<D, T>, alias: Alias<T>
-): ReflectionBasedSimpleOrm<D, T> =
-    object : ReflectionBasedSimpleOrm<D, T> {
-        override val dataPrimaryConstructor = tableOrm.dataPrimaryConstructor
-        override val propertyAndColumnPairs = tableOrm.propertyAndColumnPairs.map { it.first to alias[it.second] }
+inline fun <reified D : Any, reified T : Table> reflectionBasedClassPropertyMapperForAlias(
+    tableClassPropertyMapper: ReflectionBasedClassPropertyMapper<D, T>, alias: Alias<T>
+): ReflectionBasedClassPropertyMapper<D, T> =
+    object : ReflectionBasedClassPropertyMapper<D, T> {
+        override val dataPrimaryConstructor = tableClassPropertyMapper.dataPrimaryConstructor
+        override val propertyAndColumnPairs =
+            tableClassPropertyMapper.propertyAndColumnPairs.map { it.first to alias[it.second] }
     }
 
 
@@ -221,15 +222,15 @@ fun <Data : Any> getDefaultClassColumnMappings(
         clazz, getColumnByPropertyNameMap(tables, onDuplicateColumnPropertyNames), customMappings
     )
 
-interface GenericSimpleOrm<Data : Any> : SimpleOrm<Data, Table> {
+interface GenericClassPropertyMapper<Data : Any> : ClassPropertyMapper<Data, Table> {
     val neededColumns: List<Column<*>>
 }
 
 /** Supports classes with nested composite class properties and multiple tables */
-class ReflectionBasedGenericSimpleOrm<Data : Any>(
+class ReflectionBasedGenericClassPropertyMapper<Data : Any>(
     val clazz: KClass<Data>,
     val classColumnMappings: ClassColumnMappings<Data>,
-) : GenericSimpleOrm<Data> {
+) : GenericClassPropertyMapper<Data> {
     override val neededColumns = classColumnMappings.getNeededColumns()
     override fun resultRowToData(resultRow: ResultRow): Data =
         constructDataWithResultRow(clazz, classColumnMappings, resultRow)
@@ -301,13 +302,13 @@ fun <Data : Any> setUpdateBuilderToNulls(
 fun ClassColumnMappings<*>.getNeededColumns(): List<Column<*>> =
     buildList { forEachColumn { add(it) } }
 
-inline fun <reified Data : Any> reflectionBasedGenericSimpleOrm(
+inline fun <reified Data : Any> reflectionBasedGenericClassPropertyMapper(
     tables: List<Table>,
     customMappings: PropertyColumnMappings<Data> = emptyList(),
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST
-): ReflectionBasedGenericSimpleOrm<Data> {
+): ReflectionBasedGenericClassPropertyMapper<Data> {
     val clazz = Data::class
-    return ReflectionBasedGenericSimpleOrm(
+    return ReflectionBasedGenericClassPropertyMapper(
         clazz, getDefaultClassColumnMappings(clazz, tables, customMappings, onDuplicateColumnPropertyNames)
     )
 }
