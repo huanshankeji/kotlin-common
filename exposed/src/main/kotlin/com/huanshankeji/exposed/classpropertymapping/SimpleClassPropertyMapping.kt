@@ -43,6 +43,9 @@ interface ReflectionBasedSimpleClassPropertyMapper<Data : Any, TableT : Table> :
 inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleClassPropertyMapper(table: TableT): ReflectionBasedSimpleClassPropertyMapper<Data, TableT> =
     object : ReflectionBasedSimpleClassPropertyMapper<Data, TableT> {
         private val clazz = Data::class
+
+        // This property needs to initialize first.
+        override val dataPrimaryConstructor = clazz.primaryConstructor!!
         override val propertyAndColumnPairs = run {
             //require(dClass.isData)
             val dataMemberPropertyMap = clazz.memberProperties.associateBy { it.name }
@@ -52,7 +55,6 @@ inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleCla
                 dataMemberPropertyMap.getValue(name) to columnMap.getValue(name)
             }
         }
-        override val dataPrimaryConstructor = clazz.primaryConstructor!!
     }
 
 @Suppress("UNCHECKED_CAST")
