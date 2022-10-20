@@ -60,7 +60,7 @@ inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleCla
 @Suppress("UNCHECKED_CAST")
 fun <TableT : Table> getColumnProperties(clazz: KClass<TableT>): Sequence<KProperty1<TableT, Column<*>>> =
     clazz.memberProperties.asSequence()
-        .filter { it.returnType.classifier == Column::class }
+        .filter { it.returnType.run { classifier == Column::class && !isMarkedNullable } }
             as Sequence<KProperty1<TableT, Column<*>>>
 
 fun <TableT : Table> getColumnPropertyByNameMap(clazz: KClass<TableT>): Map<String, KProperty1<TableT, Column<*>>> =
