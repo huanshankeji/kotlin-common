@@ -216,3 +216,9 @@ inline fun <reified Data : Any> reflectionBasedClassPropertyMapper(
         clazz, getDefaultClassColumnMappings(clazz, tables, customMappings, onDuplicateColumnPropertyNames)
     )
 }
+
+inline fun <reified Data : Any/*, TableT : Table*/> reflectionBasedClassPropertyMapper(
+    table: Table,
+    customMappings: PropertyColumnMappings<Data> = emptyList()
+) =
+    reflectionBasedClassPropertyMapper(listOf(table), customMappings, THROW)
