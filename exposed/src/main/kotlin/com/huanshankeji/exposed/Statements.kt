@@ -17,7 +17,7 @@ fun Table.deleteWhereStatement(
 ): DeleteStatement =
     DeleteStatement(this, SqlExpressionBuilder.op(), false, limit, offset)
 
-// TODO: is this needed anymore?
+// to access the protected `arguments` in the super class
 class HelperInsertStatement<Key : Any>(table: Table, isIgnore: Boolean = false) :
     InsertStatement<Key>(table, isIgnore) {
     public override var arguments: List<List<Pair<Column<*>, Any?>>>?
