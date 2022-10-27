@@ -1,21 +1,29 @@
 package com.huanshankeji.exposed.classpropertymapping
 
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.Alias
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
+import kotlin.sequences.Sequence
 
-interface SimpleClassPropertyMapper<Data : Any, TableT : Table> {
+fun interface SimpleClassPropertyQueryMapper<Data : Any> {
     fun resultRowToData(resultRow: ResultRow): Data
-    fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<*>) -> Unit
 }
+
+fun interface SimpleClassPropertyUpdateMapper<Data : Any, ColumnSetT : ColumnSet> {
+    fun updateBuilderSetter(data: Data): ColumnSetT.(UpdateBuilder<*>) -> Unit = {
+        setUpdateBuilder(data, it)
+    }
+
+    fun setUpdateBuilder(data: Data, updateBuilder: UpdateBuilder<*>)
+}
+
+interface SimpleClassPropertyMapper<Data : Any, ColumnSetT : ColumnSet> :
+    SimpleClassPropertyQueryMapper<Data>, SimpleClassPropertyUpdateMapper<Data, ColumnSetT>
 
 fun ResultRow.getValue(column: Column<*>): Any? =
     this[column].let {
@@ -33,10 +41,10 @@ interface ReflectionBasedSimpleClassPropertyMapper<Data : Any, TableT : Table> :
         return dataPrimaryConstructor.call(*params.toTypedArray())
     }
 
-    override fun updateBuilderSetter(data: Data): TableT.(UpdateBuilder<*>) -> Unit = {
+    override fun setUpdateBuilder(data: Data, updateBuilder: UpdateBuilder<*>) {
         for ((property, column) in propertyAndColumnPairs)
             @Suppress("UNCHECKED_CAST")
-            it[column as Column<Any?>] = property(data)
+            updateBuilder[column as Column<Any?>] = property(data)
     }
 }
 
