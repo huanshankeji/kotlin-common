@@ -43,7 +43,6 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
                 Adt<NotNullNestedData>()
 
             class Sum<NotNullNestedData : Any, CaseValue>(
-                // I first used the Guava BiMap but then realized it's not necessary. TODO: remove this comment
                 val subclassMap: Map<KClass<out NotNullNestedData>, Product<out NotNullNestedData>>,
                 val sumTypeCaseConfig: SumTypeCaseConfig<NotNullNestedData, CaseValue>
             ) : Adt<NotNullNestedData>()
