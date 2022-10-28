@@ -358,7 +358,7 @@ class ReflectionBasedClassPropertyMapper<Data : Any>(
     val clazz: KClass<Data>,
     val classPropertyColumnMappings: ClassPropertyColumnMappings<Data>,
 ) : ClassPropertyMapper<Data> {
-    override val neededColumns = classPropertyColumnMappings.getNeededColumns()
+    override val neededColumns = classPropertyColumnMappings.getNeededColumnSet().toList()
     override fun resultRowToData(resultRow: ResultRow): Data =
         constructDataWithResultRow(clazz, classPropertyColumnMappings, resultRow)
 
@@ -487,11 +487,17 @@ fun ClassPropertyColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
     for (propertyColumnMapping in this)
         when (propertyColumnMapping) {
             is ExposedSqlPrimitive -> block(propertyColumnMapping.column)
-            is NestedClass -> when (val adt = propertyColumnMapping.adt) {
-                is NestedClass.Adt.Product -> adt.nestedMappings.forEachColumn(block)
-                is NestedClass.Adt.Sum<*, *> -> {
-                    block(adt.sumTypeCaseConfig.caseValueColumn)
-                    adt.subclassMap.values.forEach { it.nestedMappings.forEachColumn(block) }
+            is NestedClass -> {
+                when (val nullability = propertyColumnMapping.nullability) {
+                    is NestedClass.Nullability.NonNullable -> {}
+                    is NestedClass.Nullability.Nullable -> block(nullability.nullDependentColumn)
+                }
+                when (val adt = propertyColumnMapping.adt) {
+                    is NestedClass.Adt.Product -> adt.nestedMappings.forEachColumn(block)
+                    is NestedClass.Adt.Sum<*, *> -> {
+                        block(adt.sumTypeCaseConfig.caseValueColumn)
+                        adt.subclassMap.values.forEach { it.nestedMappings.forEachColumn(block) }
+                    }
                 }
             }
 
@@ -508,8 +514,8 @@ fun setUpdateBuilderToNulls(
         updateBuilder[it as Column<Any?>] = null
     }
 
-fun ClassPropertyColumnMappings<*>.getNeededColumns(): List<Column<*>> =
-    buildList { forEachColumn { add(it) } }
+fun ClassPropertyColumnMappings<*>.getNeededColumnSet(): Set<Column<*>> =
+    buildSet { forEachColumn { add(it) } }
 
 inline fun <reified Data : Any> reflectionBasedClassPropertyMapper(
     tables: List<Table>,
