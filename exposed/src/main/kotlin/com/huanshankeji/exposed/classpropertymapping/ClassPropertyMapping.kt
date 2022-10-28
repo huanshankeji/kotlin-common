@@ -19,33 +19,31 @@ typealias ClassPropertyColumnMappings<Data> = PropertyColumnMappings<Data>
 
 // TODO: decouple/remove `property` and `Data` from this class.
 sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProperty1<Data, PropertyData>) {
-    // TODO: rename all occurrences of "PrimitiveValue" to "PropertyData".
-    class ExposedSqlPrimitive<Data : Any, PrimitiveValue>(
-        property: KProperty1<Data, PrimitiveValue>,
-        val column: Column<PrimitiveValue>
-    ) : PropertyColumnMapping<Data, PrimitiveValue>(property)
+    class ExposedSqlPrimitive<Data : Any, PropertyData>(
+        property: KProperty1<Data, PropertyData>,
+        val column: Column<PropertyData>
+    ) : PropertyColumnMapping<Data, PropertyData>(property)
 
-    // TODO: rename all occurrences of "NestedData" to "PropertyData".
-    class NestedClass<Data : Any, NestedData>(
-        property: KProperty1<Data, NestedData>,
-        val nullability: Nullability<NestedData>,
-        val adt: Adt<NestedData & Any>
-    ) : PropertyColumnMapping<Data, NestedData>(property) {
-        sealed class Nullability<NestedData> {
-            class NonNullable<NotNullNestedData : Any> : Nullability<NotNullNestedData>()
-            class Nullable<NotNullNestedData : Any>(val nullDependentColumn: Column<*>) :
-                Nullability<NotNullNestedData?>()
+    class NestedClass<Data : Any, PropertyData>(
+        property: KProperty1<Data, PropertyData>,
+        val nullability: Nullability<PropertyData>,
+        val adt: Adt<PropertyData & Any>
+    ) : PropertyColumnMapping<Data, PropertyData>(property) {
+        sealed class Nullability<PropertyData> {
+            class NonNullable<NotNullPropertyData : Any> : Nullability<NotNullPropertyData>()
+            class Nullable<NotNullPropertyData : Any>(val nullDependentColumn: Column<*>) :
+                Nullability<NotNullPropertyData?>()
         }
 
         // ADT: algebraic data type
-        sealed class Adt<NotNullNestedData : Any> {
-            class Product<NotNullNestedData : Any>(val nestedMappings: ClassPropertyColumnMappings<NotNullNestedData>) :
-                Adt<NotNullNestedData>()
+        sealed class Adt<NotNullPropertyData : Any> {
+            class Product<NotNullPropertyData : Any>(val nestedMappings: ClassPropertyColumnMappings<NotNullPropertyData>) :
+                Adt<NotNullPropertyData>()
 
-            class Sum<NotNullNestedData : Any, CaseValue>(
-                val subclassMap: Map<KClass<out NotNullNestedData>, Product<out NotNullNestedData>>,
-                val sumTypeCaseConfig: SumTypeCaseConfig<NotNullNestedData, CaseValue>
-            ) : Adt<NotNullNestedData>()
+            class Sum<NotNullPropertyData : Any, CaseValue>(
+                val subclassMap: Map<KClass<out NotNullPropertyData>, Product<out NotNullPropertyData>>,
+                val sumTypeCaseConfig: SumTypeCaseConfig<NotNullPropertyData, CaseValue>
+            ) : Adt<NotNullPropertyData>()
         }
 
     }
@@ -59,10 +57,10 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
         PropertyColumnMapping<Data, PropertyData>(property)
 }
 
-class SumTypeCaseConfig<Superclass : Any, Case>(
-    val caseValueColumn: Column<Case>,
-    val caseValueToClass: (Case) -> KClass<out Superclass>,
-    val classToCaseValue: (KClass<out Superclass>?) -> Case
+class SumTypeCaseConfig<SuperclassData : Any, CaseValue>(
+    val caseValueColumn: Column<CaseValue>,
+    val caseValueToClass: (CaseValue) -> KClass<out SuperclassData>,
+    val classToCaseValue: (KClass<out SuperclassData>?) -> CaseValue
 )
 
 
