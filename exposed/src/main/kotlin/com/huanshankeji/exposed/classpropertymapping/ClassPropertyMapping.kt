@@ -17,7 +17,12 @@ typealias PropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, *>>
 /** In the order of the constructor arguments. */
 typealias ClassPropertyColumnMappings<Data> = PropertyColumnMappings<Data>
 
-// TODO: decouple/remove `property` and `Data` from this class.
+/*
+TODO: consider decoupling/removing `property` and `Data` from this class and rename it to `ColumnMapping`
+ and add a `PropertyColumnMapping` containing the property and the `ColumnMapping`.
+ However, after the refactor, `ColumnMapping` will still be coupled with `ClassPropertyColumnMappings` which is coupled with `PropertyColumnMapping`,
+ so I am not sure whether this is necessary.
+*/
 sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProperty1<Data, PropertyData>) {
     class ExposedSqlPrimitive<Data : Any, PropertyData>(
         property: KProperty1<Data, PropertyData>,
