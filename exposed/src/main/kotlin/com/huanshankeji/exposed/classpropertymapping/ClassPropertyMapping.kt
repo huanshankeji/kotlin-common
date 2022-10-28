@@ -43,9 +43,13 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
             class Sum<NotNullPropertyData : Any, CaseValue>(
                 val subclassMap: Map<KClass<out NotNullPropertyData>, Product<out NotNullPropertyData>>,
                 val sumTypeCaseConfig: SumTypeCaseConfig<NotNullPropertyData, CaseValue>
-            ) : Adt<NotNullPropertyData>()
+            ) : Adt<NotNullPropertyData>() {
+                val columnsForAllSubclasses = subclassMap.values.asSequence()
+                    .flatMap { it.nestedMappings.getNeededColumnSet() }
+                    .toSet() // Using `toSet` seems to be faster than `distinct`.
+                    .toList()
+            }
         }
-
     }
 
     // TODO: remove the temporary workaround `& Any` if and when the `Any` upper bound is removed.
@@ -430,38 +434,38 @@ fun <Data : Any> setUpdateBuilder(
                             if (propertyData !== null)
                                 setUpdateBuilder(nestedMappings, propertyData, updateBuilder)
                             else
-                                setUpdateBuilderToNulls(nestedMappings, updateBuilder)
+                                setUpdateBuilderColumnsToNullsWithMappings(nestedMappings, updateBuilder)
                         }
 
                         is NestedClass.Adt.Sum<PropertyData & Any, *> -> {
                             fun <CaseValue> typeParameterHelper() {
                                 @Suppress("UNCHECKED_CAST")
                                 adt as NestedClass.Adt.Sum<PropertyData & Any, CaseValue>
-                                val sumTypeCaseConfig = adt.sumTypeCaseConfig
-                                val subclassMap = adt.subclassMap
-                                if (propertyData !== null) {
-                                    // TODO: it seems to be a compiler bug that the non-null assertion is needed here.
-                                    val propertyDataClass = propertyData!!::class
-                                    with(sumTypeCaseConfig) {
-                                        updateBuilder[caseValueColumn] = classToCaseValue(propertyDataClass)
+                                with(adt) {
+                                    if (propertyData !== null) {
+                                        // TODO: it seems to be a compiler bug that the non-null assertion is needed here.
+                                        val propertyDataClass = propertyData!!::class
+                                        with(sumTypeCaseConfig) {
+                                            updateBuilder[caseValueColumn] = classToCaseValue(propertyDataClass)
+                                        }
+                                        fun <SubclassData : PropertyData & Any> typeParameterHelper(
+                                            subclassMapping: NestedClass.Adt.Product<SubclassData>,
+                                            propertyData: SubclassData
+                                        ) =
+                                            setUpdateBuilder(
+                                                subclassMapping.nestedMappings, propertyData, updateBuilder
+                                            )
+                                        @Suppress("UNCHECKED_CAST")
+                                        typeParameterHelper(
+                                            subclassMap.getValue(propertyDataClass) as NestedClass.Adt.Product<PropertyData & Any>,
+                                            propertyData
+                                        )
+                                    } else {
+                                        with(sumTypeCaseConfig) {
+                                            updateBuilder[caseValueColumn] = classToCaseValue(null)
+                                        }
+                                        setUpdateBuilderColumnsToNulls(columnsForAllSubclasses, updateBuilder)
                                     }
-                                    fun <SubclassData : PropertyData & Any> typeParameterHelper(
-                                        subclassMapping: NestedClass.Adt.Product<SubclassData>,
-                                        propertyData: SubclassData
-                                    ) =
-                                        setUpdateBuilder(subclassMapping.nestedMappings, propertyData, updateBuilder)
-                                    @Suppress("UNCHECKED_CAST")
-                                    typeParameterHelper(
-                                        subclassMap.getValue(propertyDataClass) as NestedClass.Adt.Product<PropertyData & Any>,
-                                        propertyData
-                                    )
-                                } else {
-                                    with(sumTypeCaseConfig) {
-                                        updateBuilder[caseValueColumn] = classToCaseValue(null)
-                                    }
-                                    // TODO: pre-process the combined columns and eliminate duplicates.
-                                    for (product in subclassMap.values)
-                                        setUpdateBuilderToNulls(product.nestedMappings, updateBuilder)
                                 }
                             }
                             typeParameterHelper<Any?>()
@@ -483,36 +487,45 @@ fun <Data : Any> setUpdateBuilder(
     }
 }
 
-fun ClassPropertyColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
-    for (propertyColumnMapping in this)
-        when (propertyColumnMapping) {
-            is ExposedSqlPrimitive -> block(propertyColumnMapping.column)
-            is NestedClass -> {
-                when (val nullability = propertyColumnMapping.nullability) {
-                    is NestedClass.Nullability.NonNullable -> {}
-                    is NestedClass.Nullability.Nullable -> block(nullability.nullDependentColumn)
-                }
-                when (val adt = propertyColumnMapping.adt) {
-                    is NestedClass.Adt.Product -> adt.nestedMappings.forEachColumn(block)
-                    is NestedClass.Adt.Sum<*, *> -> {
-                        block(adt.sumTypeCaseConfig.caseValueColumn)
-                        adt.subclassMap.values.forEach { it.nestedMappings.forEachColumn(block) }
-                    }
+fun PropertyColumnMapping<*, *>.forEachColumn(block: (Column<*>) -> Unit) =
+    when (this) {
+        is ExposedSqlPrimitive -> block(column)
+        is NestedClass -> {
+            when (nullability) {
+                is NestedClass.Nullability.NonNullable -> {}
+                is NestedClass.Nullability.Nullable -> block(nullability.nullDependentColumn)
+            }
+            when (adt) {
+                is NestedClass.Adt.Product -> adt.nestedMappings.forEachColumn(block)
+                is NestedClass.Adt.Sum<*, *> -> {
+                    block(adt.sumTypeCaseConfig.caseValueColumn)
+                    adt.subclassMap.values.forEach { it.nestedMappings.forEachColumn(block) }
                 }
             }
-
-            is Custom -> propertyColumnMapping.classPropertyMapper.neededColumns.forEach(block)
-            is Skip -> {}
         }
+
+        is Custom -> classPropertyMapper.neededColumns.forEach(block)
+        is Skip -> {}
+    }
+
+fun ClassPropertyColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
+    for (propertyColumnMapping in this)
+        propertyColumnMapping.forEachColumn(block)
 }
 
-fun setUpdateBuilderToNulls(
+fun setUpdateBuilderColumnsToNullsWithMappings(
     classPropertyColumnMappings: ClassPropertyColumnMappings<*>, updateBuilder: UpdateBuilder<*>
 ) =
     classPropertyColumnMappings.forEachColumn {
         @Suppress("UNCHECKED_CAST")
         updateBuilder[it as Column<Any?>] = null
     }
+
+fun setUpdateBuilderColumnsToNulls(columns: List<Column<*>>, updateBuilder: UpdateBuilder<*>) {
+    for (column in columns)
+        @Suppress("UNCHECKED_CAST")
+        updateBuilder[column as Column<Any?>] = null
+}
 
 fun ClassPropertyColumnMappings<*>.getNeededColumnSet(): Set<Column<*>> =
     buildSet { forEachColumn { add(it) } }
