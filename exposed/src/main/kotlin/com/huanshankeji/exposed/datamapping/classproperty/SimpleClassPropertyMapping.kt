@@ -1,5 +1,6 @@
-package com.huanshankeji.exposed.classpropertymapping
+package com.huanshankeji.exposed.datamapping.classproperty
 
+import com.huanshankeji.exposed.datamapping.SimpleDataMapper
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
@@ -10,29 +11,13 @@ import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.sequences.Sequence
 
-fun interface SimpleClassPropertyQueryMapper<Data : Any> {
-    fun resultRowToData(resultRow: ResultRow): Data
-}
-
-fun interface SimpleClassPropertyUpdateMapper<Data : Any, ColumnSetT : ColumnSet> {
-    fun updateBuilderSetter(data: Data): ColumnSetT.(UpdateBuilder<*>) -> Unit = {
-        setUpdateBuilder(data, it)
-    }
-
-    fun setUpdateBuilder(data: Data, updateBuilder: UpdateBuilder<*>)
-}
-
-interface SimpleClassPropertyMapper<Data : Any, ColumnSetT : ColumnSet> :
-    SimpleClassPropertyQueryMapper<Data>, SimpleClassPropertyUpdateMapper<Data, ColumnSetT>
-
 fun ResultRow.getValue(column: Column<*>): Any? =
     this[column].let {
         if (it is EntityID<*>) it.value else it
     }
 
 /** Nested classes are not supported. */
-interface ReflectionBasedSimpleClassPropertyMapper<Data : Any, TableT : Table> :
-    SimpleClassPropertyMapper<Data, TableT> {
+interface ReflectionBasedSimpleClassPropertyDataMapper<Data : Any> : SimpleDataMapper<Data> {
     val propertyAndColumnPairs: List<Pair<KProperty1<Data, *>, Column<*>>>
     val dataPrimaryConstructor: KFunction<Data>
 
@@ -48,8 +33,8 @@ interface ReflectionBasedSimpleClassPropertyMapper<Data : Any, TableT : Table> :
     }
 }
 
-inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleClassPropertyMapper(table: TableT): ReflectionBasedSimpleClassPropertyMapper<Data, TableT> =
-    object : ReflectionBasedSimpleClassPropertyMapper<Data, TableT> {
+inline fun <reified Data : Any> reflectionBasedSimpleClassPropertyDataMapper(table: Table): ReflectionBasedSimpleClassPropertyDataMapper<Data> =
+    object : ReflectionBasedSimpleClassPropertyDataMapper<Data> {
         private val clazz = Data::class
 
         // This property needs to initialize first.
@@ -78,13 +63,13 @@ inline fun <reified TableT : Table> getColumnByPropertyNameMapWithTypeParameter(
     getColumnPropertyByNameMap(TableT::class)
         .mapValues { it.value(table) }
 
-inline fun <reified D : Any, reified T : Table> reflectionBasedSimpleClassPropertyMapperForAlias(
-    tableClassPropertyMapper: ReflectionBasedSimpleClassPropertyMapper<D, T>, alias: Alias<T>
-): ReflectionBasedSimpleClassPropertyMapper<D, T> =
-    object : ReflectionBasedSimpleClassPropertyMapper<D, T> {
-        override val dataPrimaryConstructor = tableClassPropertyMapper.dataPrimaryConstructor
+inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleClassPropertyDataMapperForAlias(
+    tableDataMapper: ReflectionBasedSimpleClassPropertyDataMapper<Data>, alias: Alias<TableT>
+): ReflectionBasedSimpleClassPropertyDataMapper<Data> =
+    object : ReflectionBasedSimpleClassPropertyDataMapper<Data> {
+        override val dataPrimaryConstructor = tableDataMapper.dataPrimaryConstructor
         override val propertyAndColumnPairs =
-            tableClassPropertyMapper.propertyAndColumnPairs.map { it.first to alias[it.second] }
+            tableDataMapper.propertyAndColumnPairs.map { it.first to alias[it.second] }
     }
 
 

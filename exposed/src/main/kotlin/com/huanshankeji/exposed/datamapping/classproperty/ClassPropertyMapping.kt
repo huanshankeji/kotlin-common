@@ -1,7 +1,8 @@
-package com.huanshankeji.exposed.classpropertymapping
+package com.huanshankeji.exposed.datamapping.classproperty
 
-import com.huanshankeji.exposed.classpropertymapping.OnDuplicateColumnPropertyNames.*
-import com.huanshankeji.exposed.classpropertymapping.PropertyColumnMapping.*
+import com.huanshankeji.exposed.datamapping.DataMapper
+import com.huanshankeji.exposed.datamapping.classproperty.OnDuplicateColumnPropertyNames.*
+import com.huanshankeji.exposed.datamapping.classproperty.PropertyColumnMapping.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.slf4j.LoggerFactory
@@ -49,17 +50,17 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
                 val subclassMap: Map<KClass<out NotNullPropertyData>, Product<out NotNullPropertyData>>,
                 val sumTypeCaseConfig: SumTypeCaseConfig<NotNullPropertyData, CaseValue>
             ) : Adt<NotNullPropertyData>() {
-                val columnsForAllSubclasses = subclassMap.values.asSequence()
-                    .flatMap { it.nestedMappings.getNeededColumnSet() }
-                    .toSet() // Using `toSet` seems to be faster than `distinct`.
-                    .toList()
+                val columnsForAllSubclasses = buildSet {
+                    for (subclassProductMapping in subclassMap.values)
+                        addAll(subclassProductMapping.nestedMappings.getColumnSet())
+                }.toList()
             }
         }
     }
 
     // TODO: remove the temporary workaround `& Any` if and when the `Any` upper bound is removed.
     class Custom<Data : Any, PropertyData>(
-        property: KProperty1<Data, PropertyData>, val classPropertyMapper: ClassPropertyMapper<PropertyData & Any>
+        property: KProperty1<Data, PropertyData>, val dataMapper: DataMapper<PropertyData & Any>
     ) : PropertyColumnMapping<Data, PropertyData>(property)
 
     class Skip<Data : Any, PropertyData>(property: KProperty1<Data, PropertyData>) :
@@ -353,21 +354,13 @@ fun <Data : Any> getDefaultClassPropertyColumnMappings(
         customMappings
     )
 
-interface ClassPropertyQueryMapper<Data : Any> : SimpleClassPropertyQueryMapper<Data> {
-    val neededColumns: List<Column<*>>
-}
-
-typealias ClassPropertyUpdateMapper<Data> = ClassPropertyQueryMapper<Data>
-
-interface ClassPropertyMapper<Data : Any> : ClassPropertyQueryMapper<Data>, SimpleClassPropertyMapper<Data, ColumnSet>
-
 // TODO: decouple query mapper and update mapper.
 /** Supports classes with nested composite class properties and multiple tables */
-class ReflectionBasedClassPropertyMapper<Data : Any>(
+class ReflectionBasedClassPropertyDataMapper<Data : Any>(
     val clazz: KClass<Data>,
     val classPropertyColumnMappings: ClassPropertyColumnMappings<Data>,
-) : ClassPropertyMapper<Data> {
-    override val neededColumns = classPropertyColumnMappings.getNeededColumnSet().toList()
+) : DataMapper<Data> {
+    override val neededColumns = classPropertyColumnMappings.getColumnSet().toList()
     override fun resultRowToData(resultRow: ResultRow): Data =
         constructDataWithResultRow(clazz, classPropertyColumnMappings, resultRow)
 
@@ -414,7 +407,7 @@ fun <Data : Any> constructDataWithResultRow(
                     }
                 }
 
-                is Custom -> propertyColumnMapping.classPropertyMapper.resultRowToData(resultRow)
+                is Custom -> propertyColumnMapping.dataMapper.resultRowToData(resultRow)
                 is Skip -> null
             }
         @Suppress("UNCHECKED_CAST")
@@ -480,7 +473,7 @@ fun <Data : Any> setUpdateBuilder(
 
                 is Custom ->
                     // TODO: remove this cast if and when not only non-nullable data are supported.
-                    propertyColumnMapping.classPropertyMapper.setUpdateBuilder(
+                    propertyColumnMapping.dataMapper.setUpdateBuilder(
                         propertyData as (PropertyData & Any), updateBuilder
                     )
 
@@ -509,7 +502,7 @@ fun PropertyColumnMapping<*, *>.forEachColumn(block: (Column<*>) -> Unit) =
             }
         }
 
-        is Custom -> classPropertyMapper.neededColumns.forEach(block)
+        is Custom -> dataMapper.neededColumns.forEach(block)
         is Skip -> {}
     }
 
@@ -532,22 +525,22 @@ fun setUpdateBuilderColumnsToNulls(columns: List<Column<*>>, updateBuilder: Upda
         updateBuilder[column as Column<Any?>] = null
 }
 
-fun ClassPropertyColumnMappings<*>.getNeededColumnSet(): Set<Column<*>> =
+fun ClassPropertyColumnMappings<*>.getColumnSet(): Set<Column<*>> =
     buildSet { forEachColumn { add(it) } }
 
-inline fun <reified Data : Any> reflectionBasedClassPropertyMapper(
+inline fun <reified Data : Any> reflectionBasedClassPropertyDataMapper(
     tables: List<Table>,
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST,
     customMappings: PropertyColumnMappings<Data> = emptyList()
-): ReflectionBasedClassPropertyMapper<Data> {
+): ReflectionBasedClassPropertyDataMapper<Data> {
     val clazz = Data::class
-    return ReflectionBasedClassPropertyMapper(
+    return ReflectionBasedClassPropertyDataMapper(
         clazz, getDefaultClassPropertyColumnMappings(clazz, tables, onDuplicateColumnPropertyNames, customMappings)
     )
 }
 
-inline fun <reified Data : Any/*, TableT : Table*/> reflectionBasedClassPropertyMapper(
+inline fun <reified Data : Any/*, TableT : Table*/> reflectionBasedClassPropertyDataMapper(
     table: Table,
     customMappings: PropertyColumnMappings<Data> = emptyList()
 ) =
-    reflectionBasedClassPropertyMapper(listOf(table), THROW, customMappings)
+    reflectionBasedClassPropertyDataMapper(listOf(table), THROW, customMappings)
