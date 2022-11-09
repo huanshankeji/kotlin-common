@@ -1,6 +1,7 @@
 package com.huanshankeji.exposed.datamapping.classproperty
 
 import com.huanshankeji.exposed.datamapping.DataMapper
+import com.huanshankeji.exposed.datamapping.NullableDataMapper
 import com.huanshankeji.exposed.datamapping.classproperty.OnDuplicateColumnPropertyNames.*
 import com.huanshankeji.exposed.datamapping.classproperty.PropertyColumnMapping.*
 import org.jetbrains.exposed.sql.*
@@ -58,9 +59,8 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
         }
     }
 
-    // TODO: remove the temporary workaround `& Any` if and when the `Any` upper bound is removed.
     class Custom<Data : Any, PropertyData>(
-        property: KProperty1<Data, PropertyData>, val dataMapper: DataMapper<PropertyData & Any>
+        property: KProperty1<Data, PropertyData>, val nullableDataMapper: NullableDataMapper<PropertyData>
     ) : PropertyColumnMapping<Data, PropertyData>(property)
 
     class Skip<Data : Any, PropertyData>(property: KProperty1<Data, PropertyData>) :
@@ -407,7 +407,7 @@ fun <Data : Any> constructDataWithResultRow(
                     }
                 }
 
-                is Custom -> propertyColumnMapping.dataMapper.resultRowToData(resultRow)
+                is Custom -> propertyColumnMapping.nullableDataMapper.resultRowToData(resultRow)
                 is Skip -> null
             }
         @Suppress("UNCHECKED_CAST")
@@ -472,10 +472,7 @@ fun <Data : Any> setUpdateBuilder(
                 }
 
                 is Custom ->
-                    // TODO: remove this cast if and when not only non-nullable data are supported.
-                    propertyColumnMapping.dataMapper.setUpdateBuilder(
-                        propertyData as (PropertyData & Any), updateBuilder
-                    )
+                    propertyColumnMapping.nullableDataMapper.setUpdateBuilder(propertyData, updateBuilder)
 
                 is Skip -> {}
             }
@@ -502,7 +499,7 @@ fun PropertyColumnMapping<*, *>.forEachColumn(block: (Column<*>) -> Unit) =
             }
         }
 
-        is Custom -> dataMapper.neededColumns.forEach(block)
+        is Custom -> nullableDataMapper.neededColumns.forEach(block)
         is Skip -> {}
     }
 
