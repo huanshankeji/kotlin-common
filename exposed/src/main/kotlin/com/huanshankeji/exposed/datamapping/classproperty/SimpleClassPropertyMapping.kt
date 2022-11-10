@@ -33,7 +33,8 @@ interface ReflectionBasedSimpleClassPropertyDataMapper<Data : Any> : SimpleDataM
     }
 }
 
-inline fun <reified Data : Any> reflectionBasedSimpleClassPropertyDataMapper(table: Table): ReflectionBasedSimpleClassPropertyDataMapper<Data> =
+// The `TableT` reified type parameter is passed to the functions called and should not be removed.
+inline fun <reified Data : Any, reified TableT : Table> reflectionBasedSimpleClassPropertyDataMapper(table: TableT): ReflectionBasedSimpleClassPropertyDataMapper<Data> =
     object : ReflectionBasedSimpleClassPropertyDataMapper<Data> {
         private val clazz = Data::class
 
