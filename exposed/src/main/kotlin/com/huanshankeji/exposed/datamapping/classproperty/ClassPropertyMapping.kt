@@ -344,8 +344,8 @@ fun <T : Any> KClass<T>.sealedLeafSubclasses(): List<KClass<out T>> =
 fun <Data : Any> getDefaultClassPropertyColumnMappings(
     clazz: KClass<Data>,
     tables: List<Table>, onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST,
-    customMappings: PropertyColumnMappings<Data> = emptyList(),
-    propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap()
+    propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
+    customMappings: PropertyColumnMappings<Data> = emptyList()
 ): ClassPropertyColumnMappings<Data> =
     getDefaultClassPropertyColumnMappings(
         clazz,
@@ -528,16 +528,20 @@ fun ClassPropertyColumnMappings<*>.getColumnSet(): Set<Column<*>> =
 inline fun <reified Data : Any> reflectionBasedClassPropertyDataMapper(
     tables: List<Table>,
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST,
+    propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
     customMappings: PropertyColumnMappings<Data> = emptyList()
 ): ReflectionBasedClassPropertyDataMapper<Data> {
     val clazz = Data::class
     return ReflectionBasedClassPropertyDataMapper(
-        clazz, getDefaultClassPropertyColumnMappings(clazz, tables, onDuplicateColumnPropertyNames, customMappings)
+        clazz, getDefaultClassPropertyColumnMappings(
+            clazz, tables, onDuplicateColumnPropertyNames, propertyColumnMappingConfigMapOverride, customMappings
+        )
     )
 }
 
 inline fun <reified Data : Any/*, TableT : Table*/> reflectionBasedClassPropertyDataMapper(
     table: Table,
+    propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
     customMappings: PropertyColumnMappings<Data> = emptyList()
 ) =
-    reflectionBasedClassPropertyDataMapper(listOf(table), THROW, customMappings)
+    reflectionBasedClassPropertyDataMapper(listOf(table), THROW, propertyColumnMappingConfigMapOverride, customMappings)
