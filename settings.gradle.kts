@@ -1,3 +1,14 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("com.huanshankeji.set-project-names-to-concatenated") version "0.4.0-SNAPSHOT"
+}
+
 rootProject.name = "kotlin-common"
 
 include(
