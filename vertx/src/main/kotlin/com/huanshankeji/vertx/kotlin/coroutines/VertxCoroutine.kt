@@ -39,7 +39,7 @@ suspend fun <T> Vertx.awaitExecuteBlocking(blockingCode: () -> T): T =
 @Deprecated("This implementation is buggy. See https://github.com/vert-x3/vertx-lang-kotlin/pull/222/commits/fc3c5c5cc0c572eaddb3c2c37d07c696f75b4443#diff-162b76dc534138518a237d9a8ed527f1b3ecaca67385ea7d4357b6eff203f699R138-R217 for a fixed proposed version.")
 suspend fun <T> Vertx.awaitSuspendExecuteBlocking(blockingCode: suspend () -> T): T =
     coroutineScope {
-        executeBlocking<T> {
+        executeBlocking {
             launch { it.complete(blockingCode()) }
         }.await()
     }
