@@ -28,7 +28,7 @@ suspend inline fun <R> Vertx.use(block: (Vertx) -> R): R =
  * [blockingCode] returns the result when the operation completes instead of calling [Promise.complete].
  */
 suspend fun <T> Vertx.awaitExecuteBlocking(blockingCode: () -> T): T =
-    executeBlocking<T> {
+    executeBlocking {
         it.complete(blockingCode())
     }.await()
 
