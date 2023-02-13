@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 
 class ExtendedWebCoroutineVerticleTest : VertxBaseTest() {
     companion object {
-        object MethodNames {
+        object MemberFunctionNames {
             const val coroutineHandler = "coroutineHandler"
             const val coroutineHandlerInline = "coroutineHandlerInline"
             const val checkedCoroutineHandler = "checkedCoroutineHandler"
@@ -34,11 +34,11 @@ class ExtendedWebCoroutineVerticleTest : VertxBaseTest() {
                         it.end()
                     }
 
-                    with(MethodNames) {
-                        get("/$coroutineHandler").coroutineHandler(handler)
-                        get("/$coroutineHandlerInline").coroutineHandlerInline(handler)
-                        get("/$checkedCoroutineHandler").checkedCoroutineHandler(handler)
-                        get("/$checkedCoroutineHandlerInline").checkedCoroutineHandlerInline(handler)
+                    with(MemberFunctionNames) {
+                        get("/$coroutineHandler").coroutineHandler(requestHandler = handler)
+                        get("/$coroutineHandlerInline").coroutineHandlerInline(requestHandler = handler)
+                        get("/$checkedCoroutineHandler").checkedCoroutineHandler(requestHandler = handler)
+                        get("/$checkedCoroutineHandlerInline").checkedCoroutineHandlerInline(requestHandler = handler)
                     }
                 })
                 .listen(0).await()
@@ -64,12 +64,12 @@ class ExtendedWebCoroutineVerticleTest : VertxBaseTest() {
                 assertEquals(500, webClient.get("/$methodName?throws=true").send().await().statusCode())
             }
 
-            with(MethodNames) {
+            with(MemberFunctionNames) {
                 listOf(coroutineHandler, coroutineHandlerInline, checkedCoroutineHandler, checkedCoroutineHandlerInline)
                     .forEach { testOk(it) }
                 listOf(checkedCoroutineHandler, checkedCoroutineHandlerInline).forEach { testThrowable(it) }
             }
-        }, { close() })
+        }, { close().await() })
 
         vertx.undeploy(deploymentId).await()
     }
