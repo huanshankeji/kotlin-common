@@ -441,7 +441,7 @@ fun <Data : Any> setUpdateBuilder(
                                 adt as NestedClass.Adt.Sum<PropertyData & Any, CaseValue>
                                 with(adt) {
                                     if (propertyData !== null) {
-                                        // TODO: it seems to be a compiler bug that the non-null assertion is needed here.
+                                        // TODO: it seems to be a compiler bug that the non-null assertion is needed here. see: https://youtrack.jetbrains.com/issue/KT-37878/No-Smart-cast-for-class-literal-reference-of-nullable-generic-type.
                                         val propertyDataClass = propertyData!!::class
                                         with(sumTypeCaseConfig) {
                                             updateBuilder[caseValueColumn] = classToCaseValue(propertyDataClass)
