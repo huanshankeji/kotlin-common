@@ -4,4 +4,4 @@ plugins {
     id("common-conventions-after")
 }
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(8))
+kotlin.jvmToolchain(8)

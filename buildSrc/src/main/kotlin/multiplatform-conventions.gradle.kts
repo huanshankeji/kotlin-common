@@ -4,3 +4,5 @@ plugins {
     id("com.huanshankeji.kotlin-multiplatform-jvm-and-js-browser-conventions")
     id("common-conventions-after")
 }
+
+kotlin.jvmToolchain(8)
