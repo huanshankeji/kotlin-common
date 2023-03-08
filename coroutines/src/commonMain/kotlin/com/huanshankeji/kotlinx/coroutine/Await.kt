@@ -10,6 +10,13 @@ suspend fun <T> awaitAny(vararg deferreds: Deferred<T>): T =
 suspend fun <T> Collection<Deferred<T>>.awaitAny(): T =
     select { forEach { it.onAwait { it } } }
 
+suspend fun <T> Collection<Deferred<T>>.awaitAnyAndCancelOthers(): T {
+    val firstAwaited = select { forEachIndexed { index, deferred -> deferred.onAwait { IndexedValue(index, it) } } }
+    val firstAwaitedIndex = firstAwaited.index
+    forEachIndexed { index, deferred -> if (index != firstAwaitedIndex) deferred.cancel() }
+    return firstAwaited.value
+}
+
 suspend fun joinAny(vararg jobs: Job): Unit =
     select { jobs.forEach { it.onJoin { } } }
 

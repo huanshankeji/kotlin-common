@@ -1,5 +1,6 @@
 package com.huanshankeji.kotlinx.coroutine
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -7,8 +8,11 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class AwaitTest {
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun simplyTestAwaitAnyAndJoinAny() = runTest {
         val mutex = Mutex()
@@ -22,6 +26,12 @@ class AwaitTest {
             assertEquals(1, awaitAny(*deferredArray1()))
             assertEquals(0, deferredArray0().asList().awaitAny())
             assertEquals(1, deferredArray1().asList().awaitAny())
+
+
+            val deffereds = deferredArray0()
+            assertFalse(deffereds[1].isCancelled)
+            assertEquals(0, deffereds.asList().awaitAnyAndCancelOthers())
+            assertTrue(deffereds[1].isCancelled)
 
 
             var value: Int?
