@@ -6,13 +6,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import kotlin.test.*
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AwaitTest {
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun simplyTestAwaitAnyAndJoinAny() = runTest {
         val mutex = Mutex()
@@ -61,5 +58,18 @@ class AwaitTest {
             jobArray1().asList().joinAny()
             assertEquals(1, value)
         }
+    }
+
+    private inline fun assertFailsWithIae(block: () -> Unit) =
+        assertFailsWith<IllegalArgumentException>(block = block)
+
+    @Test
+    fun simplyTestAwaitAnyAndJoinAnyWithNoTarget() = runTest {
+        val emptyList = emptyList<Nothing>()
+        assertFailsWithIae { awaitAny() }
+        assertFailsWithIae { emptyList.awaitAny() }
+        assertFailsWithIae { emptyList.awaitAnyAndCancelOthers() }
+        assertFailsWithIae { joinAny() }
+        assertFailsWithIae { emptyList.joinAny() }
     }
 }
