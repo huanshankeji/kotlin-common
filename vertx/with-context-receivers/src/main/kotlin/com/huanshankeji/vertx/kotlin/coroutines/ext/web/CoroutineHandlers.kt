@@ -4,6 +4,7 @@ import com.huanshankeji.vertx.ext.web.checkedRun
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -11,7 +12,7 @@ import kotlinx.coroutines.launch
  */
 context(CoroutineScope, Route)
 fun coroutineHandler(requestHandler: suspend (RoutingContext) -> Unit): Route =
-    handler { launch { requestHandler(it) } }
+    handler { launch(Dispatchers.Unconfined) { requestHandler(it) } }
 
 /**
  * Like [coroutineHandler] and calls [RoutingContext.fail] if a [Throwable] is thrown in [requestHandler].
