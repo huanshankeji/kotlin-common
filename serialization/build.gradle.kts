@@ -5,12 +5,18 @@ plugins {
 
 kotlin {
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 with(commonDependencies.kotlinx.serialization) {
                     implementation(core())
                     implementation(protobuf())
                 }
+            }
+        }
+
+        commonTest {
+            dependencies {
+                implementation(kotlin("test"))
             }
         }
     }
