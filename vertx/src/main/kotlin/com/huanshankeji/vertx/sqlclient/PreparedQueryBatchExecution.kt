@@ -13,7 +13,7 @@ import io.vertx.sqlclient.Tuple
 fun <QueryResultT, DataT, SelectorResultT : Comparable<SelectorResultT>> PreparedQuery<QueryResultT>.sortDataAndExecuteBatch(
     dataList: List<DataT>, selector: (DataT) -> SelectorResultT, toTuple: DataT.() -> Tuple
 ) =
-    executeBatch(dataList.sortedBy(selector = selector).map(toTuple))
+    executeBatch(dataList.sortedBy(selector).map(toTuple))
 
 
 @Untested
