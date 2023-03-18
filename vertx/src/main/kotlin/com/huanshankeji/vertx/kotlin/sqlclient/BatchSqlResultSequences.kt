@@ -1,7 +1,6 @@
-package com.huanshankeji.vertx.sqlclient
+package com.huanshankeji.vertx.kotlin.sqlclient
 
-import io.vertx.sqlclient.RowSet
-import io.vertx.sqlclient.SqlResult
+import io.vertx.sqlclient.*
 
 fun <SqlResultT : SqlResult<*>> SqlResultT.batchSqlResultSequence(): Sequence<SqlResultT> =
     generateSequence(this) {
@@ -12,5 +11,5 @@ fun <SqlResultT : SqlResult<*>> SqlResultT.batchSqlResultSequence(): Sequence<Sq
 fun SqlResult<*>.batchSqlResultRowCountSequence() =
     batchSqlResultSequence().map { it.rowCount() }
 
-fun <R> RowSet<R>.batchSqlResultRowSequence() =
+fun <R> RowSet<R>.batchSqlResultRowSequenceSequence() =
     batchSqlResultSequence().map { asSequence() }
