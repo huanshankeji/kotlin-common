@@ -9,7 +9,7 @@ import kotlinx.serialization.protobuf.ProtoNumber
 
 @ExperimentalSerializationApi
 @Serializable
-class SumTypeSupertypeSurrogate(
+private class SumTypeSupertypeSurrogate(
     @ProtoNumber(1)
     val subtypeNumber: Int,
     @ProtoNumber(2)
@@ -19,17 +19,22 @@ class SumTypeSupertypeSurrogate(
         get() = backingSubtypeSerializedData!!
 }
 
+/**
+ * A ProtoBuf [KSerializer] for sum types, aka, open/abstract/sealed classes and interfaces.
+ *
+ * It's achieved by converting the object to a wrapper surrogate object [SumTypeSupertypeSurrogate],
+ * in which the type is stored as a classifying [Int] number [SumTypeSupertypeSurrogate.subtypeNumber].
+ */
 @ExperimentalSerializationApi
 interface ProtoBufSumTypeSerializer<Supertype> : KSerializer<Supertype> {
-    val surrogateSerializer get() = SumTypeSupertypeSurrogate.serializer()
+    private val surrogateSerializer get() = SumTypeSupertypeSurrogate.serializer()
     override val descriptor: SerialDescriptor
         get() = surrogateSerializer.descriptor
 
-    fun Supertype.toSurrogate(): SumTypeSupertypeSurrogate {
+    private fun Supertype.toSurrogate(): SumTypeSupertypeSurrogate {
         val (subtypeNumber, subtypeSerializer) = getSubtypeNumberAndSubtypeSerializationStrategy(this)
         @Suppress("UNCHECKED_CAST")
         return SumTypeSupertypeSurrogate(
-            // use `encodeToByteArrayNothingWorkaround` if something goes wrong
             subtypeNumber, ProtoBuf.encodeToByteArray(
                 subtypeSerializer as SerializationStrategy<Any?>, this
             )
@@ -38,8 +43,7 @@ interface ProtoBufSumTypeSerializer<Supertype> : KSerializer<Supertype> {
 
     fun getSubtypeNumberAndSubtypeSerializationStrategy(value: Supertype): Pair<Int, SerializationStrategy<*>>
 
-    fun SumTypeSupertypeSurrogate.toOriginal(): Supertype =
-        // use `decodeFromByteArrayNothingWorkaround` if something goes wrong
+    private fun SumTypeSupertypeSurrogate.toOriginal(): Supertype =
         @Suppress("UNCHECKED_CAST")
         ProtoBuf.decodeFromByteArray(
             getSubtypeDeserializationStrategy(subtypeNumber) as DeserializationStrategy<Supertype>,
