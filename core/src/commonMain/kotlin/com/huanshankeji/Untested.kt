@@ -2,7 +2,7 @@ package com.huanshankeji
 
 import kotlin.annotation.AnnotationTarget.*
 
-@RequiresOptIn("This API hasn't been tested yet.", RequiresOptIn.Level.WARNING)
+@RequiresOptIn("This API hasn't been tested yet. Use at your own risk.", RequiresOptIn.Level.WARNING)
 @Retention(AnnotationRetention.BINARY)
 // The ones commented out are what I think may be used in very few use cases.
 @Target(
