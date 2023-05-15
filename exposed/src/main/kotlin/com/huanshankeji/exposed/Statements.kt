@@ -17,6 +17,7 @@ fun Table.deleteWhereStatement(
 ): DeleteStatement =
     DeleteStatement(this, SqlExpressionBuilder.op(), false, limit, offset)
 
+// to access the protected `arguments` in the super class
 class HelperInsertStatement<Key : Any>(table: Table, isIgnore: Boolean = false) :
     InsertStatement<Key>(table, isIgnore) {
     public override var arguments: List<List<Pair<Column<*>, Any?>>>?
@@ -41,6 +42,16 @@ fun <T : Table> T.insertIgnoreStatement(body: T.(InsertStatement<Number>) -> Uni
     HelperInsertStatement<Number>(this, true).apply {
         body(this)
     }
+
+/**
+ * Adapted from [org.jetbrains.exposed.sql.insert].
+ */
+fun <T : Table> T.insertSelectStatement(
+    selectQuery: AbstractQuery<*>,
+    columns: List<Column<*>> = this.columns.filter { !it.columnType.isAutoInc || it.autoIncColumnType?.nextValExpression != null },
+    isIgnore: Boolean = false
+): InsertSelectStatement =
+    InsertSelectStatement(columns, selectQuery, isIgnore)
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.update].
