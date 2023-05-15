@@ -1,6 +1,7 @@
 # Huanshankeji Kotlin Common
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.huanshankeji/kotlin-common-core)](https://search.maven.org/search?q=g:com.huanshankeji%20a:kotlin-common-*)
+![Kotlin version](https://kotlin-version.aws.icerock.dev/kotlin-version?group=com.huanshankeji&name=kotlin-common-core)
 
 Huanshankeji's common code libraries in Kotlin
 
