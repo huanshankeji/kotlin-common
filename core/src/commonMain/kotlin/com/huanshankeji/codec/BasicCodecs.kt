@@ -1,6 +1,7 @@
 package com.huanshankeji.codec
 
-import java.util.*
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 fun uLongBigEndianShiftOffset(index: Int): Int =
     (7 - index) * 8
@@ -36,8 +37,18 @@ fun List<Byte>.bigEndianToLong(): Long =
     map { it.toUByte() }.bigEndianToULong().toLong()
 
 
+@Deprecated(
+    "Use `Base64` in the Kotlin Standard Library directly.",
+    ReplaceWith("Base64.encode(this)", "kotlin.io.encoding.Base64")
+)
 fun ByteArray.toBase64String(): String =
-    Base64.getEncoder().encodeToString(this)
+    @OptIn(ExperimentalEncodingApi::class)
+    Base64.encode(this)
 
+@Deprecated(
+    "Use `Base64` in the Kotlin Standard Library directly.",
+    ReplaceWith("Base64.decode(this)", "kotlin.io.encoding.Base64")
+)
 fun String.base64ToBytes(): ByteArray =
-    Base64.getDecoder().decode(this)
+    @OptIn(ExperimentalEncodingApi::class)
+    Base64.decode(this)

@@ -8,15 +8,16 @@ import io.kotest.property.arbitrary.list
 import io.kotest.property.checkAll
 import io.kotest.property.exhaustive.of
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class BasicCodecsTest {
-    @OptIn(ExperimentalUnsignedTypes::class)
+    @OptIn(ExperimentalUnsignedTypes::class, ExperimentalCoroutinesApi::class)
     @Test
-    fun testConversionBetweenLongAndBigEndianBytes() {
+    fun testConversionBetweenLongAndBigEndianBytes(): TestResult {
         val long = 0x0123456789ABCDEFU.toLong()
         val bytes = ubyteArrayOf(0x01U, 0x23U, 0x45U, 0x67U, 0x89U, 0xABU, 0xCDU, 0xEFU).asByteArray()
         assertContentEquals(bytes, long.toBigEndianBytes())
