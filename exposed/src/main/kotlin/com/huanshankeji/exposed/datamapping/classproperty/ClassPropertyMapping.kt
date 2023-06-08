@@ -6,20 +6,23 @@ import com.huanshankeji.exposed.datamapping.NullableDataMapper
 import com.huanshankeji.exposed.datamapping.classproperty.OnDuplicateColumnPropertyNames.CHOOSE_FIRST
 import com.huanshankeji.exposed.datamapping.classproperty.OnDuplicateColumnPropertyNames.THROW
 import com.huanshankeji.exposed.datamapping.classproperty.PropertyColumnMapping.*
-import org.jetbrains.exposed.sql.*
+import com.huanshankeji.kotlin.reflect.*
+import org.jetbrains.exposed.sql.Column
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.statements.UpdateBuilder
 import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 import kotlin.reflect.full.isSubclassOf
-import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.typeOf
-import kotlin.sequences.Sequence
 
 // Our own class mapping implementation using reflection which should be adapted using annotation processors and code generation in the future.
 
+
+// TODO: unify type parameter names
 
 typealias PropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, *>>
 //typealias LessStrictlyTypedPropertyColumnMappings<Data> = List<PropertyColumnMapping<Data, Any?>>
@@ -34,7 +37,7 @@ TODO: consider decoupling/removing `property` and `Data` from this class and ren
 */
 @Untested
 sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProperty1<Data, PropertyData>) {
-    class ExposedSqlPrimitive<Data : Any, PropertyData>(
+    class SqlPrimitive<Data : Any, PropertyData>(
         property: KProperty1<Data, PropertyData>,
         val column: Column<PropertyData>
     ) : PropertyColumnMapping<Data, PropertyData>(property)
@@ -46,7 +49,7 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
     ) : PropertyColumnMapping<Data, PropertyData>(property) {
         sealed class Nullability<PropertyData> {
             class NonNullable<NotNullPropertyData : Any> : Nullability<NotNullPropertyData>()
-            class Nullable<NotNullPropertyData : Any>(val nullDependentColumn: Column<*>) :
+            class Nullable<NotNullPropertyData : Any>(val whetherNullDependentColumn: Column<*>) :
                 Nullability<NotNullPropertyData?>()
         }
 
@@ -77,6 +80,7 @@ sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProp
 
 class SumTypeCaseConfig<SuperclassData : Any, CaseValue>(
     val caseValueColumn: Column<CaseValue>,
+    // TODO: use `BidirectionalConversion`
     val caseValueToClass: (CaseValue) -> KClass<out SuperclassData>,
     val classToCaseValue: (KClass<out SuperclassData>?) -> CaseValue
 )
@@ -95,8 +99,11 @@ val defaultNotNullExposedSqlPrimitiveClasses = listOf(
     // types related to time and date
 )
 
+private fun KClass<*>.isEnumClass() =
+    isSubclassOf(Enum::class)
+
 fun KClass<*>.isExposedSqlPrimitiveType(): Boolean =
-    this in defaultNotNullExposedSqlPrimitiveClasses || isSubclassOf(Enum::class)
+    this in defaultNotNullExposedSqlPrimitiveClasses || isEnumClass()
 
 fun KType.isExposedSqlPrimitiveType() =
     (classifier as KClass<*>).isExposedSqlPrimitiveType()
@@ -133,42 +140,55 @@ fun getColumnByPropertyNameMap(
     }
 }
 
-val logger = LoggerFactory.getLogger("class property mapping")
+private val logger = LoggerFactory.getLogger("class property mapping")
+
+private fun KClass<*>.isInheritable() =
+    isOpen || isAbstract || isSealed
+
+private fun KClass<*>.isAbstractOrSealed() =
+    isAbstract || isSealed
 
 /**
  * @param skip both writing and reading. Note that the property type need not be nullable if it's only used for writing.
- * @param nullDependentColumn required for nullable properties.
+ * @param whetherNullDependentColumn required for nullable properties.
  */
 class PropertyColumnMappingConfig<P>(
     type: KType,
-    usedForQuery: Boolean = true,
     val skip: Boolean = false,
-    val differentColumnPropertyName: String? = null,
-    val nullDependentColumn: Column<*>? = null, // for query
+    usedForQuery: Boolean = true,
+    val columnPropertyName: String? = null, // TODO: use the property directly instead of the name string
+    val whetherNullDependentColumn: Column<*>? = null, // for query
+    /* TODO: whether it's null can depend on all columns:
+        the property is null if when all columns are null (warn if some columns are not null),
+        or a necessary column is null,
+        in both cases of which warn if all nested properties are nullable */
     val adt: Adt<P & Any>? = null, // for query and update
 ) {
     init {
         // perform the checks
 
         if (type.isMarkedNullable) {
-            if (skip && nullDependentColumn !== null || adt !== null)
-                logger.warn("${::nullDependentColumn.name} and ${::adt.name} are unnecessary when ${::skip.name} is configured to true.")
+            if (skip && whetherNullDependentColumn !== null || adt !== null)
+                logger.warn("${::whetherNullDependentColumn.name} and ${::adt.name} are unnecessary when ${::skip.name} is configured to true.")
         } else {
             // Non-nullable properties can be skipped when updating but not when querying.
             if (usedForQuery)
                 require(!skip)
-            require(nullDependentColumn === null)
+            require(whetherNullDependentColumn === null)
         }
 
 
-        if (type.isExposedSqlPrimitiveType() && nullDependentColumn === null && adt === null)
-            logger.warn("${::nullDependentColumn} or ${::adt} is set for a primitive type $type and will be ignored.")
-
+        if (type.isExposedSqlPrimitiveType()) {
+            if (whetherNullDependentColumn !== null)
+                logger.warn("${::whetherNullDependentColumn} is set for a primitive type $type and will be ignored.")
+            if (adt !== null)
+                logger.warn("${::adt} is set for a primitive type $type and will be ignored.")
+        }
         @Suppress("UNCHECKED_CAST")
         val clazz = type.classifier as KClass<P & Any>
         when (adt) {
-            is Adt.Product -> require(!clazz.isAbstract)
-            is Adt.Sum<*, *> -> require(clazz.isOpen)
+            is Adt.Product -> require(clazz.isFinal || clazz.isOpen) { "the class $clazz must be instantiable (final or open) to be treated as a product type" }
+            is Adt.Sum<*, *> -> require(clazz.isInheritable()) { "the class $clazz must be inheritable (open, abstract, or sealed) to be treated as a sum type" }
             null -> {}
         }
     }
@@ -177,7 +197,7 @@ class PropertyColumnMappingConfig<P>(
         inline fun <reified PropertyData> create(
             skip: Boolean = false,
             usedForQuery: Boolean = true,
-            columnPropertyName: String? = null,
+            columnPropertyName: String? = null, // TODO: use the column property
             nullDependentColumn: Column<*>? = null,
             adt: Adt<PropertyData & Any>? = null
         ) =
@@ -193,11 +213,11 @@ class PropertyColumnMappingConfig<P>(
 
         class Sum<Data : Any, CaseValue>(
             clazz: KClass<Data>,
-            val subclassProductConfigMapOrOverride: Map<KClass<out Data>, Product<out Data>>,
+            val subclassProductConfigMapOverride: Map<KClass<out Data>, Product<out Data>>, // TODO: why can't a sum type nest another sum type?
             val sumTypeCaseConfig: SumTypeCaseConfig<Data, CaseValue>
         ) : Adt<Data>() {
             init {
-                require(subclassProductConfigMapOrOverride.keys.all { !it.isAbstract && it.isSubclassOf(clazz) })
+                require(subclassProductConfigMapOverride.keys.all { !it.isInheritable() && it.isSubclassOf(clazz) })
             }
 
             companion object {
@@ -210,156 +230,187 @@ class PropertyColumnMappingConfig<P>(
                     return Sum(clazz, subclassProductConfigMapOverride, sumTypeCaseConfig)
                 }
 
-                inline fun <reified Data : Any, CaseValue> createForAbstractNotSealed(
+                inline fun <reified Data : Any, CaseValue> createForAbstract(
                     subclassProductConfigMap: Map<KClass<out Data>, Product<out Data>>,
                     sumTypeCaseConfig: SumTypeCaseConfig<Data, CaseValue>
                 ): Sum<Data, CaseValue> {
                     val clazz = Data::class
-                    require(clazz.isAbstract && !clazz.isSealed)
+                    require(clazz.isAbstract)
                     return Sum(clazz, subclassProductConfigMap, sumTypeCaseConfig)
                 }
             }
         }
+
+        // not needed
+        //class Enum<Data : kotlin.Enum<*>, CaseValue> : Adt<Data>()
     }
 }
 
-typealias PropertyColumnMappingConfigMap<Data /*: Any*/> = Map<KProperty1<Data, *>, PropertyColumnMappingConfig<*>>
+// TODO: constrain the property return type and the config type parameter to be the same
+typealias PropertyColumnMappingConfigMap2<Data /*: Any*/, PropertyReturnType> = Map<KProperty1<Data, PropertyReturnType>, PropertyColumnMappingConfig<PropertyReturnType>>
+typealias PropertyColumnMappingConfigMap<Data /*: Any*/> = PropertyColumnMappingConfigMap2<Data, *>
+
+private fun KClass<*>.isObject() =
+    objectInstance !== null
 
 @Untested
-fun <Data : Any> getDefaultClassPropertyColumnMappings(
-    clazz: KClass<Data>,
-    columnByPropertyNameMap: Map<String, Column<*>>,
+private fun <Data : Any> doGetDefaultClassPropertyColumnMappings(
+    typeAndClass: TypeAndClass<Data>,
+    tables: List<Table>, // for error messages only
+    columnByPropertyNameMap: Map<String, Column<*>>, // TODO: refactor as `Data` may be a sum type
     propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
     customMappings: PropertyColumnMappings<Data> = emptyList()
 ): ClassPropertyColumnMappings<Data> {
-    val customMappingProperties = customMappings.asSequence().map { it.property }.toSet()
-    val dataMemberPropertyMap =
-        (clazz.memberProperties.toSet() - customMappingProperties).associateBy { it.name }
+    val customMappingPropertySet = customMappings.asSequence().map { it.property }.toSet()
+    val dataCrtMemberPropertyMap = typeAndClass.concreteReturnTypeMemberProperties().asSequence()
+        .filterNot { it.property in customMappingPropertySet }
+        .associateBy { it.property.name }
     val customMappingMap = customMappings.associateBy { it.property.name }
 
-    return clazz.primaryConstructor!!.parameters.map {
-        val name = it.name!!
+    val clazz = typeAndClass.clazz
+    return if (clazz.isObject()) // mainly for case objects of sealed classes
+        emptyList() // TODO: use `null`
+    else (clazz.primaryConstructor
+        ?: throw IllegalArgumentException("$clazz must have a primary constructor with all the properties to be mapped to columns to be mapped as a product type"))
+        .parameters.map {
+            val name = it.name!!
 
-        val customMapping = customMappingMap[name]
-        if (customMapping !== null)
-            return@map customMapping
+            val customMapping = customMappingMap[name]
+            if (customMapping !== null)
+                return@map customMapping
 
-        val property = dataMemberPropertyMap.getValue(name)
-        require(it.type == property.returnType)
-
-        // This function is added to introduce a new type parameter `PropertyData` to constrain the types better.
-        fun <PropertyData> typeParameterHelper(property: KProperty1<Data, PropertyData>): PropertyColumnMapping<Data, PropertyData> {
-            val config = propertyColumnMappingConfigMapOverride[property]
-            if (config?.skip == true)
-                return Skip(property)
-
-            val columnPropertyName = config?.differentColumnPropertyName ?: name
-            val type = property.returnType
-
-            @Suppress("UNCHECKED_CAST")
-            val propertyClazz = type.classifier as KClass<*> as KClass<PropertyData & Any>
-            return if (propertyClazz.isExposedSqlPrimitiveType())
-                @Suppress("UNCHECKED_CAST")
-                ExposedSqlPrimitive(
-                    property, columnByPropertyNameMap.getValue(columnPropertyName) as Column<PropertyData>
-                )
-            else {
-                val isNullable = type.isMarkedNullable
-
-                @Suppress("UNCHECKED_CAST")
-                val nullability =
-                    (
-                            if (isNullable)
-                            /*
-                            I first had the idea of finding a default `nullDependentColumn` but it seems difficult to cover all kinds of cases.
-
-                            There are 3 ways I can think of to find the default `nullDependentColumn` in the corresponding columns mapped by the properties:
-                            1. find the first non-nullable column;
-                            1. find the first column that's a primary key;
-                            1. find the first non-nullable column with the suffix "id".
-
-                            They all have their drawbacks.
-                            The first approach is too unpredictable, adding or removing properties can affect which column to choose.
-                            Both the second and the third approach can't deal with the case where the column is not within the mapped columns,
-                            which happens when selecting a small portion of the fields as data.
-                             */
-                                NestedClass.Nullability.Nullable<PropertyData & Any>(config?.nullDependentColumn!!)
-                            else
-                                NestedClass.Nullability.NonNullable<PropertyData & Any>()
-                            )
-                            as NestedClass.Nullability<PropertyData>
-
-
-                @Suppress("UNCHECKED_CAST")
-                val adtConfig = config?.adt as PropertyColumnMappingConfig.Adt<PropertyData & Any>?
-                val adt = if (propertyClazz.isAbstract) {
-                    //requireNotNull(adtConfig)
-                    require(adtConfig is PropertyColumnMappingConfig.Adt.Sum<*, *>)
-                    adtConfig as PropertyColumnMappingConfig.Adt.Sum<PropertyData & Any, *>
-                    val subclassProductConfigMapOrOverride = adtConfig.subclassProductConfigMapOrOverride
-
-
-                    val subclassProductNestedConfigMapMapOrOverride =
-                        subclassProductConfigMapOrOverride.mapValues { it.value.nestedConfigMap }
-                    val subclassProductNestedConfigMapMap =
-                        if (propertyClazz.isSealed)
-                            propertyClazz.sealedLeafSubclasses().associateWith {
-                                emptyMap<KProperty1<out PropertyData & Any, *>, PropertyColumnMappingConfig<*>>()
-                            } + subclassProductNestedConfigMapMapOrOverride
-                        else {
-                            require(subclassProductConfigMapOrOverride.isNotEmpty()) { "A custom config needs to be specified for a non-sealed abstract class" }
-                            subclassProductNestedConfigMapMapOrOverride
-                        }
-
-                    NestedClass.Adt.Sum(
-                        subclassProductNestedConfigMapMap.mapValues {
-                            fun <SubclassData : PropertyData & Any> typeParameterHelper(
-                                clazz: KClass<SubclassData>, configMap: PropertyColumnMappingConfigMap<SubclassData>
-                            ): NestedClass.Adt.Product<SubclassData> =
-                                NestedClass.Adt.Product(
-                                    getDefaultClassPropertyColumnMappings(clazz, columnByPropertyNameMap, configMap)
-                                )
-                            @Suppress("UNCHECKED_CAST")
-                            typeParameterHelper(
-                                it.key as KClass<PropertyData & Any>,
-                                it.value as PropertyColumnMappingConfigMap<PropertyData & Any>
-                            )
-                        },
-                        adtConfig.sumTypeCaseConfig
-                    )
-                } else {
-                    require(adtConfig is PropertyColumnMappingConfig.Adt.Product?)
-                    NestedClass.Adt.Product(
-                        getDefaultClassPropertyColumnMappings(
-                            propertyClazz,
-                            columnByPropertyNameMap,
-                            (adtConfig?.nestedConfigMap ?: emptyMap())
-                        )
-                    )
-                }
-
-                NestedClass(property, nullability, adt)
+            val crtProperty = dataCrtMemberPropertyMap.getOrElse(name) {
+                throw IllegalArgumentException("primary constructor parameter `$it` is not a property in the class `$clazz`")
             }
-        }
-        typeParameterHelper(property)
-    }
-}
+            val property = crtProperty.property
+            require(it.type == property.returnType) {
+                "primary constructor parameter `$it` and property `$property` and different types"
+            }
 
-// This implementation currently has poor performance (O(depth * size) time complexity).
-fun <T : Any> KClass<T>.sealedLeafSubclasses(): List<KClass<out T>> =
-    if (isSealed) sealedSubclasses.flatMap { it.sealedLeafSubclasses() }
-    else listOf(this)
+            // This function is added to introduce a new type parameter `PropertyData` to constrain the types better.
+            fun <PropertyData> typeParameterHelper(crtProperty: ConcreteReturnTypeProperty1<Data, PropertyData>): PropertyColumnMapping<Data, PropertyData> {
+                @Suppress("NAME_SHADOWING")
+                val property = crtProperty.property
+                val config = propertyColumnMappingConfigMapOverride[property]
+                if (config?.skip == true)
+                    return Skip(property)
+
+                val columnPropertyName = config?.columnPropertyName ?: name
+                val propertyReturnType = crtProperty.concreteReturnType
+
+                val propertyReturnTypeTypeAndClass = TypeAndClass<PropertyData & Any>(propertyReturnType)
+                val propertyReturnTypeClass = propertyReturnTypeTypeAndClass.clazz
+                return if (propertyReturnTypeClass.isExposedSqlPrimitiveType())
+                    @Suppress("UNCHECKED_CAST")
+                    SqlPrimitive(
+                        property, columnByPropertyNameMap.getOrElse(columnPropertyName) {
+                            throw IllegalArgumentException("column with property name `$columnPropertyName` for class property `$property` does not exist in the tables `$tables`")
+                        } as Column<PropertyData>
+                    )
+                else {
+                    val isNullable = propertyReturnType.isMarkedNullable
+
+                    @Suppress("UNCHECKED_CAST")
+                    val nullability =
+                        (
+                                if (isNullable)
+                                /*
+                                I first had the idea of finding a default `nullDependentColumn` but it seems difficult to cover all kinds of cases.
+
+                                There are 3 ways I can think of to find the default `nullDependentColumn` in the corresponding columns mapped by the properties:
+                                1. find the first non-nullable column;
+                                1. find the first column that's a primary key;
+                                1. find the first non-nullable column with the suffix "id".
+
+                                They all have their drawbacks.
+                                The first approach is too unpredictable, adding or removing properties can affect which column to choose.
+                                Both the second and the third approach can't deal with the case where the column is not within the mapped columns,
+                                which happens when selecting a small portion of the fields as data.
+                                 */
+                                    NestedClass.Nullability.Nullable<PropertyData & Any>(
+                                        config?.whetherNullDependentColumn
+                                            ?: throw IllegalArgumentException("`PropertyColumnMappingConfig::nullDependentColumn` has to be specified for `$property` because its return type `$propertyReturnType` is a nullable nested data type")
+                                    )
+                                else
+                                    NestedClass.Nullability.NonNullable<PropertyData & Any>()
+                                )
+                                as NestedClass.Nullability<PropertyData>
+
+
+                    @Suppress("UNCHECKED_CAST")
+                    val adtConfig = config?.adt as PropertyColumnMappingConfig.Adt<PropertyData & Any>?
+                    val adt = if (propertyReturnTypeClass.isAbstractOrSealed()) {
+                        //requireNotNull(adtConfig)
+                        require(adtConfig is PropertyColumnMappingConfig.Adt.Sum<*, *>)
+                        adtConfig as PropertyColumnMappingConfig.Adt.Sum<PropertyData & Any, *>
+                        val subclassProductConfigMapOverride = adtConfig.subclassProductConfigMapOverride
+
+                        val sealedLeafSubTypes =
+                            propertyReturnTypeTypeAndClass.concreteTypeSealedLeafSubtypes() // TODO: also support direct sealed subtypes
+                        val subclassProductNestedConfigMapMapOverride =
+                            subclassProductConfigMapOverride.mapValues { it.value.nestedConfigMap }
+                        val subclassProductNestedConfigMapMap =
+                            if (propertyReturnTypeClass.isSealed)
+                                sealedLeafSubTypes.asSequence().map { it.clazz }.associateWith {
+                                    emptyMap<KProperty1<out PropertyData & Any, *>, PropertyColumnMappingConfig<*>>()
+                                } + subclassProductNestedConfigMapMapOverride
+                            else {
+                                require(subclassProductConfigMapOverride.isNotEmpty()) { "A custom config needs to be specified for a non-sealed abstract class ${propertyReturnTypeTypeAndClass.type}" }
+                                subclassProductNestedConfigMapMapOverride
+                            }
+
+                        NestedClass.Adt.Sum(
+                            sealedLeafSubTypes.associate {
+                                fun <SubclassData : PropertyData & Any> typeParameterHelper(
+                                    typeAndClass: TypeAndClass<SubclassData>,
+                                    configMap: PropertyColumnMappingConfigMap<SubclassData>
+                                ): NestedClass.Adt.Product<SubclassData> =
+                                    NestedClass.Adt.Product(
+                                        doGetDefaultClassPropertyColumnMappings(
+                                            typeAndClass,
+                                            tables, columnByPropertyNameMap,
+                                            configMap
+                                        )
+                                    )
+
+                                @Suppress("NAME_SHADOWING")
+                                val clazz = it.clazz
+                                @Suppress("UNCHECKED_CAST")
+                                clazz to typeParameterHelper(
+                                    it as TypeAndClass<PropertyData & Any>,
+                                    subclassProductNestedConfigMapMap[clazz] as PropertyColumnMappingConfigMap<PropertyData & Any>
+                                )
+                            },
+                            adtConfig.sumTypeCaseConfig
+                        )
+                    } else {
+                        require(adtConfig is PropertyColumnMappingConfig.Adt.Product?)
+                        NestedClass.Adt.Product(
+                            doGetDefaultClassPropertyColumnMappings(
+                                propertyReturnTypeTypeAndClass,
+                                tables, columnByPropertyNameMap,
+                                (adtConfig?.nestedConfigMap ?: emptyMap())
+                            )
+                        )
+                    }
+
+                    NestedClass(property, nullability, adt)
+                }
+            }
+            typeParameterHelper(crtProperty)
+        }
+}
 
 @Untested
 fun <Data : Any> getDefaultClassPropertyColumnMappings(
-    clazz: KClass<Data>,
+    typeAndClass: TypeAndClass<Data>,
     tables: List<Table>, onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST,
     propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
     customMappings: PropertyColumnMappings<Data> = emptyList()
 ): ClassPropertyColumnMappings<Data> =
-    getDefaultClassPropertyColumnMappings(
-        clazz,
-        getColumnByPropertyNameMap(tables, onDuplicateColumnPropertyNames),
+    doGetDefaultClassPropertyColumnMappings(
+        typeAndClass,
+        tables, getColumnByPropertyNameMap(tables, onDuplicateColumnPropertyNames),
         propertyColumnMappingConfigMapOverride,
         customMappings
     )
@@ -382,7 +433,7 @@ class ReflectionBasedClassPropertyDataMapper<Data : Any>(
 
 
 @Untested
-fun <Data : Any> constructDataWithResultRow(
+private fun <Data : Any> constructDataWithResultRow(
     clazz: KClass<Data>, classPropertyColumnMappings: ClassPropertyColumnMappings<Data>, resultRow: ResultRow
 ): Data =
     clazz.primaryConstructor!!.call(*classPropertyColumnMappings.map {
@@ -391,7 +442,7 @@ fun <Data : Any> constructDataWithResultRow(
             nestedClass: KClass<PropertyData & Any>
         ) =
             when (propertyColumnMapping) {
-                is ExposedSqlPrimitive -> resultRow.getValue(propertyColumnMapping.column)
+                is SqlPrimitive -> resultRow.getValue(propertyColumnMapping.column)
                 is NestedClass -> {
                     fun constructNotNullData() =
                         when (val adt = propertyColumnMapping.adt) {
@@ -416,7 +467,7 @@ fun <Data : Any> constructDataWithResultRow(
 
                     when (val nullability = propertyColumnMapping.nullability) {
                         is NestedClass.Nullability.NonNullable -> constructNotNullData()
-                        is NestedClass.Nullability.Nullable<*> -> if (resultRow[nullability.nullDependentColumn] !== null) constructNotNullData() else null
+                        is NestedClass.Nullability.Nullable<*> -> if (resultRow[nullability.whetherNullDependentColumn] !== null) constructNotNullData() else null
                     }
                 }
 
@@ -435,7 +486,7 @@ fun <Data : Any> setUpdateBuilder(
         fun <PropertyData> typeParameterHelper(propertyColumnMapping: PropertyColumnMapping<Data, PropertyData>) {
             val propertyData = propertyColumnMapping.property(data)
             when (propertyColumnMapping) {
-                is ExposedSqlPrimitive ->
+                is SqlPrimitive ->
                     updateBuilder[propertyColumnMapping.column] = propertyData
 
                 is NestedClass -> {
@@ -499,11 +550,11 @@ fun <Data : Any> setUpdateBuilder(
 @Untested
 fun PropertyColumnMapping<*, *>.forEachColumn(block: (Column<*>) -> Unit) =
     when (this) {
-        is ExposedSqlPrimitive -> block(column)
+        is SqlPrimitive -> block(column)
         is NestedClass -> {
             when (nullability) {
                 is NestedClass.Nullability.NonNullable -> {}
-                is NestedClass.Nullability.Nullable -> block(nullability.nullDependentColumn)
+                is NestedClass.Nullability.Nullable -> block(nullability.whetherNullDependentColumn)
             }
             when (adt) {
                 is NestedClass.Adt.Product -> adt.nestedMappings.forEachColumn(block)
@@ -550,10 +601,11 @@ inline fun <reified Data : Any> reflectionBasedClassPropertyDataMapper(
     propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
     customMappings: PropertyColumnMappings<Data> = emptyList()
 ): ReflectionBasedClassPropertyDataMapper<Data> {
-    val clazz = Data::class
+    val typeAndClass = typeAndClassOf<Data>()
     return ReflectionBasedClassPropertyDataMapper(
-        clazz, getDefaultClassPropertyColumnMappings(
-            clazz, tables, onDuplicateColumnPropertyNames, propertyColumnMappingConfigMapOverride, customMappings
+        typeAndClass.clazz, getDefaultClassPropertyColumnMappings(
+            typeAndClass,
+            tables, onDuplicateColumnPropertyNames, propertyColumnMappingConfigMapOverride, customMappings
         )
     )
 }

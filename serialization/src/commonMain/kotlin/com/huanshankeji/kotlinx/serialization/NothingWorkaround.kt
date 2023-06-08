@@ -1,29 +1,14 @@
 package com.huanshankeji.kotlinx.serialization
 
+import com.huanshankeji.kotlin.reflect.copyWithArguments
+import com.huanshankeji.kotlin.reflect.isNothing
+import com.huanshankeji.kotlin.reflect.isNullableNothing
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialFormat
 import kotlinx.serialization.serializer
 import kotlin.reflect.KType
 import kotlin.reflect.KTypeProjection
 import kotlin.reflect.typeOf
-
-internal class DummyTypeConstructor<T> private constructor()
-
-@ExperimentalStdlibApi
-internal val nothingType: KType = typeOf<DummyTypeConstructor<Nothing>>().arguments.first().type!!
-
-@ExperimentalStdlibApi
-internal val nullableNothingType: KType = typeOf<DummyTypeConstructor<Nothing?>>().arguments.first().type!!
-
-@ExperimentalStdlibApi
-internal fun KType.isNothing() =
-    nothingType == this
-
-@ExperimentalStdlibApi
-internal fun KType.isNullableNothing() =
-    nullableNothingType == this
-
-internal expect fun KType.copyWithArguments(arguments: List<KTypeProjection>): KType
 
 @ExperimentalStdlibApi
 internal val serializableNothingType = typeOf<SerializableNothing>()

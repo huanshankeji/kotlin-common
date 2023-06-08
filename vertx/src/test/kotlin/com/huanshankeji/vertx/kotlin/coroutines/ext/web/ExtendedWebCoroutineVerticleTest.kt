@@ -69,7 +69,7 @@ class ExtendedWebCoroutineVerticleTest : VertxBaseTest() {
                     .forEach { testOk(it) }
                 listOf(checkedCoroutineHandler, checkedCoroutineHandlerInline).forEach { testThrowable(it) }
             }
-        }, { close().await() })
+        }, { close() })
 
         vertx.undeploy(deploymentId).await()
     }

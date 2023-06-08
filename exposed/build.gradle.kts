@@ -8,4 +8,5 @@ dependencies {
     implementation(commonDependencies.exposed.core())
 
     implementation(cpnProject(project, ":core"))
+    implementation(cpnProject(project, ":reflect"))
 }

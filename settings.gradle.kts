@@ -9,6 +9,7 @@ include(
     "coroutines",
     "exposed",
     "ktor:client",
+    "reflect",
     "serialization",
     "vertx",
     "vertx:with-context-receivers",
