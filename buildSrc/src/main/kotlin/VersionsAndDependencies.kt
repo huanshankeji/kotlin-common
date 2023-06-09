@@ -3,7 +3,6 @@ import com.huanshankeji.CommonGradleClasspathDependencies
 import com.huanshankeji.CommonVersions
 
 val projectVersion = "0.4.0-SNAPSHOT"
-val commonVersions =
-    CommonVersions(kotlinxSerialization = "1.5.1", vertx = "4.4.2") // TODO: use the default version when it's bumped
+val commonVersions = CommonVersions(kotlin = "1.8.21")
 val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
