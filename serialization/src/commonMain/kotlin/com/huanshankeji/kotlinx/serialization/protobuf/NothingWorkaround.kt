@@ -7,7 +7,7 @@ import kotlinx.serialization.protobuf.ProtoBuf
 
 @Deprecated(
     NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE, ReplaceWith(
-        "this.encodeToByteArray(value)",
+        "this.encodeToByteArray<T>(value)",
         "kotlinx.serialization.encodeToByteArray"
     )
 )
@@ -18,7 +18,7 @@ inline fun <reified T> ProtoBuf.encodeToByteArrayNothingWorkaround(value: T) =
 
 @Deprecated(
     NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE, ReplaceWith(
-        "this.decodeFromByteArray(bytes)",
+        "this.decodeFromByteArray<T>(bytes)",
         "kotlinx.serialization.decodeFromByteArray"
     )
 )
