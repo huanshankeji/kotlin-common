@@ -10,13 +10,15 @@ import kotlin.reflect.KType
 import kotlin.reflect.KTypeProjection
 import kotlin.reflect.typeOf
 
-@ExperimentalStdlibApi
+const val NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE =
+    "The `Nothing` type is supported by kotlinx.serialization by default now. " +
+            "See https://github.com/Kotlin/kotlinx.serialization/issues/932 " +
+            "and https://github.com/Kotlin/kotlinx.serialization/pull/2150 ."
+
 internal val serializableNothingType = typeOf<SerializableNothing>()
 
-@ExperimentalStdlibApi
 internal val nullableSerializableNothingType = typeOf<SerializableNothing?>()
 
-@ExperimentalStdlibApi
 fun KType.mapNothingToSerializableNothing(): KType =
     if (isNothing())
         serializableNothingType
@@ -27,7 +29,10 @@ fun KType.mapNothingToSerializableNothing(): KType =
             KTypeProjection(it.variance, it.type!!.mapNothingToSerializableNothing())
         })
 
-@ExperimentalStdlibApi
+@Deprecated(
+    NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE,
+    ReplaceWith("this.serializersModule.serializer<T>()", "kotlinx.serialization.serializer")
+)
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> SerialFormat.serializerNothingWorkaround(): KSerializer<T> =
     serializersModule.serializer(typeOf<T>().mapNothingToSerializableNothing()) as KSerializer<T>

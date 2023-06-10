@@ -2,6 +2,8 @@ package com.huanshankeji.kotlinx.serialization.protobuf
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromByteArray
+import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.protobuf.ProtoBuf
 import kotlinx.serialization.protobuf.ProtoNumber
 import kotlin.test.Test
@@ -16,8 +18,16 @@ class ProtoBufSerializationTest {
     @Test
     fun testNothingField() {
         val testData = TestData(null)
-        val encoded = ProtoBuf.encodeToByteArrayNothingWorkaround(testData)
-        assertContentEquals(ByteArray(0), encoded)
-        assertEquals(testData, ProtoBuf.decodeFromByteArrayNothingWorkaround(encoded))
+        @Suppress("DEPRECATION")
+        run {
+            val encoded = ProtoBuf.encodeToByteArrayNothingWorkaround(testData)
+            assertContentEquals(ByteArray(0), encoded)
+            assertEquals(testData, ProtoBuf.decodeFromByteArrayNothingWorkaround(encoded))
+        }
+        run {
+            val encoded = ProtoBuf.encodeToByteArray(testData)
+            assertContentEquals(ByteArray(0), encoded)
+            assertEquals(testData, ProtoBuf.decodeFromByteArray(encoded))
+        }
     }
 }

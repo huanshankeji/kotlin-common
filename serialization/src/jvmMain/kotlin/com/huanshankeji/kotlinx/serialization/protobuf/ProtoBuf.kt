@@ -10,6 +10,7 @@ import kotlinx.serialization.protobuf.ProtoBuf
 actual val extendedProtoBuf = ProtoBuf {
     serializersModule = SerializersModule {
         //contextual(Nothing::class, NothingSerializer)
+        @Suppress("DEPRECATION")
         contextual(VoidSerializer)
     }
 }

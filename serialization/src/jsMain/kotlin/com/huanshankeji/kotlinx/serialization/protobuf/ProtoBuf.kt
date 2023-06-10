@@ -9,6 +9,7 @@ import kotlinx.serialization.protobuf.ProtoBuf
 @ExperimentalSerializationApi
 actual val extendedProtoBuf = ProtoBuf {
     serializersModule = SerializersModule {
+        @Suppress("DEPRECATION")
         contextual(Nothing::class, NothingSerializer) // doesn't work
         // This is uncompleted and deprecated. Consider removing this someday.
     }
