@@ -10,7 +10,7 @@ import kotlin.test.Test
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
-@OptIn(ExperimentalStdlibApi::class, ExperimentalSerializationApi::class)
+@OptIn(ExperimentalSerializationApi::class)
 class ProtoBufSerializationTest {
     @Serializable
     data class TestData<T : Any>(@ProtoNumber(1) val field: T?)
