@@ -1,6 +1,5 @@
 package com.huanshankeji.exposed.datamapping.classproperty
 
-import com.huanshankeji.Untested
 import com.huanshankeji.exposed.datamapping.DataMapper
 import com.huanshankeji.exposed.datamapping.NullableDataMapper
 import com.huanshankeji.exposed.datamapping.classproperty.OnDuplicateColumnPropertyNames.CHOOSE_FIRST
@@ -35,7 +34,6 @@ TODO: consider decoupling/removing `property` and `Data` from this class and ren
  However, after the refactor, `ColumnMapping` will still be coupled with `ClassPropertyColumnMappings` which is coupled with `PropertyColumnMapping`,
  so I am not sure whether this is necessary.
 */
-@Untested
 sealed class PropertyColumnMapping<Data : Any, PropertyData>(val property: KProperty1<Data, PropertyData>) {
     class SqlPrimitive<Data : Any, PropertyData>(
         property: KProperty1<Data, PropertyData>,
@@ -253,7 +251,6 @@ typealias PropertyColumnMappingConfigMap<Data /*: Any*/> = PropertyColumnMapping
 private fun KClass<*>.isObject() =
     objectInstance !== null
 
-@Untested
 private fun <Data : Any> doGetDefaultClassPropertyColumnMappings(
     typeAndClass: TypeAndClass<Data>,
     tables: List<Table>, // for error messages only
@@ -401,7 +398,6 @@ private fun <Data : Any> doGetDefaultClassPropertyColumnMappings(
         }
 }
 
-@Untested
 fun <Data : Any> getDefaultClassPropertyColumnMappings(
     typeAndClass: TypeAndClass<Data>,
     tables: List<Table>, onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST,
@@ -417,7 +413,6 @@ fun <Data : Any> getDefaultClassPropertyColumnMappings(
 
 // TODO: decouple query mapper and update mapper.
 /** Supports classes with nested composite class properties and multiple tables */
-@Untested
 class ReflectionBasedClassPropertyDataMapper<Data : Any>(
     val clazz: KClass<Data>,
     val classPropertyColumnMappings: ClassPropertyColumnMappings<Data>,
@@ -432,7 +427,6 @@ class ReflectionBasedClassPropertyDataMapper<Data : Any>(
 }
 
 
-@Untested
 private fun <Data : Any> constructDataWithResultRow(
     clazz: KClass<Data>, classPropertyColumnMappings: ClassPropertyColumnMappings<Data>, resultRow: ResultRow
 ): Data =
@@ -478,7 +472,6 @@ private fun <Data : Any> constructDataWithResultRow(
         typeParameterHelper(it as PropertyColumnMapping<Data, Any?>, it.property.returnType.classifier as KClass<Any>)
     }.toTypedArray())
 
-@Untested
 fun <Data : Any> setUpdateBuilder(
     classPropertyColumnMappings: ClassPropertyColumnMappings<Data>, data: Data, updateBuilder: UpdateBuilder<*>
 ) {
@@ -547,7 +540,6 @@ fun <Data : Any> setUpdateBuilder(
     }
 }
 
-@Untested
 fun PropertyColumnMapping<*, *>.forEachColumn(block: (Column<*>) -> Unit) =
     when (this) {
         is SqlPrimitive -> block(column)
@@ -569,13 +561,11 @@ fun PropertyColumnMapping<*, *>.forEachColumn(block: (Column<*>) -> Unit) =
         is Skip -> {}
     }
 
-@Untested
 fun ClassPropertyColumnMappings<*>.forEachColumn(block: (Column<*>) -> Unit) {
     for (propertyColumnMapping in this)
         propertyColumnMapping.forEachColumn(block)
 }
 
-@Untested
 fun setUpdateBuilderColumnsToNullsWithMappings(
     classPropertyColumnMappings: ClassPropertyColumnMappings<*>, updateBuilder: UpdateBuilder<*>
 ) =
@@ -590,11 +580,9 @@ fun setUpdateBuilderColumnsToNulls(columns: List<Column<*>>, updateBuilder: Upda
         updateBuilder[column as Column<Any?>] = null
 }
 
-@Untested
 fun ClassPropertyColumnMappings<*>.getColumnSet(): Set<Column<*>> =
     buildSet { forEachColumn { add(it) } }
 
-@Untested
 inline fun <reified Data : Any> reflectionBasedClassPropertyDataMapper(
     tables: List<Table>,
     onDuplicateColumnPropertyNames: OnDuplicateColumnPropertyNames = CHOOSE_FIRST,
@@ -610,7 +598,6 @@ inline fun <reified Data : Any> reflectionBasedClassPropertyDataMapper(
     )
 }
 
-@Untested
 inline fun <reified Data : Any/*, TableT : Table*/> reflectionBasedClassPropertyDataMapper(
     table: Table,
     propertyColumnMappingConfigMapOverride: PropertyColumnMappingConfigMap<Data> = emptyMap(),
