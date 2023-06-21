@@ -10,6 +10,12 @@ fun FieldSet.selectStatement(where: Op<Boolean>): Query =
 */
 
 /**
+ * @see org.jetbrains.exposed.sql.deleteAll
+ */
+fun Table.deleteAllStatement() =
+    DeleteStatement(this)
+
+/**
  * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
  */
 fun Table.deleteWhereStatement(
