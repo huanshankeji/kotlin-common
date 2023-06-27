@@ -16,3 +16,7 @@ fun Random.nextByte() =
 @ExperimentalUnsignedTypes
 fun Random.nextUByte() =
     nextUBytes(1).first()
+
+/** Creates a short sequence buffered in [Long]s to improve performance. */
+private fun Random.shortSequence(): Sequence<Short> =
+    TODO()
