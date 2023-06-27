@@ -4,10 +4,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.*
 
 // The select queries are not executed eagerly so just use them directly.
-/*
 fun FieldSet.selectStatement(where: Op<Boolean>): Query =
     select(where)
-*/
 
 /**
  * @see org.jetbrains.exposed.sql.deleteAll
