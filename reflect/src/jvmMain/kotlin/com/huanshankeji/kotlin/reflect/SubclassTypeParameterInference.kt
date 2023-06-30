@@ -26,6 +26,10 @@ fun inferSubclassType(subclass: KClass<*>, superclassTypeAndClass: TypeAndClass<
     }
 }
 
+fun inferSubclassTypeThrowOnFailing(subclass: KClass<*>, superclassTypeAndClass: TypeAndClass<*>) =
+    inferSubclassType(subclass, superclassTypeAndClass)
+        ?: throw IllegalArgumentException("failed to infer the type for $subclass")
+
 /**
  * For GADTs, the subclasses whose type parameters failed to be inferred will be discarded.
  */
@@ -42,16 +46,16 @@ fun <T : Any> TypeAndClass<T>.concreteTypeSealedLeafSubtypes(): List<TypeAndClas
     else listOf(this)
 
 /**
- * Excluding those with star projections.
+ * Excluding those with star projections (and instantiated with type parameters).
  */
-fun <T : Any> TypeAndClass<T>.concreteTypeConcreteSealedDirectSubtypes(): List<TypeAndClass<out T>> =
-    concreteTypeSealedDirectSubtypes().filter { it.type.isConcreteType() }
+fun <T : Any> TypeAndClass<T>.concreteTypeSealedDirectSubtypesWithAllActualKClasses(): List<TypeAndClass<out T>> =
+    concreteTypeSealedDirectSubtypes().filter { it.type.isConcreteTypeWithAllActualKClasses() }
 
 /**
- * Excluding those with star projections.
+ * Excluding those with star projections (and instantiated with type parameters).
  * @see sealedLeafSubclasses
- * @see concreteTypeConcreteSealedDirectSubtypes
+ * @see concreteTypeSealedDirectSubtypesWithAllActualKClasses
  */
-fun <T : Any> TypeAndClass<T>.concreteTypeConcreteSealedLeafSubtypes(): List<TypeAndClass<out T>> =
-    if (clazz.isSealed) concreteTypeConcreteSealedDirectSubtypes().flatMap { it.concreteTypeConcreteSealedLeafSubtypes() }
+fun <T : Any> TypeAndClass<T>.concreteTypeSealedLeafSubtypesWithAllActualKClasses(): List<TypeAndClass<out T>> =
+    if (clazz.isSealed) concreteTypeSealedDirectSubtypesWithAllActualKClasses().flatMap { it.concreteTypeSealedLeafSubtypesWithAllActualKClasses() }
     else listOf(this)

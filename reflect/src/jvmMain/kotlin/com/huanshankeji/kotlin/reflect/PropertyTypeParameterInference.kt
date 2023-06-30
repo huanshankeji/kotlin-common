@@ -5,10 +5,12 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.memberProperties
 
 // TODO: don't use data classes in an API
-data class ConcreteReturnTypeProperty1<T, out V>(
+data class ConcreteReturnTypeProperty1<T, V>(
     val property: KProperty1<T, V>,
     val concreteReturnType: KType
-)
+) {
+    val concreteReturnTypeTypeAndClass = TypeAndClass<V & Any>(concreteReturnType)
+}
 
 /**
  * @see isConcreteType

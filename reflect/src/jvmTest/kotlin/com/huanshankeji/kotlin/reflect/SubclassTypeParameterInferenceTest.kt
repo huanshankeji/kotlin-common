@@ -42,11 +42,11 @@ class SubclassTypeParameterInferenceTest {
     }
 
     @Test
-    fun `test concreteTypeConcreteSealedLeafSubtypes`() {
+    fun `test concreteTypeSealedLeafSubtypesWithAllActualKClasses`() {
         // T1 == T2 == Unit
         assertEquals(
             setOf(typeAndClassOf<A<Unit>>(), typeAndClassOf<B<Unit>>()),
-            typeAndClassOf<TestSealedClass<Unit, Unit>>().concreteTypeConcreteSealedLeafSubtypes().toSet()
+            typeAndClassOf<TestSealedClass<Unit, Unit>>().concreteTypeSealedLeafSubtypesWithAllActualKClasses().toSet()
         )
     }
 
