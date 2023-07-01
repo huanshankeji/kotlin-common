@@ -18,15 +18,15 @@ class FullConcreteTypeTest {
         assertEquals(
             FullConcreteTypeClass(
                 typeAndClassOf<TestClass<Int, Unit>>(),
-                listOf(FullConcreteTypeProperty(ConcreteReturnTypeProperty1(TestClass<Int, Unit>::v1, typeOf<Int>()))),
+                listOf(FullConcreteTypeProperty1(ConcreteReturnTypeProperty1(TestClass<Int, Unit>::v1, typeOf<Int>()))),
                 listOf(
                     FullConcreteTypeClass(
                         typeAndClassOf<TestClass.A<Int, Unit>>(),
                         listOf(
-                            FullConcreteTypeProperty(
+                            FullConcreteTypeProperty1(
                                 ConcreteReturnTypeProperty1(TestClass.A<Int, Unit>::v2, typeOf<Unit>())
                             ),
-                            FullConcreteTypeProperty(
+                            FullConcreteTypeProperty1(
                                 ConcreteReturnTypeProperty1(TestClass.A<Int, Unit>::v1, typeOf<Int>())
                             )
                         )
@@ -34,7 +34,7 @@ class FullConcreteTypeTest {
                     FullConcreteTypeClass(
                         typeAndClassOf<TestClass.B>(),
                         listOf(
-                            FullConcreteTypeProperty(
+                            FullConcreteTypeProperty1(
                                 ConcreteReturnTypeProperty1(TestClass.B::v1, typeOf<Int>())
                             )
                         )
