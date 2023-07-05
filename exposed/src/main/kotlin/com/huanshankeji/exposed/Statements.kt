@@ -82,7 +82,7 @@ fun <T : Table> T.insertSelectStatement(
 ): InsertSelectStatement =
     InsertSelectStatement(columns, selectQuery, isIgnore)
 
-fun <T : Table> T.updateStatement(
+fun <T : Table> T.updateStatementWithWhereOp(
     where: WhereOp? = null, limit: Int? = null, body: T.(UpdateStatement) -> Unit
 ): UpdateStatement {
     val query = UpdateStatement(this, limit, where)
