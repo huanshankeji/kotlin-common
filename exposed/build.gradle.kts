@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation(commonDependencies.exposed.core())
+    testImplementation(kotlin("test"))
 }
