@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("gradle-plugin", "1.8.21"))
-    implementation("com.huanshankeji:common-gradle-dependencies:0.6.0-20230609")
+    implementation(kotlin("gradle-plugin", "1.9.20"))
+    implementation("com.huanshankeji:common-gradle-dependencies:0.7.0-20231111-SNAPSHOT") // TODO
     implementation("com.huanshankeji.team:gradle-plugins:0.4.0")
 }

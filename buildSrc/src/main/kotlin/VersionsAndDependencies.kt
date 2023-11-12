@@ -3,6 +3,6 @@ import com.huanshankeji.CommonGradleClasspathDependencies
 import com.huanshankeji.CommonVersions
 
 val projectVersion = "0.4.0-SNAPSHOT"
-val commonVersions = CommonVersions(kotlin = "1.8.21")
+val commonVersions = CommonVersions(kotlin = "1.9.20")
 val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
