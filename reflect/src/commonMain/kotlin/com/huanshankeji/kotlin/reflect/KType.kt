@@ -4,17 +4,13 @@ import kotlin.reflect.*
 
 private class DummyTypeConstructor<T> private constructor()
 
-@ExperimentalStdlibApi
 val nothingType: KType = typeOf<DummyTypeConstructor<Nothing>>().arguments.first().type!!
 
-@ExperimentalStdlibApi
 val nullableNothingType: KType = typeOf<DummyTypeConstructor<Nothing?>>().arguments.first().type!!
 
-@ExperimentalStdlibApi
 fun KType.isNothing() =
     nothingType == this
 
-@ExperimentalStdlibApi
 fun KType.isNullableNothing() =
     nullableNothingType == this
 
