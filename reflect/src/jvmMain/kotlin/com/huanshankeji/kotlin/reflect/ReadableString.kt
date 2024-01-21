@@ -19,16 +19,18 @@ fun Any?.toReadableStringByReflection(): String =
         val clazz = this::class as KClass<Any>
         if (clazz.java.methods.find { it.name == "toString" && it.parameterCount == 0 }!!.declaringClass == Any::class.java)
             "${clazz.simpleName}(${
-                clazz.memberProperties.asSequence().filter { it.visibility == KVisibility.PUBLIC }.joinToString(", ") { kProperty1 ->
-                    "${kProperty1.name}=${
-                        try {
-                            kProperty1(this).toReadableStringByReflection()
-                        } catch (t: Throwable) {
-                            t.printStackTrace()
-                            t
-                        }
-                    }"
-                }
+                clazz.memberProperties.asSequence()
+                    .filter { it.visibility == KVisibility.PUBLIC }
+                    .joinToString(", ") { kProperty1 ->
+                        "${kProperty1.name}=${
+                            try {
+                                kProperty1(this).toReadableStringByReflection()
+                            } catch (t: Throwable) {
+                                t.printStackTrace()
+                                t
+                            }
+                        }"
+                    }
             })"
         else
             toString()
