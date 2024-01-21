@@ -17,8 +17,8 @@ fun Any?.toReadableStringByReflection(): String =
     else {
         @Suppress("UNCHECKED_CAST")
         val clazz = this::class as KClass<Any>
-        if (clazz.java.methods.find { it.name == "toString" && it.parameterCount == 0 }!!.declaringClass == Any::class.java)
-            "${clazz.simpleName}(${
+        when {
+            clazz.java.methods.find { it.name == "toString" && it.parameterCount == 0 }!!.declaringClass == Any::class.java -> "${clazz.simpleName}(${
                 clazz.memberProperties.asSequence()
                     .filter { it.visibility == KVisibility.PUBLIC }
                     .joinToString(", ") { kProperty1 ->
@@ -32,6 +32,12 @@ fun Any?.toReadableStringByReflection(): String =
                         }"
                     }
             })"
-        else
-            toString()
+
+            this is Collection<*> -> joinToString(", ", "[", "]") { it.toReadableStringByReflection() }
+            this is Map<*, *> -> this.entries.joinToString(", ", "{", "}") {
+                "${it.key.toReadableStringByReflection()}=${it.value.toReadableStringByReflection()}"
+            }
+
+            else -> toString()
+        }
     }
