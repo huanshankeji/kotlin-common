@@ -11,6 +11,7 @@ include(
     "ktor:client",
     "reflect",
     "serialization",
+    "serialization:benchmark",
     "vertx",
     "vertx:with-context-receivers",
 )
