@@ -1,34 +1,30 @@
 package com.huanshankeji.kotlinx.serialization.benchmark
 
 import com.huanshankeji.kotlinx.serialization.protobuf.encodeToByteArrayNothingWorkaround
-import kotlinx.benchmark.*
 import kotlinx.benchmark.Benchmark
 import kotlinx.serialization.encodeToByteArray
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.protobuf.ProtoBuf
 
-@State(Scope.Benchmark)
-@Warmup(1)
-@Measurement(1)
-class Benchmark {
+class TestDataBenchmark : BaseBenchmark() {
     @Benchmark
     fun serializeToJson() =
-        Json.encodeToString(testData)
+        Json.encodeToString(testDataOfNothing)
 
     @Benchmark
     fun serializeToJsonWithStaticSerializer() =
-        Json.encodeToString(testDataNothingSerializer, testData)
+        Json.encodeToString(testDataOfNothingSerializer, testDataOfNothing)
 
     @Benchmark
     fun serializeToProtobuf() =
-        ProtoBuf.encodeToByteArray(testData)
+        ProtoBuf.encodeToByteArray(testDataOfNothing)
 
     @Benchmark
     fun serializeToProtobufWithStaticSerializer() =
-        ProtoBuf.encodeToByteArray(testDataNothingSerializer, testData)
+        ProtoBuf.encodeToByteArray(testDataOfNothingSerializer, testDataOfNothing)
 
     @Benchmark
     fun serializeToProtobufWithNothingWorkaround() =
-        ProtoBuf.encodeToByteArrayNothingWorkaround(testData)
+        ProtoBuf.encodeToByteArrayNothingWorkaround(testDataOfNothing)
 }
