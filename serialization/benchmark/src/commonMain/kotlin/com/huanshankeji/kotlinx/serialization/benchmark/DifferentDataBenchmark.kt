@@ -12,14 +12,14 @@ import kotlin.reflect.KType
 @Suppress("UNCHECKED_CAST")
 class DifferentDataBenchmark : BaseBenchmark() {
     @Param
-    lateinit var dataEnum: DataEnum
+    lateinit var paramEnum: DifferentDataParamEnum
 
     /**
      * Adapted from [TestDataBenchmark.serializeToJson] by inlining and passing the [KType] argument.
      */
     @Benchmark
     fun serializeToJsonWithSerializerFromKType() =
-        with(dataEnum.dataSerializationConfig) {
+        with(paramEnum.dataSerializationConfig) {
             // `Json.serializersModule.serializer(kType)` is equivalent to `serializer(kType)`
             Json.encodeToString(Json.serializersModule.serializer(kType), data)
         }
@@ -29,7 +29,7 @@ class DifferentDataBenchmark : BaseBenchmark() {
      */
     @Benchmark
     fun serializeToJsonWithStaticSerializer() =
-        with(dataEnum.dataSerializationConfig as DataSerializationConfig<Any?>) {
+        with(paramEnum.dataSerializationConfig as DataSerializationConfig<Any?>) {
             Json.encodeToString(serializer, data)
         }
 
@@ -38,7 +38,7 @@ class DifferentDataBenchmark : BaseBenchmark() {
      */
     @Benchmark
     fun serializeToProtobufWithSerializerFromKType() =
-        with(dataEnum.dataSerializationConfig) {
+        with(paramEnum.dataSerializationConfig) {
             // `ProtoBuf.serializersModule.serializer(kType)` is equivalent to `serializer(kType)`
             ProtoBuf.encodeToByteArray(ProtoBuf.serializersModule.serializer(kType), data)
         }
@@ -48,7 +48,7 @@ class DifferentDataBenchmark : BaseBenchmark() {
      */
     @Benchmark
     fun serializeToProtobufWithStaticSerializer() =
-        with(dataEnum.dataSerializationConfig as DataSerializationConfig<Any?>) {
+        with(paramEnum.dataSerializationConfig as DataSerializationConfig<Any?>) {
             ProtoBuf.encodeToByteArray(serializer, data)
         }
 }
