@@ -1,0 +1,9 @@
+package com.huanshankeji.kotlinx.serialization.benchmark.protobuf;
+
+message DefaultLongWrapper {
+  required int64 data = 1;
+}
+
+message FixedLongWrapper {
+  required fixed64 data = 1;
+}
