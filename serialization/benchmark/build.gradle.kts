@@ -29,11 +29,8 @@ kotlin {
                 }
                 implementation(cpnProject(project, ":serialization"))
 
-                // TODO check this again
-                /*
                 // This has to be added explicitly for kotlinx.benchmark on the JS target, which is probably a bug.
                 implementation(cpnProject(project, ":reflect"))
-                */
             }
         }
     }
