@@ -12,6 +12,7 @@ include(
     "reflect",
     "serialization",
     "serialization:benchmark",
+    "serialization:benchmark:jvm-only",
     "vertx",
     "vertx:with-context-receivers",
 )

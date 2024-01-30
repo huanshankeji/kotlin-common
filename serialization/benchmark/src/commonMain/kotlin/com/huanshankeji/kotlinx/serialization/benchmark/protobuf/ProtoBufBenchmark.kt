@@ -14,8 +14,8 @@ class ProtoBufBenchmark : BaseBenchmark() {
         MaxLongWrapper(maxLongWrapperDataSerializationConfig),
         ZeroDefaultLongWrapper(zeroDefaultLongWrapperDataSerializationConfig),
         MaxDefaultLongWrapper(maxDefaultLongWrapperDataSerializationConfig),
-        ZeroFixedLong(zeroFixedLongWrapperDataSerializationConfig),
-        MaxFixedLong(maxFixedLongWrapperDataSerializationConfig)
+        ZeroFixedLongWrapper(zeroFixedLongWrapperDataSerializationConfig),
+        MaxFixedLongWrapper(maxFixedLongWrapperDataSerializationConfig)
     }
 
     @Param
