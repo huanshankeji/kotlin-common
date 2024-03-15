@@ -1,5 +1,8 @@
 package com.huanshankeji.kotlinx.serialization
 
+import com.huanshankeji.kotlin.reflect.copyWithArguments
+import com.huanshankeji.kotlin.reflect.isNothing
+import com.huanshankeji.kotlin.reflect.isNullableNothing
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialFormat
 import kotlinx.serialization.serializer
@@ -7,31 +10,15 @@ import kotlin.reflect.KType
 import kotlin.reflect.KTypeProjection
 import kotlin.reflect.typeOf
 
-internal class DummyTypeConstructor<T> private constructor()
+const val NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE =
+    "The `Nothing` type is supported by kotlinx.serialization by default now. " +
+            "See https://github.com/Kotlin/kotlinx.serialization/issues/932 " +
+            "and https://github.com/Kotlin/kotlinx.serialization/pull/2150 ."
 
-@ExperimentalStdlibApi
-internal val nothingType: KType = typeOf<DummyTypeConstructor<Nothing>>().arguments.first().type!!
-
-@ExperimentalStdlibApi
-internal val nullableNothingType: KType = typeOf<DummyTypeConstructor<Nothing?>>().arguments.first().type!!
-
-@ExperimentalStdlibApi
-internal fun KType.isNothing() =
-    nothingType == this
-
-@ExperimentalStdlibApi
-internal fun KType.isNullableNothing() =
-    nullableNothingType == this
-
-internal expect fun KType.copyWithArguments(arguments: List<KTypeProjection>): KType
-
-@ExperimentalStdlibApi
 internal val serializableNothingType = typeOf<SerializableNothing>()
 
-@ExperimentalStdlibApi
 internal val nullableSerializableNothingType = typeOf<SerializableNothing?>()
 
-@ExperimentalStdlibApi
 fun KType.mapNothingToSerializableNothing(): KType =
     if (isNothing())
         serializableNothingType
@@ -42,7 +29,10 @@ fun KType.mapNothingToSerializableNothing(): KType =
             KTypeProjection(it.variance, it.type!!.mapNothingToSerializableNothing())
         })
 
-@ExperimentalStdlibApi
+@Deprecated(
+    NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE,
+    ReplaceWith("this.serializersModule.serializer<T>()", "kotlinx.serialization.serializer")
+)
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T> SerialFormat.serializerNothingWorkaround(): KSerializer<T> =
     serializersModule.serializer(typeOf<T>().mapNothingToSerializableNothing()) as KSerializer<T>

@@ -48,7 +48,7 @@ class CoroutineHandlersTest : VertxBaseTest() {
             WebClient.create(vertx, webClientOptionsOf(defaultPort = httpServer.actualPort())).use({ webClient ->
                 webClient.get(DEFAULT_PATH).send().await()
                 webClient.get(UNCONFINED_PATH).send().await()
-            }, { close().await() })
+            }, { close() })
         }
     }
 }

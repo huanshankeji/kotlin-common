@@ -9,7 +9,7 @@ interface VirtualHostCombinable {
 
 interface SingleVirtualHostVerticle : VirtualHostCombinable, Verticle {
     override fun Router.routesOnVirtualHost() {
-        mountSubRouter("/", subRouter()).virtualHost(virtualHost)
+        route().subRouter(subRouter()).virtualHost(virtualHost)
     }
 
     val virtualHost: String

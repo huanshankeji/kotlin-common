@@ -1,6 +1,8 @@
+import com.huanshankeji.cpnProject
+
 plugins {
     id("multiplatform-conventions")
-    with(commonGradleClasspathDependencies.kotlin.serializationPlugin) { kotlin(moduleName) version version }
+    with(commonGradleClasspathDependencies.kotlin.plugin.serialization) { applyPluginWithVersion() }
 }
 
 kotlin {
@@ -11,6 +13,7 @@ kotlin {
                     implementation(core())
                     implementation(protobuf())
                 }
+                implementation(cpnProject(project, ":reflect"))
             }
         }
 

@@ -24,8 +24,8 @@ interface CombinedVerticleFunctions : Verticle {
         @Suppress("UNCHECKED_CAST")
         subVerticlesStop(stopPromise as Promise<Void?>)
 
-    fun <E> List<E>.runAllWithPromise(block: E.(Promise: Promise<Void?>) -> Unit, promise: Promise<Void?>) {
-        CompositeFuture.all(map {
+    fun <E> List<E>.runAllWithPromise(block: E.(promise: Promise<Void?>) -> Unit, promise: Promise<Void?>) {
+        Future.all(map {
             @Suppress("NAME_SHADOWING") val promise = Promise.promise<Void?>()
             vertx.runOnContext { _ -> it.block(promise) }
             //it.block(promise)
