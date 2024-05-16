@@ -23,3 +23,11 @@ fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
         child.setProjectConcatenatedNames("$name-")
 }
 rootProject.setProjectConcatenatedNames("")
+
+// This is needed for Kotlin Native.
+dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
+    repositories {
+        mavenCentral()
+    }
+}

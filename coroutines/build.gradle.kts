@@ -1,8 +1,16 @@
 import com.huanshankeji.cpnProject
 
 plugins {
-    id("multiplatform-conventions")
+    `multiplatform-conventions-without-ios`
 }
+
+/*
+Compiling fails for the iOS targets:
+```
+e: Compilation failed: Backend Internal error: Exception during psi2ir
+```
+ */
+
 kotlin {
     sourceSets {
         commonMain {

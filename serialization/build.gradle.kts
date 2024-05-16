@@ -1,7 +1,7 @@
 import com.huanshankeji.cpnProject
 
 plugins {
-    id("multiplatform-conventions")
+    `multiplatform-conventions`
     with(commonGradleClasspathDependencies.kotlin.plugin.serialization) { applyPluginWithVersion() }
 }
 
