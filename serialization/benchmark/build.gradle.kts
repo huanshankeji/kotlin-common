@@ -9,7 +9,8 @@ plugins {
 
 kotlin {
     jvm()
-    js(IR) {
+    // The JS benchmark doesn't run yet, which appears to result from a bug.
+    js {
         browser()
         nodejs()
     }
