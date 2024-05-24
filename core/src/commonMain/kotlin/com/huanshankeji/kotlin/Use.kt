@@ -7,6 +7,7 @@ import kotlin.contracts.contract
 /**
  * Copied and adapted from [kotlin.use].
  */
+@Deprecated("See https://kotlinlang.org/docs/whatsnew20.html#stable-autocloseable-interface")
 @OptIn(ExperimentalContracts::class)
 inline fun <T, R> T.use(block: (T) -> R, close: T.() -> Unit): R {
     contract {
@@ -26,6 +27,7 @@ inline fun <T, R> T.use(block: (T) -> R, close: T.() -> Unit): R {
 /**
  * Copied and adapted from [kotlin.closeFinally].
  */
+@Deprecated("See https://kotlinlang.org/docs/whatsnew20.html#stable-autocloseable-interface")
 /*private*/ inline fun <T> T.closeFinally(cause: Throwable?, close: T.() -> Unit) = when {
     this == null -> {
     }
