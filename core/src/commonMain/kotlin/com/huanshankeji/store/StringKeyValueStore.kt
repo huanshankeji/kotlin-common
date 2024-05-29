@@ -6,4 +6,5 @@ interface StringKeyValueStore {
     fun exists(key: String): Boolean
     fun getNonNull(key: String): String
     fun remove(key: String)
+    // TODO `removeAndGet`?
 }
