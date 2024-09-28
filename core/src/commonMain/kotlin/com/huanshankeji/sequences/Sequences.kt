@@ -8,3 +8,9 @@ inline fun <T, R : Comparable<R>> Sequence<T>.isSortedBy(crossinline selector: (
 
 fun <T> Sequence<T>.isSortedWith(comparator: Comparator<in T>): Boolean =
     zipWithNext { a, b -> comparator.compare(a, b) <= 0 }.all { it }
+
+inline fun <T : Comparable<T>> Sequence<T>.isSortedDescending(): Boolean =
+    isSortedWith(reverseOrder())
+
+inline fun <T, R : Comparable<R>> Sequence<T>.isSortedByDescending(crossinline selector: (T) -> R?): Boolean =
+    isSortedWith(compareByDescending(selector))

@@ -24,3 +24,9 @@ inline fun <T, R : Comparable<R>> Iterable<T>.isSortedBy(crossinline selector: (
 
 fun <T> Iterable<T>.isSortedWith(comparator: Comparator<in T>): Boolean =
     asSequence().isSortedWith(comparator)
+
+inline fun <T : Comparable<T>> Iterable<T>.isSortedDescending(): Boolean =
+    isSortedWith(reverseOrder())
+
+inline fun <T, R : Comparable<R>> Iterable<T>.isSortedByDescending(crossinline selector: (T) -> R?): Boolean =
+    isSortedWith(compareByDescending(selector))
