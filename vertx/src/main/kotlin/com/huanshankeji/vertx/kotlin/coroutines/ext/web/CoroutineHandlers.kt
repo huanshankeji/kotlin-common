@@ -10,12 +10,12 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
-private fun coroutineHandler(
-    coroutineScope: CoroutineScope, route: Route,
+fun Route.coroutineHandler(
+    coroutineScope: CoroutineScope,
     context: CoroutineContext, start: CoroutineStart,
     requestHandler: suspend (RoutingContext) -> Unit
 ): Route =
-    route.handler { coroutineScope.launch(context, start) { requestHandler(it) } }
+    handler { coroutineScope.launch(context, start) { requestHandler(it) } }
 
 /**
  * @see CoroutineContext
@@ -42,19 +42,19 @@ enum class CoroutineHandlerLaunchMode {
      * It's recommend when all the suspending functions called in the handler are Vert.x functions.
      *
      * As tested with the vertx-web-kotlinx portion of TechEmpower Framework Benchmarks, [Dispatchers.Unconfined] greatly improves the performance of the Plaintext test.
-     * See <https://github.com/huanshankeji/FrameworkBenchmarks/commit/030ce1b14d1838784c1ccd2fd94f14446f693b3f> for more details.
+     * See https://github.com/huanshankeji/FrameworkBenchmarks/commit/030ce1b14d1838784c1ccd2fd94f14446f693b3f for more details.
      */
     Unconfined
 }
 
 // workaround for context receivers
-fun coroutineHandler(
-    coroutineScope: CoroutineScope, route: Route,
+fun Route.coroutineHandler(
+    coroutineScope: CoroutineScope,
     launchMode: CoroutineHandlerLaunchMode = DefaultOnVertxEventLoop,
     requestHandler: suspend (RoutingContext) -> Unit
 ): Route =
     coroutineHandler(
-        coroutineScope, route,
+        coroutineScope,
         when (launchMode) {
             DefaultOnVertxEventLoop -> EmptyCoroutineContext
             Unconfined -> Dispatchers.Unconfined
@@ -62,10 +62,32 @@ fun coroutineHandler(
         CoroutineStart.UNDISPATCHED, requestHandler
     )
 
+@Deprecated(
+    "Use the extension version.",
+    ReplaceWith("route.coroutineHandler(coroutineScope, launchMode, requestHandler)")
+)
+fun coroutineHandler(
+    coroutineScope: CoroutineScope, route: Route,
+    launchMode: CoroutineHandlerLaunchMode = DefaultOnVertxEventLoop,
+    requestHandler: suspend (RoutingContext) -> Unit
+): Route =
+    route.coroutineHandler(coroutineScope, launchMode, requestHandler)
+
 // workaround for context receivers
+fun Route.checkedCoroutineHandler(
+    coroutineScope: CoroutineScope,
+    launchMode: CoroutineHandlerLaunchMode = DefaultOnVertxEventLoop,
+    requestHandler: suspend (RoutingContext) -> Unit
+): Route =
+    coroutineHandler(coroutineScope, launchMode) { ctx -> ctx.checkedRun { requestHandler(ctx) } }
+
+@Deprecated(
+    "Use the extension version.",
+    ReplaceWith("route.checkedCoroutineHandler(coroutineScope, launchMode, requestHandler)")
+)
 fun checkedCoroutineHandler(
     coroutineScope: CoroutineScope, route: Route,
     launchMode: CoroutineHandlerLaunchMode = DefaultOnVertxEventLoop,
     requestHandler: suspend (RoutingContext) -> Unit
 ): Route =
-    coroutineHandler(coroutineScope, route, launchMode) { ctx -> ctx.checkedRun { requestHandler(ctx) } }
+    route.checkedCoroutineHandler(coroutineScope, launchMode, requestHandler)
