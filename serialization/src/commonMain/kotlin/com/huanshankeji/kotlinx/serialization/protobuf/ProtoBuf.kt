@@ -1,8 +1,8 @@
 package com.huanshankeji.kotlinx.serialization.protobuf
 
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.protobuf.ProtoBuf
-
+// TODO remove
+/*
 @Deprecated("A workaround Nothing serializer doesn't work for the JS target.")
 @ExperimentalSerializationApi
 expect val extendedProtoBuf: ProtoBuf
+*/

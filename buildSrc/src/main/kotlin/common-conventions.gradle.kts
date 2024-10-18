@@ -3,6 +3,7 @@ import com.huanshankeji.team.pomForTeamDefaultOpenSource
 
 plugins {
     id("com.huanshankeji.team.with-group")
+    id("maven-central")
     id("com.huanshankeji.team.default-github-packages-maven-publish")
 }
 
