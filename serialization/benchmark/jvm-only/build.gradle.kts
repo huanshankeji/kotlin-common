@@ -2,7 +2,8 @@ import com.huanshankeji.SourceSetType
 import com.huanshankeji.cpnProject
 
 plugins {
-    id("com.huanshankeji.kotlin-jvm-common-conventions")
+    kotlin("jvm")
+    `maven-central`
     id("com.huanshankeji.benchmark.kotlinx-benchmark-jvm-conventions")
     id("com.google.protobuf") version DependencyVersions.protobufPlugin
 }

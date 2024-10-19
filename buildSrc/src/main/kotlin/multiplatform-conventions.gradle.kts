@@ -1,7 +1,14 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("common-conventions")
-    id("com.huanshankeji.kotlin-multiplatform-jvm-and-js-browser-conventions")
+    id("com.huanshankeji.kotlin-multiplatform-conventional-targets")
     id("com.huanshankeji.kotlin-multiplatform-sonatype-ossrh-publish-conventions")
 }
 
-kotlin.jvmToolchain(8)
+kotlin {
+    jvmToolchain(8)
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs()
+}

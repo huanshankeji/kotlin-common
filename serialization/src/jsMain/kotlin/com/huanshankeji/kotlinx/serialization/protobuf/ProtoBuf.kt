@@ -7,7 +7,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.protobuf.ProtoBuf
 
 @ExperimentalSerializationApi
-actual val extendedProtoBuf = ProtoBuf {
+/*actual*/ val extendedProtoBuf = ProtoBuf {
     serializersModule = SerializersModule {
         @Suppress("DEPRECATION")
         contextual(Nothing::class, NothingSerializer) // doesn't work

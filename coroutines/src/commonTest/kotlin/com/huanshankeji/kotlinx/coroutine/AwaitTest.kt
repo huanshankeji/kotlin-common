@@ -8,7 +8,6 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.test.runTest
 import kotlin.test.*
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AwaitTest {
     @Test
     fun simplyTestAwaitAnyAndJoinAny() = runTest {

@@ -13,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
 import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class CoroutineHandlersTest : VertxBaseTest() {
     companion object {
@@ -32,15 +33,15 @@ class CoroutineHandlersTest : VertxBaseTest() {
                     Thread.currentThread().name.contains("kotlinx.coroutines.DefaultExecutor")
 
                 coroutineHandler(this@withContext, get(DEFAULT_PATH), DefaultOnVertxEventLoop) {
-                    assert(isOnVertxEventLoop())
+                    assertTrue(isOnVertxEventLoop())
                     delay(1)
-                    assert(isOnVertxEventLoop())
+                    assertTrue(isOnVertxEventLoop())
                     it.response().end()
                 }
                 coroutineHandler(this@withContext, get(UNCONFINED_PATH), Unconfined) {
-                    assert(isOnVertxEventLoop())
+                    assertTrue(isOnVertxEventLoop())
                     delay(1)
-                    assert(isOnDefaultExecutor())
+                    assertTrue(isOnDefaultExecutor())
                     it.response().end()
                 }
             }).listen(0).await()
