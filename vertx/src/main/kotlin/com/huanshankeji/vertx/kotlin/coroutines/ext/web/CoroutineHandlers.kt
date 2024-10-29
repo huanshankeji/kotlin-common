@@ -5,11 +5,22 @@ import com.huanshankeji.vertx.kotlin.coroutines.ext.web.CoroutineHandlerLaunchMo
 import com.huanshankeji.vertx.kotlin.coroutines.ext.web.CoroutineHandlerLaunchMode.Unconfined
 import io.vertx.ext.web.Route
 import io.vertx.ext.web.RoutingContext
+import io.vertx.kotlin.coroutines.CoroutineRouterSupport
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.coroutineRouter
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
+/**
+ * This function can be replaced by [coroutineRouter] and [CoroutineRouterSupport.coHandler]
+ * which is newly introduced to the official "vertx-lang-kotlin-coroutines" library.
+ * However, note that [CoroutineRouterSupport.coHandler] handles exceptions and is equivalent to [Route.checkedCoroutineHandler].
+ * See the [official docs](https://vertx.io/docs/vertx-lang-kotlin-coroutines/kotlin/#_vert_x_web) for more details.
+ *
+ * This function is not deprecated yet and can still serve its purpose in some scenarios
+ * because the approach above is still a bit ugly for the lack of [context parameters](https://github.com/Kotlin/KEEP/issues/367).
+ */
 fun Route.coroutineHandler(
     coroutineScope: CoroutineScope,
     context: CoroutineContext, start: CoroutineStart,
@@ -73,6 +84,9 @@ fun coroutineHandler(
 ): Route =
     route.coroutineHandler(coroutineScope, launchMode, requestHandler)
 
+/**
+ * @see coroutineHandler
+ */
 // workaround for context receivers
 fun Route.checkedCoroutineHandler(
     coroutineScope: CoroutineScope,
