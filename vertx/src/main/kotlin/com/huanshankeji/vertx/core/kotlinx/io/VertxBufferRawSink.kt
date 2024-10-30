@@ -1,4 +1,4 @@
-package com.huanshankeji.vertx.kotlinx.io
+package com.huanshankeji.vertx.core.kotlinx.io
 
 import kotlinx.io.RawSink
 import kotlinx.io.Sink

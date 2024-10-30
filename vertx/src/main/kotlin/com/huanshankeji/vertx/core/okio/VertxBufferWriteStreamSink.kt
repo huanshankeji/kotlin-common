@@ -1,4 +1,4 @@
-package com.huanshankeji.vertx.okio
+package com.huanshankeji.vertx.core.okio
 
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.streams.WriteStream

@@ -1,4 +1,4 @@
-package com.huanshankeji.vertx.okio
+package com.huanshankeji.vertx.core.okio
 
 import okio.Buffer
 import okio.Sink

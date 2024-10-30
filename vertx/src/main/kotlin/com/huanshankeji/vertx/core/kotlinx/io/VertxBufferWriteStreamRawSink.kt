@@ -1,4 +1,4 @@
-package com.huanshankeji.vertx.kotlinx.io
+package com.huanshankeji.vertx.core.kotlinx.io
 
 import io.vertx.core.buffer.Buffer
 import io.vertx.core.streams.WriteStream
