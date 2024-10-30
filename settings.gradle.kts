@@ -15,6 +15,10 @@ include(
     "serialization:benchmark:jvm-only",
     "vertx",
     "vertx:with-context-receivers",
+    /*
+    "vertx:kotlinx-io",
+    "vertx:okio",
+    */
 )
 
 fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
