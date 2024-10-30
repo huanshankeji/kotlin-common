@@ -17,6 +17,13 @@ java {
     registerFeature("okio") {
         usingSourceSet(sourceSets["main"])
     }
+    val kotlinxSerialization = "kotlinxSerialization"
+    registerFeature("${kotlinxSerialization}Json") {
+        usingSourceSet(sourceSets["main"])
+    }
+    registerFeature("${kotlinxSerialization}Protobuf") {
+        usingSourceSet(sourceSets["main"])
+    }
 }
 
 dependencies {
@@ -31,6 +38,10 @@ dependencies {
 
     "kotlinxIoImplementation"("org.jetbrains.kotlinx:kotlinx-io-core:${DependencyVersions.kotlinxIo}")
     "okioImplementation"("com.squareup.okio:okio:${DependencyVersions.okio}")
+    with(commonDependencies.kotlinx.serialization) {
+        "kotlinxSerializationJsonImplementation"(json())
+        "kotlinxSerializationProtobufImplementation"(protobuf())
+    }
 
     implementation(cpnProject(project, ":core"))
     implementation(cpnProject(project, ":coroutines"))
