@@ -6,7 +6,7 @@ import io.vertx.core.http.HttpServer
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.client.WebClient
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import io.vertx.kotlin.ext.web.client.webClientOptionsOf
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -41,27 +41,27 @@ class ExtendedWebCoroutineVerticleTest : VertxBaseTest() {
                         get("/$checkedCoroutineHandlerInline").checkedCoroutineHandlerInline(requestHandler = handler)
                     }
                 })
-                .listen(0).await()
+                .listen(0).coAwait()
         }
 
         override suspend fun stop() {
-            httpServer.close().await()
+            httpServer.close().coAwait()
         }
     }
 
     @Test
     fun `test ExtendedCoroutineVerticle`() = runTest {
         val verticle = Verticle()
-        val deploymentId = vertx.deployVerticle(verticle).await()
+        val deploymentId = vertx.deployVerticle(verticle).coAwait()
 
         WebClient.create(vertx, webClientOptionsOf(defaultPort = verticle.httpServer.actualPort())).use({ webClient ->
             suspend fun testOk(methodName: String) {
-                assertEquals(200, webClient.get("/$methodName").send().await().statusCode())
+                assertEquals(200, webClient.get("/$methodName").send().coAwait().statusCode())
             }
 
             suspend fun testThrowable(methodName: String) {
                 testOk(methodName)
-                assertEquals(500, webClient.get("/$methodName?throws=true").send().await().statusCode())
+                assertEquals(500, webClient.get("/$methodName?throws=true").send().coAwait().statusCode())
             }
 
             with(MemberFunctionNames) {
@@ -71,6 +71,6 @@ class ExtendedWebCoroutineVerticleTest : VertxBaseTest() {
             }
         }, { close() })
 
-        vertx.undeploy(deploymentId).await()
+        vertx.undeploy(deploymentId).coAwait()
     }
 }

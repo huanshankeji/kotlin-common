@@ -6,7 +6,7 @@ import com.huanshankeji.vertx.kotlin.coroutines.ext.web.CoroutineHandlerLaunchMo
 import com.huanshankeji.vertx.kotlin.coroutines.ext.web.CoroutineHandlerLaunchMode.Unconfined
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.client.WebClient
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import io.vertx.kotlin.coroutines.dispatcher
 import io.vertx.kotlin.ext.web.client.webClientOptionsOf
 import kotlinx.coroutines.delay
@@ -32,23 +32,23 @@ class CoroutineHandlersTest : VertxBaseTest() {
                 fun isOnDefaultExecutor() =
                     Thread.currentThread().name.contains("kotlinx.coroutines.DefaultExecutor")
 
-                coroutineHandler(this@withContext, get(DEFAULT_PATH), DefaultOnVertxEventLoop) {
+                get(DEFAULT_PATH).coroutineHandler(this@withContext, DefaultOnVertxEventLoop) {
                     assertTrue(isOnVertxEventLoop())
                     delay(1)
                     assertTrue(isOnVertxEventLoop())
                     it.response().end()
                 }
-                coroutineHandler(this@withContext, get(UNCONFINED_PATH), Unconfined) {
+                get(UNCONFINED_PATH).coroutineHandler(this@withContext, Unconfined) {
                     assertTrue(isOnVertxEventLoop())
                     delay(1)
                     assertTrue(isOnDefaultExecutor())
                     it.response().end()
                 }
-            }).listen(0).await()
+            }).listen(0).coAwait()
 
             WebClient.create(vertx, webClientOptionsOf(defaultPort = httpServer.actualPort())).use({ webClient ->
-                webClient.get(DEFAULT_PATH).send().await()
-                webClient.get(UNCONFINED_PATH).send().await()
+                webClient.get(DEFAULT_PATH).send().coAwait()
+                webClient.get(UNCONFINED_PATH).send().coAwait()
             }, { close() })
         }
     }
