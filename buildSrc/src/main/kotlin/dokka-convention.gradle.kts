@@ -9,7 +9,7 @@ dokka {
         sourceLink {
             //localDirectory.set(file("src/main/kotlin"))
             remoteUrl(
-                "https://github.com/huanshankeji/kotlin-common/tree/v${version}/${
+                "https://github.com/huanshankeji/kotlin-common/tree/b06299af90a13ab54cd56ce00104723536f80117/${
                     with(project) {
                         name.removePrefix(parent!!.name + '-')
                     }
