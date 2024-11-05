@@ -3,19 +3,22 @@ plugins {
 }
 
 dokka {
-    // TODO
-    /*
-    moduleName.set("Huanshankeji Kotlin Common")
-    dokkaSourceSets.named("main") {
-        includes.from("README.md")
+    //moduleName.set("Huanshankeji Kotlin Common")
+    dokkaSourceSets.all {
+        //includes.from("README.md")
         sourceLink {
-            localDirectory.set(file("src/main/kotlin"))
-            remoteUrl("https://github.com/huanshankeji/kotlin-common/tree/v${version}")
+            //localDirectory.set(file("src/main/kotlin"))
+            remoteUrl(
+                "https://github.com/huanshankeji/kotlin-common/tree/v${version}/${
+                    with(project) {
+                        name.removePrefix(parent!!.name + '-')
+                    }
+                }"
+            )
             remoteLineSuffix.set("#L")
         }
-        pluginsConfiguration.html {
+        /*pluginsConfiguration.html {
             footerMessage.set("(c) Yongshun Ye")
-        }
+        }*/
     }
-    */
 }
