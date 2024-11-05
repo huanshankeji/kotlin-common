@@ -46,7 +46,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: demo/build/dist/sideBySide/productionExecutable/
+          path: build/dokka/html/
 
   # Deployment job
   deploy:
