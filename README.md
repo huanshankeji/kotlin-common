@@ -9,6 +9,8 @@ These include a core library to extend the Kotlin language and its standard libr
 
 Currently supported targets by multiplatform libraries: JVM, JS (browser), iOS (`iosX64`, `iosArm64`, and `iosSimulatorArm64`), and Wasm JS.
 
+[Check out the API documentation here.](https://huanshankeji.github.io/kotlin-common/.)
+
 ## Maven coordinates
 
 ```kotlin
