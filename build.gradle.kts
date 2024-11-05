@@ -21,7 +21,7 @@ dependencies {
         "reflect",
         "serialization",
         "vertx",
-        "vertx:with-context-receivers",
+        //"vertx:with-context-receivers",
     ).forEach {
         dokka(cpnProject(project, ":$it"))
     }
