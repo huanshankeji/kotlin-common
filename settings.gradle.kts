@@ -28,7 +28,7 @@ fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
 }
 rootProject.setProjectConcatenatedNames("")
 
-// This is needed for Kotlin Native.
+// This is needed for Kotlin Native and Dokka.
 dependencyResolutionManagement {
     @Suppress("UnstableApiUsage")
     repositories {
