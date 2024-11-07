@@ -1,5 +1,6 @@
 package com.huanshankeji.exposed
 
+import com.huanshankeji.Untested
 import org.jetbrains.exposed.sql.ColumnSet
 
 /**
@@ -9,3 +10,7 @@ import org.jetbrains.exposed.sql.ColumnSet
 @Deprecated("This causes \"java.lang.IllegalArgumentException: Can't prepare SELECT statement without columns or expressions to retrieve\" in the latest version of Exposed.")
 fun ColumnSet.emptySlice() =
     slice(emptyList())
+
+@Untested
+fun ColumnSet.selectEmpty() =
+    select(emptyList())
