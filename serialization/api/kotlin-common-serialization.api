@@ -1,0 +1,60 @@
+public final class com/huanshankeji/kotlinx/serialization/NothingSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lcom/huanshankeji/kotlinx/serialization/NothingSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Void;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Void;)Ljava/lang/Void;
+}
+
+public final class com/huanshankeji/kotlinx/serialization/NothingWorkaroundKt {
+	public static final field NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE Ljava/lang/String;
+	public static final fun mapNothingToSerializableNothing (Lkotlin/reflect/KType;)Lkotlin/reflect/KType;
+}
+
+public final class com/huanshankeji/kotlinx/serialization/SerializableNothing {
+	public static final field Companion Lcom/huanshankeji/kotlinx/serialization/SerializableNothing$Companion;
+}
+
+public synthetic class com/huanshankeji/kotlinx/serialization/SerializableNothing$$serializer : kotlinx/serialization/internal/GeneratedSerializer {
+	public static final field INSTANCE Lcom/huanshankeji/kotlinx/serialization/SerializableNothing$$serializer;
+	public final fun childSerializers ()[Lkotlinx/serialization/KSerializer;
+	public final fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Lcom/huanshankeji/kotlinx/serialization/SerializableNothing;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public final fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public final fun serialize (Lkotlinx/serialization/encoding/Encoder;Lcom/huanshankeji/kotlinx/serialization/SerializableNothing;)V
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun typeParametersSerializers ()[Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/huanshankeji/kotlinx/serialization/SerializableNothing$Companion {
+	public final fun serializer ()Lkotlinx/serialization/KSerializer;
+}
+
+public final class com/huanshankeji/kotlinx/serialization/VoidSerializer : kotlinx/serialization/KSerializer {
+	public static final field INSTANCE Lcom/huanshankeji/kotlinx/serialization/VoidSerializer;
+	public synthetic fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Void;
+	public fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public synthetic fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+	public fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Void;)Ljava/lang/Void;
+}
+
+public final class com/huanshankeji/kotlinx/serialization/protobuf/ProtoBufKt {
+	public static final fun getExtendedProtoBuf ()Lkotlinx/serialization/protobuf/ProtoBuf;
+}
+
+public abstract interface class com/huanshankeji/kotlinx/serialization/protobuf/ProtoBufSumTypeSerializer : kotlinx/serialization/KSerializer {
+	public abstract fun deserialize (Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public abstract fun getDescriptor ()Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public abstract fun getSubtypeDeserializationStrategy (I)Lkotlinx/serialization/DeserializationStrategy;
+	public abstract fun getSubtypeNumberAndSubtypeSerializationStrategy (Ljava/lang/Object;)Lkotlin/Pair;
+	public abstract fun serialize (Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+
+public final class com/huanshankeji/kotlinx/serialization/protobuf/ProtoBufSumTypeSerializer$DefaultImpls {
+	public static fun deserialize (Lcom/huanshankeji/kotlinx/serialization/protobuf/ProtoBufSumTypeSerializer;Lkotlinx/serialization/encoding/Decoder;)Ljava/lang/Object;
+	public static fun getDescriptor (Lcom/huanshankeji/kotlinx/serialization/protobuf/ProtoBufSumTypeSerializer;)Lkotlinx/serialization/descriptors/SerialDescriptor;
+	public static fun serialize (Lcom/huanshankeji/kotlinx/serialization/protobuf/ProtoBufSumTypeSerializer;Lkotlinx/serialization/encoding/Encoder;Ljava/lang/Object;)V
+}
+

@@ -1,0 +1,21 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-web>
+final const val com.huanshankeji.web.cors/CACHE_PREFLIGHT_MAX_AGE // com.huanshankeji.web.cors/CACHE_PREFLIGHT_MAX_AGE|{}CACHE_PREFLIGHT_MAX_AGE[0]
+    final fun <get-CACHE_PREFLIGHT_MAX_AGE>(): kotlin/Int // com.huanshankeji.web.cors/CACHE_PREFLIGHT_MAX_AGE.<get-CACHE_PREFLIGHT_MAX_AGE>|<get-CACHE_PREFLIGHT_MAX_AGE>(){}[0]
+final const val com.huanshankeji.web.cors/CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN // com.huanshankeji.web.cors/CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN|{}CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN[0]
+    final fun <get-CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN>(): kotlin/String // com.huanshankeji.web.cors/CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN.<get-CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN>|<get-CORS_LOCALHOST_ALL_PORTS_ALLOWED_ORIGIN_PATTERN>(){}[0]
+final const val com.huanshankeji.web.test/HTTP_TEST_PORT // com.huanshankeji.web.test/HTTP_TEST_PORT|{}HTTP_TEST_PORT[0]
+    final fun <get-HTTP_TEST_PORT>(): kotlin/Int // com.huanshankeji.web.test/HTTP_TEST_PORT.<get-HTTP_TEST_PORT>|<get-HTTP_TEST_PORT>(){}[0]
+final const val com.huanshankeji.web/DEFAULT_HTTPS_PORT // com.huanshankeji.web/DEFAULT_HTTPS_PORT|{}DEFAULT_HTTPS_PORT[0]
+    final fun <get-DEFAULT_HTTPS_PORT>(): kotlin/Int // com.huanshankeji.web/DEFAULT_HTTPS_PORT.<get-DEFAULT_HTTPS_PORT>|<get-DEFAULT_HTTPS_PORT>(){}[0]
+final const val com.huanshankeji.web/DEFAULT_HTTP_PORT // com.huanshankeji.web/DEFAULT_HTTP_PORT|{}DEFAULT_HTTP_PORT[0]
+    final fun <get-DEFAULT_HTTP_PORT>(): kotlin/Int // com.huanshankeji.web/DEFAULT_HTTP_PORT.<get-DEFAULT_HTTP_PORT>|<get-DEFAULT_HTTP_PORT>(){}[0]
+
+final fun com.huanshankeji.web.cors/corsAllowedOriginPattern(kotlin/Boolean, kotlin/String, kotlin/Int? = ...): kotlin/String // com.huanshankeji.web.cors/corsAllowedOriginPattern|corsAllowedOriginPattern(kotlin.Boolean;kotlin.String;kotlin.Int?){}[0]
+final fun com.huanshankeji.web.cors/origin(kotlin/Boolean, kotlin/String, kotlin/Int?): kotlin/String // com.huanshankeji.web.cors/origin|origin(kotlin.Boolean;kotlin.String;kotlin.Int?){}[0]

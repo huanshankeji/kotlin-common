@@ -1,0 +1,52 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-serialization>
+abstract interface <#A: kotlin/Any?> com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer : kotlinx.serialization/KSerializer<#A> { // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer|null[0]
+    open val descriptor // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer.descriptor|{}descriptor[0]
+        open fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+    abstract fun getSubtypeDeserializationStrategy(kotlin/Int): kotlinx.serialization/DeserializationStrategy<*> // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer.getSubtypeDeserializationStrategy|getSubtypeDeserializationStrategy(kotlin.Int){}[0]
+    abstract fun getSubtypeNumberAndSubtypeSerializationStrategy(#A): kotlin/Pair<kotlin/Int, kotlinx.serialization/SerializationStrategy<*>> // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer.getSubtypeNumberAndSubtypeSerializationStrategy|getSubtypeNumberAndSubtypeSerializationStrategy(1:0){}[0]
+    open fun deserialize(kotlinx.serialization.encoding/Decoder): #A // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+    open fun serialize(kotlinx.serialization.encoding/Encoder, #A) // com.huanshankeji.kotlinx.serialization.protobuf/ProtoBufSumTypeSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;1:0){}[0]
+}
+
+final class com.huanshankeji.kotlinx.serialization/SerializableNothing { // com.huanshankeji.kotlinx.serialization/SerializableNothing|null[0]
+    final object $serializer : kotlinx.serialization.internal/GeneratedSerializer<com.huanshankeji.kotlinx.serialization/SerializableNothing> { // com.huanshankeji.kotlinx.serialization/SerializableNothing.$serializer|null[0]
+        final val descriptor // com.huanshankeji.kotlinx.serialization/SerializableNothing.$serializer.descriptor|{}descriptor[0]
+            final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.huanshankeji.kotlinx.serialization/SerializableNothing.$serializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+        final fun childSerializers(): kotlin/Array<kotlinx.serialization/KSerializer<*>> // com.huanshankeji.kotlinx.serialization/SerializableNothing.$serializer.childSerializers|childSerializers(){}[0]
+        final fun deserialize(kotlinx.serialization.encoding/Decoder): com.huanshankeji.kotlinx.serialization/SerializableNothing // com.huanshankeji.kotlinx.serialization/SerializableNothing.$serializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+        final fun serialize(kotlinx.serialization.encoding/Encoder, com.huanshankeji.kotlinx.serialization/SerializableNothing) // com.huanshankeji.kotlinx.serialization/SerializableNothing.$serializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;com.huanshankeji.kotlinx.serialization.SerializableNothing){}[0]
+    }
+
+    final object Companion { // com.huanshankeji.kotlinx.serialization/SerializableNothing.Companion|null[0]
+        final fun serializer(): kotlinx.serialization/KSerializer<com.huanshankeji.kotlinx.serialization/SerializableNothing> // com.huanshankeji.kotlinx.serialization/SerializableNothing.Companion.serializer|serializer(){}[0]
+    }
+}
+
+final object com.huanshankeji.kotlinx.serialization/NothingSerializer : kotlinx.serialization/KSerializer<kotlin/Nothing> { // com.huanshankeji.kotlinx.serialization/NothingSerializer|null[0]
+    final val descriptor // com.huanshankeji.kotlinx.serialization/NothingSerializer.descriptor|{}descriptor[0]
+        final fun <get-descriptor>(): kotlinx.serialization.descriptors/SerialDescriptor // com.huanshankeji.kotlinx.serialization/NothingSerializer.descriptor.<get-descriptor>|<get-descriptor>(){}[0]
+
+    final fun deserialize(kotlinx.serialization.encoding/Decoder): kotlin/Nothing // com.huanshankeji.kotlinx.serialization/NothingSerializer.deserialize|deserialize(kotlinx.serialization.encoding.Decoder){}[0]
+    final fun serialize(kotlinx.serialization.encoding/Encoder, kotlin/Nothing): kotlin/Nothing // com.huanshankeji.kotlinx.serialization/NothingSerializer.serialize|serialize(kotlinx.serialization.encoding.Encoder;kotlin.Nothing){}[0]
+}
+
+final const val com.huanshankeji.kotlinx.serialization/NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE // com.huanshankeji.kotlinx.serialization/NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE|{}NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE[0]
+    final fun <get-NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE>(): kotlin/String // com.huanshankeji.kotlinx.serialization/NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE.<get-NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE>|<get-NOTHING_SUPPORTED_BY_KOTLINX_SERIALIZATION_MESSAGE>(){}[0]
+
+final fun (kotlin.reflect/KType).com.huanshankeji.kotlinx.serialization/mapNothingToSerializableNothing(): kotlin.reflect/KType // com.huanshankeji.kotlinx.serialization/mapNothingToSerializableNothing|mapNothingToSerializableNothing@kotlin.reflect.KType(){}[0]
+final inline fun <#A: reified kotlin/Any?> (kotlinx.serialization.protobuf/ProtoBuf).com.huanshankeji.kotlinx.serialization.protobuf/decodeFromByteArrayNothingWorkaround(kotlin/ByteArray): #A // com.huanshankeji.kotlinx.serialization.protobuf/decodeFromByteArrayNothingWorkaround|decodeFromByteArrayNothingWorkaround@kotlinx.serialization.protobuf.ProtoBuf(kotlin.ByteArray){0§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?> (kotlinx.serialization.protobuf/ProtoBuf).com.huanshankeji.kotlinx.serialization.protobuf/encodeToByteArrayNothingWorkaround(#A): kotlin/ByteArray // com.huanshankeji.kotlinx.serialization.protobuf/encodeToByteArrayNothingWorkaround|encodeToByteArrayNothingWorkaround@kotlinx.serialization.protobuf.ProtoBuf(0:0){0§<kotlin.Any?>}[0]
+final inline fun <#A: reified kotlin/Any?> (kotlinx.serialization/SerialFormat).com.huanshankeji.kotlinx.serialization/serializerNothingWorkaround(): kotlinx.serialization/KSerializer<#A> // com.huanshankeji.kotlinx.serialization/serializerNothingWorkaround|serializerNothingWorkaround@kotlinx.serialization.SerialFormat(){0§<kotlin.Any?>}[0]
+
+// Targets: [js]
+final val com.huanshankeji.kotlinx.serialization.protobuf/extendedProtoBuf // com.huanshankeji.kotlinx.serialization.protobuf/extendedProtoBuf|{}extendedProtoBuf[0]
+    final fun <get-extendedProtoBuf>(): kotlinx.serialization.protobuf/ProtoBuf // com.huanshankeji.kotlinx.serialization.protobuf/extendedProtoBuf.<get-extendedProtoBuf>|<get-extendedProtoBuf>(){}[0]

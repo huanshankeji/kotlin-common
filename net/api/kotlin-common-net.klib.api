@@ -1,0 +1,19 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-net>
+final class com.huanshankeji.net/HostAndPort { // com.huanshankeji.net/HostAndPort|null[0]
+    constructor <init>(kotlin/String, kotlin/Int) // com.huanshankeji.net/HostAndPort.<init>|<init>(kotlin.String;kotlin.Int){}[0]
+
+    final val host // com.huanshankeji.net/HostAndPort.host|{}host[0]
+        final fun <get-host>(): kotlin/String // com.huanshankeji.net/HostAndPort.host.<get-host>|<get-host>(){}[0]
+    final val port // com.huanshankeji.net/HostAndPort.port|{}port[0]
+        final fun <get-port>(): kotlin/Int // com.huanshankeji.net/HostAndPort.port.<get-port>|<get-port>(){}[0]
+}
+
+final const val com.huanshankeji.net/LOCALHOST // com.huanshankeji.net/LOCALHOST|{}LOCALHOST[0]
+    final fun <get-LOCALHOST>(): kotlin/String // com.huanshankeji.net/LOCALHOST.<get-LOCALHOST>|<get-LOCALHOST>(){}[0]

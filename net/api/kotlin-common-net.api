@@ -1,0 +1,10 @@
+public final class com/huanshankeji/net/ConstantsKt {
+	public static final field LOCALHOST Ljava/lang/String;
+}
+
+public final class com/huanshankeji/net/HostAndPort {
+	public fun <init> (Ljava/lang/String;I)V
+	public final fun getHost ()Ljava/lang/String;
+	public final fun getPort ()I
+}
+

@@ -1,0 +1,87 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-core>
+open annotation class com.huanshankeji/Untested : kotlin/Annotation { // com.huanshankeji/Untested|null[0]
+    constructor <init>() // com.huanshankeji/Untested.<init>|<init>(){}[0]
+}
+
+abstract interface <#A: kotlin/Any?, #B: kotlin/Any?> com.huanshankeji/BidirectionalConversion { // com.huanshankeji/BidirectionalConversion|null[0]
+    abstract fun from(#B): #A // com.huanshankeji/BidirectionalConversion.from|from(1:1){}[0]
+    abstract fun to(#A): #B // com.huanshankeji/BidirectionalConversion.to|to(1:0){}[0]
+}
+
+abstract interface com.huanshankeji.store/StringKeyValueStore { // com.huanshankeji.store/StringKeyValueStore|null[0]
+    abstract fun exists(kotlin/String): kotlin/Boolean // com.huanshankeji.store/StringKeyValueStore.exists|exists(kotlin.String){}[0]
+    abstract fun getNonNull(kotlin/String): kotlin/String // com.huanshankeji.store/StringKeyValueStore.getNonNull|getNonNull(kotlin.String){}[0]
+    abstract fun getOrNull(kotlin/String): kotlin/String? // com.huanshankeji.store/StringKeyValueStore.getOrNull|getOrNull(kotlin.String){}[0]
+    abstract fun remove(kotlin/String) // com.huanshankeji.store/StringKeyValueStore.remove|remove(kotlin.String){}[0]
+    abstract fun set(kotlin/String, kotlin/String) // com.huanshankeji.store/StringKeyValueStore.set|set(kotlin.String;kotlin.String){}[0]
+}
+
+final class <#A: kotlin/Comparable<#A>> com.huanshankeji.collections/LexicographicOrderListComparable : kotlin/Comparable<com.huanshankeji.collections/LexicographicOrderListComparable<#A>> { // com.huanshankeji.collections/LexicographicOrderListComparable|null[0]
+    final val list // com.huanshankeji.collections/LexicographicOrderListComparable.list|{}list[0]
+        final fun <get-list>(): kotlin.collections/List<#A> // com.huanshankeji.collections/LexicographicOrderListComparable.list.<get-list>|<get-list>(){}[0]
+
+    final fun compareTo(com.huanshankeji.collections/LexicographicOrderListComparable<#A>): kotlin/Int // com.huanshankeji.collections/LexicographicOrderListComparable.compareTo|compareTo(com.huanshankeji.collections.LexicographicOrderListComparable<1:0>){}[0]
+}
+
+final class com.huanshankeji.store/MutableMapStringKeyValueStore : com.huanshankeji.store/StringKeyValueStore { // com.huanshankeji.store/MutableMapStringKeyValueStore|null[0]
+    constructor <init>(kotlin.collections/MutableMap<kotlin/String, kotlin/String> = ...) // com.huanshankeji.store/MutableMapStringKeyValueStore.<init>|<init>(kotlin.collections.MutableMap<kotlin.String,kotlin.String>){}[0]
+
+    final val mutableMap // com.huanshankeji.store/MutableMapStringKeyValueStore.mutableMap|{}mutableMap[0]
+        final fun <get-mutableMap>(): kotlin.collections/MutableMap<kotlin/String, kotlin/String> // com.huanshankeji.store/MutableMapStringKeyValueStore.mutableMap.<get-mutableMap>|<get-mutableMap>(){}[0]
+
+    final fun exists(kotlin/String): kotlin/Boolean // com.huanshankeji.store/MutableMapStringKeyValueStore.exists|exists(kotlin.String){}[0]
+    final fun getNonNull(kotlin/String): kotlin/String // com.huanshankeji.store/MutableMapStringKeyValueStore.getNonNull|getNonNull(kotlin.String){}[0]
+    final fun getOrNull(kotlin/String): kotlin/String? // com.huanshankeji.store/MutableMapStringKeyValueStore.getOrNull|getOrNull(kotlin.String){}[0]
+    final fun remove(kotlin/String) // com.huanshankeji.store/MutableMapStringKeyValueStore.remove|remove(kotlin.String){}[0]
+    final fun set(kotlin/String, kotlin/String) // com.huanshankeji.store/MutableMapStringKeyValueStore.set|set(kotlin.String;kotlin.String){}[0]
+}
+
+final fun (kotlin.collections/List<*>).com.huanshankeji.collections/areElementsDistinct(): kotlin/Boolean // com.huanshankeji.collections/areElementsDistinct|areElementsDistinct@kotlin.collections.List<*>(){}[0]
+final fun (kotlin.collections/List<kotlin/Byte>).com.huanshankeji.codec/bigEndianToLong(): kotlin/Long // com.huanshankeji.codec/bigEndianToLong|bigEndianToLong@kotlin.collections.List<kotlin.Byte>(){}[0]
+final fun (kotlin.collections/List<kotlin/UByte>).com.huanshankeji.codec/bigEndianToULong(): kotlin/ULong // com.huanshankeji.codec/bigEndianToULong|bigEndianToULong@kotlin.collections.List<kotlin.UByte>(){}[0]
+final fun (kotlin.random/Random).com.huanshankeji.random/nextByte(): kotlin/Byte // com.huanshankeji.random/nextByte|nextByte@kotlin.random.Random(){}[0]
+final fun (kotlin.random/Random).com.huanshankeji.random/nextShort(): kotlin/Short // com.huanshankeji.random/nextShort|nextShort@kotlin.random.Random(){}[0]
+final fun (kotlin.random/Random).com.huanshankeji.random/nextUByte(): kotlin/UByte // com.huanshankeji.random/nextUByte|nextUByte@kotlin.random.Random(){}[0]
+final fun (kotlin.random/Random).com.huanshankeji.random/nextUShort(): kotlin/UInt // com.huanshankeji.random/nextUShort|nextUShort@kotlin.random.Random(){}[0]
+final fun (kotlin/ByteArray).com.huanshankeji.codec/bigEndianToLong(): kotlin/Long // com.huanshankeji.codec/bigEndianToLong|bigEndianToLong@kotlin.ByteArray(){}[0]
+final fun (kotlin/ByteArray).com.huanshankeji.codec/toBase64String(): kotlin/String // com.huanshankeji.codec/toBase64String|toBase64String@kotlin.ByteArray(){}[0]
+final fun (kotlin/Long).com.huanshankeji.codec/toBigEndianBytes(): kotlin/ByteArray // com.huanshankeji.codec/toBigEndianBytes|toBigEndianBytes@kotlin.Long(){}[0]
+final fun (kotlin/String).com.huanshankeji.codec/base64ToBytes(): kotlin/ByteArray // com.huanshankeji.codec/base64ToBytes|base64ToBytes@kotlin.String(){}[0]
+final fun (kotlin/String).com.huanshankeji.text/capitalize(): kotlin/String // com.huanshankeji.text/capitalize|capitalize@kotlin.String(){}[0]
+final fun (kotlin/UByteArray).com.huanshankeji.codec/bigEndianToULong(): kotlin/ULong // com.huanshankeji.codec/bigEndianToULong|bigEndianToULong@kotlin.UByteArray(){}[0]
+final fun (kotlin/ULong).com.huanshankeji.codec/toBigEndianUBytes(): kotlin/UByteArray // com.huanshankeji.codec/toBigEndianUBytes|toBigEndianUBytes@kotlin.ULong(){}[0]
+final fun <#A: kotlin/Any?> (kotlin.collections/Iterable<#A>).com.huanshankeji.collections/isSortedWith(kotlin/Comparator<in #A>): kotlin/Boolean // com.huanshankeji.collections/isSortedWith|isSortedWith@kotlin.collections.Iterable<0:0>(kotlin.Comparator<in|0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlin.collections/Iterable<#A>).com.huanshankeji.collections/singleOrNullIfEmpty(): #A? // com.huanshankeji.collections/singleOrNullIfEmpty|singleOrNullIfEmpty@kotlin.collections.Iterable<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlin.collections/List<#A>).com.huanshankeji.collections/eachCount(): kotlin.collections/Map<#A, kotlin/Int> // com.huanshankeji.collections/eachCount|eachCount@kotlin.collections.List<0:0>(){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> (kotlin.sequences/Sequence<#A>).com.huanshankeji.sequences/isSortedWith(kotlin/Comparator<in #A>): kotlin/Boolean // com.huanshankeji.sequences/isSortedWith|isSortedWith@kotlin.sequences.Sequence<0:0>(kotlin.Comparator<in|0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Comparable<#A>> (kotlin.collections/List<#A>).com.huanshankeji.collections/lexicographicOrderComparable(): com.huanshankeji.collections/LexicographicOrderListComparable<#A> // com.huanshankeji.collections/lexicographicOrderComparable|lexicographicOrderComparable@kotlin.collections.List<0:0>(){0§<kotlin.Comparable<0:0>>}[0]
+final fun <#A: kotlin/Enum<#A>> com.huanshankeji.kotlin/enumPlus(kotlin/Array<#A>, #A, kotlin/Int): #A // com.huanshankeji.kotlin/enumPlus|enumPlus(kotlin.Array<0:0>;0:0;kotlin.Int){0§<kotlin.Enum<0:0>>}[0]
+final fun com.huanshankeji.codec/uLongBigEndianShiftOffset(kotlin/Int): kotlin/Int // com.huanshankeji.codec/uLongBigEndianShiftOffset|uLongBigEndianShiftOffset(kotlin.Int){}[0]
+final inline fun <#A: kotlin/Any> com.huanshankeji.kotlin/produceInCallback(kotlin/Function1<kotlin/Function1<#A, kotlin/Unit>, kotlin/Unit>): #A // com.huanshankeji.kotlin/produceInCallback|produceInCallback(kotlin.Function1<kotlin.Function1<0:0,kotlin.Unit>,kotlin.Unit>){0§<kotlin.Any>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> (#A).com.huanshankeji.kotlin/use(kotlin/Function1<#A, #B>, kotlin/Function1<#A, kotlin/Unit>): #B // com.huanshankeji.kotlin/use|use@0:0(kotlin.Function1<0:0,0:1>;kotlin.Function1<0:0,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Any?> com.huanshankeji/lambdaOf(noinline kotlin/Function1<#A, #B>): kotlin/Function1<#A, #B> // com.huanshankeji/lambdaOf|lambdaOf(kotlin.Function1<0:0,0:1>){0§<kotlin.Any?>;1§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Comparable<#B>> (kotlin.collections/Iterable<#A>).com.huanshankeji.collections/isSortedBy(crossinline kotlin/Function1<#A, #B?>): kotlin/Boolean // com.huanshankeji.collections/isSortedBy|isSortedBy@kotlin.collections.Iterable<0:0>(kotlin.Function1<0:0,0:1?>){0§<kotlin.Any?>;1§<kotlin.Comparable<0:1>>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Comparable<#B>> (kotlin.collections/Iterable<#A>).com.huanshankeji.collections/isSortedByDescending(crossinline kotlin/Function1<#A, #B?>): kotlin/Boolean // com.huanshankeji.collections/isSortedByDescending|isSortedByDescending@kotlin.collections.Iterable<0:0>(kotlin.Function1<0:0,0:1?>){0§<kotlin.Any?>;1§<kotlin.Comparable<0:1>>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Comparable<#B>> (kotlin.sequences/Sequence<#A>).com.huanshankeji.sequences/isSortedBy(crossinline kotlin/Function1<#A, #B?>): kotlin/Boolean // com.huanshankeji.sequences/isSortedBy|isSortedBy@kotlin.sequences.Sequence<0:0>(kotlin.Function1<0:0,0:1?>){0§<kotlin.Any?>;1§<kotlin.Comparable<0:1>>}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin/Comparable<#B>> (kotlin.sequences/Sequence<#A>).com.huanshankeji.sequences/isSortedByDescending(crossinline kotlin/Function1<#A, #B?>): kotlin/Boolean // com.huanshankeji.sequences/isSortedByDescending|isSortedByDescending@kotlin.sequences.Sequence<0:0>(kotlin.Function1<0:0,0:1?>){0§<kotlin.Any?>;1§<kotlin.Comparable<0:1>>}[0]
+final inline fun <#A: kotlin/Any?> (#A).com.huanshankeji.kotlin/closeFinally(kotlin/Throwable?, kotlin/Function1<#A, kotlin/Unit>) // com.huanshankeji.kotlin/closeFinally|closeFinally@0:0(kotlin.Throwable?;kotlin.Function1<0:0,kotlin.Unit>){0§<kotlin.Any?>}[0]
+final inline fun <#A: kotlin/Comparable<#A>> (kotlin.collections/Iterable<#A>).com.huanshankeji.collections/isSorted(): kotlin/Boolean // com.huanshankeji.collections/isSorted|isSorted@kotlin.collections.Iterable<0:0>(){0§<kotlin.Comparable<0:0>>}[0]
+final inline fun <#A: kotlin/Comparable<#A>> (kotlin.collections/Iterable<#A>).com.huanshankeji.collections/isSortedDescending(): kotlin/Boolean // com.huanshankeji.collections/isSortedDescending|isSortedDescending@kotlin.collections.Iterable<0:0>(){0§<kotlin.Comparable<0:0>>}[0]
+final inline fun <#A: kotlin/Comparable<#A>> (kotlin.sequences/Sequence<#A>).com.huanshankeji.sequences/isSorted(): kotlin/Boolean // com.huanshankeji.sequences/isSorted|isSorted@kotlin.sequences.Sequence<0:0>(){0§<kotlin.Comparable<0:0>>}[0]
+final inline fun <#A: kotlin/Comparable<#A>> (kotlin.sequences/Sequence<#A>).com.huanshankeji.sequences/isSortedDescending(): kotlin/Boolean // com.huanshankeji.sequences/isSortedDescending|isSortedDescending@kotlin.sequences.Sequence<0:0>(){0§<kotlin.Comparable<0:0>>}[0]
+final inline fun <#A: reified kotlin/Enum<#A>> (#A).com.huanshankeji.kotlin/dec(): #A // com.huanshankeji.kotlin/dec|dec@0:0(){0§<kotlin.Enum<0:0>>}[0]
+final inline fun <#A: reified kotlin/Enum<#A>> (#A).com.huanshankeji.kotlin/inc(): #A // com.huanshankeji.kotlin/inc|inc@0:0(){0§<kotlin.Enum<0:0>>}[0]
+final inline fun <#A: reified kotlin/Enum<#A>> (#A).com.huanshankeji.kotlin/minus(kotlin/Int): #A // com.huanshankeji.kotlin/minus|minus@0:0(kotlin.Int){0§<kotlin.Enum<0:0>>}[0]
+final inline fun <#A: reified kotlin/Enum<#A>> (#A).com.huanshankeji.kotlin/plus(kotlin/Int): #A // com.huanshankeji.kotlin/plus|plus@0:0(kotlin.Int){0§<kotlin.Enum<0:0>>}[0]
+final inline fun com.huanshankeji/emptyLambda(): kotlin/Function0<kotlin/Unit> // com.huanshankeji/emptyLambda|emptyLambda(){}[0]
+final inline fun com.huanshankeji/lambdaOf(noinline kotlin/Function0<kotlin/Unit>): kotlin/Function0<kotlin/Unit> // com.huanshankeji/lambdaOf|lambdaOf(kotlin.Function0<kotlin.Unit>){}[0]
+
+// Targets: [js]
+final fun com.huanshankeji.js.commonjs/require(kotlin/String): dynamic // com.huanshankeji.js.commonjs/require|require(kotlin.String){}[0]
