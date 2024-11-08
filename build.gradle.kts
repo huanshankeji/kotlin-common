@@ -6,6 +6,7 @@ tasks.wrapper {
 
 plugins {
     id("org.jetbrains.dokka")
+    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.16.3"
 }
 
 dependencies {
@@ -24,5 +25,12 @@ dependencies {
         //"vertx:with-context-receivers",
     ).forEach {
         dokka(cpnProject(project, ":$it"))
+    }
+}
+
+apiValidation {
+    @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
+    klib {
+        enabled = true
     }
 }
