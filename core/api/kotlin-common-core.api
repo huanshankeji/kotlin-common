@@ -3,6 +3,9 @@ public abstract interface class com/huanshankeji/BidirectionalConversion {
 	public abstract fun to (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
+public abstract interface annotation class com/huanshankeji/InternalApi : java/lang/annotation/Annotation {
+}
+
 public final class com/huanshankeji/LambdasKt {
 	public static final fun emptyLambda ()Lkotlin/jvm/functions/Function0;
 	public static final fun lambdaOf (Lkotlin/jvm/functions/Function0;)Lkotlin/jvm/functions/Function0;

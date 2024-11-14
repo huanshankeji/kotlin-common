@@ -6,6 +6,10 @@
 // - Show declarations: true
 
 // Library unique name: <com.huanshankeji:kotlin-common-core>
+open annotation class com.huanshankeji/InternalApi : kotlin/Annotation { // com.huanshankeji/InternalApi|null[0]
+    constructor <init>() // com.huanshankeji/InternalApi.<init>|<init>(){}[0]
+}
+
 open annotation class com.huanshankeji/Untested : kotlin/Annotation { // com.huanshankeji/Untested|null[0]
     constructor <init>() // com.huanshankeji/Untested.<init>|<init>(){}[0]
 }

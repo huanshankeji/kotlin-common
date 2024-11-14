@@ -15,6 +15,7 @@ public final class com/huanshankeji/exposed/SliceKt {
 }
 
 public final class com/huanshankeji/exposed/StatementsKt {
+	public static final field SELECT_DSL_DEPRECATION_MESSAGE Ljava/lang/String;
 	public static final fun defaultColumnsForInsertSelect (Lorg/jetbrains/exposed/sql/Table;)Ljava/util/List;
 	public static final fun deleteAllStatement (Lorg/jetbrains/exposed/sql/Table;)Lorg/jetbrains/exposed/sql/statements/DeleteStatement;
 	public static final fun deleteIgnoreWhereStatement (Lorg/jetbrains/exposed/sql/Table;Ljava/lang/Integer;Ljava/lang/Long;Lkotlin/jvm/functions/Function2;)Lorg/jetbrains/exposed/sql/statements/DeleteStatement;
