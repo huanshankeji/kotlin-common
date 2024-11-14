@@ -1,9 +1,13 @@
+@file:OptIn(InternalApi::class)
+
 package com.huanshankeji.exposed
 
+import com.huanshankeji.InternalApi
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.*
 
-private const val SELECT_DSL_DEPRECATION_MESSAGE =
+@InternalApi
+const val SELECT_DSL_DEPRECATION_MESSAGE =
     "As part of Exposed SELECT DSL design changes, this will be removed in future releases."
 
 // The select queries are not executed eagerly so just use them directly.
