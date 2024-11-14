@@ -70,15 +70,6 @@ fun Table.deleteWhereStatement(
 /**
  * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
  */
-@Deprecated("Use the new table-aware APIs. See https://github.com/JetBrains/Exposed/commit/b9b53f8bbdfbf8cbab56d5602f92543e2ccd473c.")
-fun Table.deleteWhereStatement(
-    isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null, op: BuildWhere
-): DeleteStatement =
-    DeleteStatement(this, SqlExpressionBuilder.op(), isIgnore, limit, offset)
-
-/**
- * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
- */
 fun <T : Table> T.deleteWhereStatement(
     limit: Int? = null, offset: Long? = null, op: TableAwareWithSqlExpressionBuilderBuildWhere<T>
 ): DeleteStatement =
