@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 /**
  * A coroutine variant of [ClientBuilder.withConnectHandler].
- * You don't need to call [SqlConnection.close] in [handler].
+ * With this function, you don't need to call [SqlConnection.close] in [handler].
  */
 fun ClientBuilder<*>.withCoConnectHandler(handler: suspend (SqlConnection) -> Unit) =
     withConnectHandler {
