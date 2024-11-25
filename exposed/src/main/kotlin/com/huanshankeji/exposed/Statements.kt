@@ -19,6 +19,7 @@ const val SELECT_DSL_DEPRECATION_MESSAGE =
     ReplaceWith("selectAllStatement().where(where)")
 )
 fun FieldSet.selectStatement(where: WhereOp): Query =
+    @Suppress("DEPRECATION_ERROR")
     select(where)
 
 /**
@@ -29,6 +30,7 @@ fun FieldSet.selectStatement(where: WhereOp): Query =
     ReplaceWith("selectAllStatement().where(where)")
 )
 fun FieldSet.selectStatement(where: BuildWhere): Query =
+    @Suppress("DEPRECATION_ERROR")
     select(where)
 
 @Deprecated(
