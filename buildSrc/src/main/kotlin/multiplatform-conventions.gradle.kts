@@ -11,4 +11,10 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs()
+
+    sourceSets {
+        all {
+            forEachOptIn(languageSettings::optIn)
+        }
+    }
 }
