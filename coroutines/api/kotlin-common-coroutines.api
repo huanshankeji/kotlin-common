@@ -6,6 +6,14 @@ public final class com/huanshankeji/kotlinx/coroutine/AwaitKt {
 	public static final fun joinAny ([Lkotlinx/coroutines/Job;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public abstract interface class com/huanshankeji/kotlinx/coroutine/CoroutineAutoCloseable {
+	public abstract fun close (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/kotlinx/coroutine/CoroutineAutoCloseableKt {
+	public static final fun use (Lcom/huanshankeji/kotlinx/coroutine/CoroutineAutoCloseable;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public abstract interface class com/huanshankeji/kotlinx/coroutine/WithCoroutineScope {
 	public abstract fun getCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
 }
