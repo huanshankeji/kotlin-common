@@ -14,4 +14,4 @@ fun interface CoroutineAutoCloseable {
 }
 
 suspend inline fun <T : CoroutineAutoCloseable?, R> T.use(block: (T) -> R): R =
-    use(block, { this?.close() })
+    use(block) { this?.close() }

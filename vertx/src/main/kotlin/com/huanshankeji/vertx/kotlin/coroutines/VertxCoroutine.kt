@@ -18,8 +18,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  * Execute the [block] code and close the [Vertx] instance like [kotlin.use] on an [AutoCloseable].
  */
 suspend inline fun <R> Vertx.use(block: (Vertx) -> R): R =
-    @Suppress("MoveLambdaOutsideParentheses")
-    use(block, { close().coAwait() })
+    use(block) { close().coAwait() }
 
 /**
  * Execute [blockingCode] that returns the a [T] instance with [Vertx.executeBlocking]
