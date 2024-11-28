@@ -5,7 +5,7 @@ import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 
 typealias BuildWhere = SqlExpressionBuilder.() -> Op<Boolean>
-@Deprecated("Renamed to `WhereBuilder`", ReplaceWith("BuildWhere"))
+@Deprecated("Renamed to `WhereBuilder`", ReplaceWith("BuildWhere"/*, "com.huanshankeji.exposed.BuildWhere"*/))
 typealias Where = BuildWhere
 typealias WhereOp = Op<Boolean>
 typealias TableAwareBuildWhere<T/*: FieldSet*/> = T.() -> Op<Boolean>
