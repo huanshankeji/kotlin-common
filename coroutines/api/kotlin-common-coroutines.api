@@ -1,0 +1,20 @@
+public final class com/huanshankeji/kotlinx/coroutine/AwaitKt {
+	public static final fun awaitAny (Ljava/util/Collection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun awaitAny ([Lkotlinx/coroutines/Deferred;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun awaitAnyAndCancelOthers (Ljava/util/Collection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun joinAny (Ljava/util/Collection;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun joinAny ([Lkotlinx/coroutines/Job;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/huanshankeji/kotlinx/coroutine/CoroutineAutoCloseable {
+	public abstract fun close (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/kotlinx/coroutine/CoroutineAutoCloseableKt {
+	public static final fun use (Lcom/huanshankeji/kotlinx/coroutine/CoroutineAutoCloseable;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/huanshankeji/kotlinx/coroutine/WithCoroutineScope {
+	public abstract fun getCoroutineScope ()Lkotlinx/coroutines/CoroutineScope;
+}
+

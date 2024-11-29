@@ -1,0 +1,16 @@
+public abstract class com/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark : com/huanshankeji/kotlinx/serialization/benchmark/BaseBenchmark {
+	public field paramEnum Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;
+	public fun <init> ()V
+	public fun getParamEnum ()Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;
+	public fun setParamEnum (Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;)V
+}
+
+public final class com/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum : java/lang/Enum {
+	public static final field Max Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;
+	public static final field Zero Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public final fun getLongWrapper ()Lcom/huanshankeji/kotlinx/serialization/benchmark/LongWrapper;
+	public static fun valueOf (Ljava/lang/String;)Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;
+	public static fun values ()[Lcom/huanshankeji/kotlinx/serialization/benchmark/GoogleProtobufBaseBenchmark$ParamEnum;
+}
+

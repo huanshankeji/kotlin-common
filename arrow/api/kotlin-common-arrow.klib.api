@@ -1,0 +1,9 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-arrow>
+final fun (kotlin/Boolean).com.huanshankeji.arrow.core/toOptionUnit(): arrow.core/Option<kotlin/Unit> // com.huanshankeji.arrow.core/toOptionUnit|toOptionUnit@kotlin.Boolean(){}[0]

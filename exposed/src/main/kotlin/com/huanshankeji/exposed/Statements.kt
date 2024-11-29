@@ -1,23 +1,62 @@
+@file:OptIn(InternalApi::class)
+
 package com.huanshankeji.exposed
 
+import com.huanshankeji.InternalApi
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.*
+
+@InternalApi
+const val SELECT_DSL_DEPRECATION_MESSAGE =
+    "As part of Exposed SELECT DSL design changes, this will be removed in future releases."
 
 // The select queries are not executed eagerly so just use them directly.
 /**
  * Adapted from [org.jetbrains.exposed.sql.select].
  */
+@Deprecated(
+    SELECT_DSL_DEPRECATION_MESSAGE,
+    ReplaceWith("selectAllStatement().where(where)")
+)
 fun FieldSet.selectStatement(where: WhereOp): Query =
+    @Suppress("DEPRECATION_ERROR")
     select(where)
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.select].
  */
+@Deprecated(
+    SELECT_DSL_DEPRECATION_MESSAGE,
+    ReplaceWith("selectAllStatement().where(where)")
+)
 fun FieldSet.selectStatement(where: BuildWhere): Query =
+    @Suppress("DEPRECATION_ERROR")
     select(where)
 
+@Deprecated(
+    SELECT_DSL_DEPRECATION_MESSAGE,
+    ReplaceWith("selectAllStatement().where(where)")
+)
 fun <T : FieldSet> T.selectStatementTableAware(where: TableAwareBuildWhere<T>): Query =
     selectStatement(where())
+
+/**
+ * You can also just use [selectAll].
+ */
+fun FieldSet.selectAllStatement() =
+    selectAll()
+
+/**
+ * You can also just use [select].
+ */
+fun ColumnSet.selectStatement(columns: List<Expression<*>>) =
+    select(columns)
+
+/**
+ * You can also just use [select].
+ */
+fun ColumnSet.selectStatement(column: Expression<*>, vararg columns: Expression<*>): Query =
+    select(column, *columns)
 
 /**
  * @see org.jetbrains.exposed.sql.deleteAll
@@ -29,15 +68,6 @@ fun Table.deleteWhereStatement(
     op: WhereOp, isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null
 ): DeleteStatement =
     DeleteStatement(this, op, isIgnore, limit, offset)
-
-/**
- * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
- */
-@Deprecated("Use the new table-aware APIs. See https://github.com/JetBrains/Exposed/commit/b9b53f8bbdfbf8cbab56d5602f92543e2ccd473c.")
-fun Table.deleteWhereStatement(
-    isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null, op: BuildWhere
-): DeleteStatement =
-    DeleteStatement(this, SqlExpressionBuilder.op(), isIgnore, limit, offset)
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.deleteWhere].

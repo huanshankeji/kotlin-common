@@ -16,7 +16,7 @@ interface ExtendedWebCoroutineVerticleI : CoroutineVerticleI {
         launchMode: CoroutineHandlerLaunchMode = DefaultOnVertxEventLoop,
         requestHandler: suspend (RoutingContext) -> Unit
     ): Route =
-        coroutineHandler(this@ExtendedWebCoroutineVerticleI, this, launchMode, requestHandler)
+        coroutineHandler(this@ExtendedWebCoroutineVerticleI, launchMode, requestHandler)
 
     /**
      * Like [coroutineHandler] and calls [RoutingContext.fail] if a [Throwable] is thrown in [requestHandler].
@@ -25,7 +25,7 @@ interface ExtendedWebCoroutineVerticleI : CoroutineVerticleI {
         launchMode: CoroutineHandlerLaunchMode = DefaultOnVertxEventLoop,
         requestHandler: suspend (RoutingContext) -> Unit
     ): Route =
-        checkedCoroutineHandler(this@ExtendedWebCoroutineVerticleI, this, launchMode, requestHandler)
+        checkedCoroutineHandler(this@ExtendedWebCoroutineVerticleI, launchMode, requestHandler)
 }
 
 abstract class ExtendedWebCoroutineVerticle : CoroutineVerticle(), ExtendedWebCoroutineVerticleI {

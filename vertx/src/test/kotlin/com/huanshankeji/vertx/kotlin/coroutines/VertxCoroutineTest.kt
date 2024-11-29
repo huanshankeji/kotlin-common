@@ -7,7 +7,7 @@ import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
 import io.vertx.core.impl.NoStackTraceThrowable
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
@@ -26,7 +26,7 @@ class VertxCoroutineTest : VertxBaseTest() {
 
     suspend fun assertClosed(vertx: Vertx) =
         assertThrows<NoStackTraceThrowable> {
-            vertx.deployVerticle(DummyVerticle()).await()
+            vertx.deployVerticle(DummyVerticle()).coAwait()
         }
 
     @Test
@@ -34,7 +34,7 @@ class VertxCoroutineTest : VertxBaseTest() {
         val vertx = Vertx.vertx()
         vertx.use {
             assertDoesNotThrow {
-                vertx.deployVerticle(DummyVerticle()).await()
+                vertx.deployVerticle(DummyVerticle()).coAwait()
             }
         }
         assertClosed(vertx)
@@ -82,14 +82,14 @@ class VertxCoroutineTest : VertxBaseTest() {
         assertTrue(measureVirtualTime {
             coroutineToFuture {
                 delay(DEFAULT_SLEEP_OR_DELAY_DURATION)
-            }.await()
+            }.coAwait()
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
 
         assertTrue(measureTimeMillis {
             coroutineToFuture {
                 @Suppress("BlockingMethodInNonBlockingContext")
                 Thread.sleep(DEFAULT_SLEEP_OR_DELAY_DURATION)
-            }.await()
+            }.coAwait()
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 

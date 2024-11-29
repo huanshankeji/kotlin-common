@@ -7,7 +7,7 @@ import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.client.WebClient
 import io.vertx.junit5.VertxTestContext
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -33,13 +33,13 @@ abstract class RoutingContextBaseTest : VertxBaseTest() {
 
                     it.next()
                 }
-        }).listen(0).await()
+        }).listen(0).coAwait()
 
         httpServer.use({
             val port = httpServer.actualPort()
             WebClient.create(vertx).use({
-                assertEquals(500, it.get(port, LOCALHOST, "").send().await().statusCode())
+                assertEquals(500, it.get(port, LOCALHOST, "").send().coAwait().statusCode())
             }, { close() })
-        }, { close().await() })
+        }, { close().coAwait() })
     }
 }

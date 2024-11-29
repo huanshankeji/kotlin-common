@@ -11,6 +11,15 @@ java {
     registerFeature("vertxSqlClient") {
         usingSourceSet(sourceSets["main"])
     }
+    registerFeature("vertxPgClient") {
+        usingSourceSet(sourceSets["main"])
+    }
+    registerFeature("kotlinxIo") {
+        usingSourceSet(sourceSets["main"])
+    }
+    registerFeature("okio") {
+        usingSourceSet(sourceSets["main"])
+    }
 }
 
 dependencies {
@@ -19,9 +28,13 @@ dependencies {
         implementation(moduleWithoutVersion("core"))
         "vertxWebImplementation"(moduleWithoutVersion("web"))
         "vertxSqlClientImplementation"(moduleWithoutVersion("sql-client"))
+        "vertxPgClientImplementation"(moduleWithoutVersion("pg-client"))
         implementation(moduleWithoutVersion("lang-kotlin"))
         implementation(moduleWithoutVersion("lang-kotlin-coroutines"))
     }
+
+    "kotlinxIoImplementation"("org.jetbrains.kotlinx:kotlinx-io-core:${DependencyVersions.kotlinxIo}")
+    "okioImplementation"("com.squareup.okio:okio:${DependencyVersions.okio}")
 
     implementation(cpnProject(project, ":core"))
     implementation(cpnProject(project, ":coroutines"))

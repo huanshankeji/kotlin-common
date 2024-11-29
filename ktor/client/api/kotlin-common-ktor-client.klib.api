@@ -1,0 +1,10 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-ktor-client>
+// Targets: [js]
+final fun com.huanshankeji.ktor.client/addCredentialsIncludeToFetch(): dynamic // com.huanshankeji.ktor.client/addCredentialsIncludeToFetch|addCredentialsIncludeToFetch(){}[0]

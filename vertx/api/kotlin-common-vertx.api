@@ -1,0 +1,302 @@
+public final class com/huanshankeji/vertx/NativeTransportKt {
+	public static final fun isNativeTransportEnabled (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/vertx/WebKt {
+	public static final fun failWithBadRequest (Lio/vertx/ext/web/RoutingContext;)V
+	public static final fun failWithBadRequest (Lio/vertx/ext/web/RoutingContext;Ljava/lang/Throwable;)V
+	public static final fun failWithForbidden (Lio/vertx/ext/web/RoutingContext;)V
+	public static final fun failWithUnauthorized (Lio/vertx/ext/web/RoutingContext;)V
+}
+
+public final class com/huanshankeji/vertx/core/BufferKt {
+	public static final fun wrappedBuffer ([B)Lio/vertx/core/buffer/Buffer;
+}
+
+public class com/huanshankeji/vertx/core/CombinedVerticle : io/vertx/core/AbstractVerticle, com/huanshankeji/vertx/core/CombinedVerticleFunctions {
+	public fun <init> (Ljava/util/List;)V
+	public fun getSubVerticles ()Ljava/util/List;
+	public fun init (Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
+	public fun runAllWithPromise (Ljava/util/List;Lkotlin/jvm/functions/Function2;Lio/vertx/core/Promise;)V
+	public fun start (Lio/vertx/core/Promise;)V
+	public fun stop (Lio/vertx/core/Promise;)V
+	public fun subVerticlesInit (Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
+	public fun subVerticlesStart (Lio/vertx/core/Promise;)V
+	public fun subVerticlesStartUnit (Lio/vertx/core/Promise;)V
+	public fun subVerticlesStop (Lio/vertx/core/Promise;)V
+	public fun subVerticlesStopUnit (Lio/vertx/core/Promise;)V
+}
+
+public abstract interface class com/huanshankeji/vertx/core/CombinedVerticleFunctions : io/vertx/core/Verticle {
+	public abstract fun getSubVerticles ()Ljava/util/List;
+	public abstract fun runAllWithPromise (Ljava/util/List;Lkotlin/jvm/functions/Function2;Lio/vertx/core/Promise;)V
+	public abstract fun subVerticlesInit (Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
+	public abstract fun subVerticlesStart (Lio/vertx/core/Promise;)V
+	public abstract fun subVerticlesStartUnit (Lio/vertx/core/Promise;)V
+	public abstract fun subVerticlesStop (Lio/vertx/core/Promise;)V
+	public abstract fun subVerticlesStopUnit (Lio/vertx/core/Promise;)V
+}
+
+public final class com/huanshankeji/vertx/core/CombinedVerticleFunctions$DefaultImpls {
+	public static fun runAllWithPromise (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Ljava/util/List;Lkotlin/jvm/functions/Function2;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesInit (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
+	public static fun subVerticlesStart (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesStartUnit (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesStop (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesStopUnit (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+}
+
+public final class com/huanshankeji/vertx/core/HandlerKt {
+	public static final fun plus (Lio/vertx/core/Handler;Lio/vertx/core/Handler;)Lio/vertx/core/Handler;
+}
+
+public final class com/huanshankeji/vertx/core/VertxKt {
+	public static final fun deployVerticleOnAllCores (Lio/vertx/core/Vertx;Ljava/util/function/Supplier;)Lio/vertx/core/Future;
+}
+
+public final class com/huanshankeji/vertx/core/kotlinx/io/VertxBufferRawSink : kotlinx/io/RawSink {
+	public static final synthetic fun box-impl (Lio/vertx/core/buffer/Buffer;)Lcom/huanshankeji/vertx/core/kotlinx/io/VertxBufferRawSink;
+	public fun close ()V
+	public static fun close-impl (Lio/vertx/core/buffer/Buffer;)V
+	public static fun constructor-impl (Lio/vertx/core/buffer/Buffer;)Lio/vertx/core/buffer/Buffer;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Lio/vertx/core/buffer/Buffer;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Lio/vertx/core/buffer/Buffer;Lio/vertx/core/buffer/Buffer;)Z
+	public fun flush ()V
+	public static fun flush-impl (Lio/vertx/core/buffer/Buffer;)V
+	public final fun getVertxBuffer ()Lio/vertx/core/buffer/Buffer;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Lio/vertx/core/buffer/Buffer;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Lio/vertx/core/buffer/Buffer;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Lio/vertx/core/buffer/Buffer;
+	public fun write (Lkotlinx/io/Buffer;J)V
+	public static fun write-impl (Lio/vertx/core/buffer/Buffer;Lkotlinx/io/Buffer;J)V
+}
+
+public final class com/huanshankeji/vertx/core/kotlinx/io/VertxBufferRawSinkKt {
+	public static final fun toRawSink (Lio/vertx/core/buffer/Buffer;)Lkotlinx/io/RawSink;
+	public static final fun toSink (Lio/vertx/core/buffer/Buffer;)Lkotlinx/io/Sink;
+}
+
+public final class com/huanshankeji/vertx/core/kotlinx/io/VertxBufferWriteStreamRawSink : kotlinx/io/RawSink {
+	public static final synthetic fun box-impl (Lio/vertx/core/streams/WriteStream;)Lcom/huanshankeji/vertx/core/kotlinx/io/VertxBufferWriteStreamRawSink;
+	public fun close ()V
+	public static fun close-impl (Lio/vertx/core/streams/WriteStream;)V
+	public static fun constructor-impl (Lio/vertx/core/streams/WriteStream;)Lio/vertx/core/streams/WriteStream;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Lio/vertx/core/streams/WriteStream;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Lio/vertx/core/streams/WriteStream;Lio/vertx/core/streams/WriteStream;)Z
+	public fun flush ()V
+	public static fun flush-impl (Lio/vertx/core/streams/WriteStream;)V
+	public final fun getWriteStream ()Lio/vertx/core/streams/WriteStream;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Lio/vertx/core/streams/WriteStream;)I
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Lio/vertx/core/streams/WriteStream;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Lio/vertx/core/streams/WriteStream;
+	public fun write (Lkotlinx/io/Buffer;J)V
+	public static fun write-impl (Lio/vertx/core/streams/WriteStream;Lkotlinx/io/Buffer;J)V
+}
+
+public final class com/huanshankeji/vertx/core/kotlinx/io/VertxBufferWriteStreamRawSinkKt {
+	public static final fun toRawSink (Lio/vertx/core/streams/WriteStream;)Lkotlinx/io/RawSink;
+	public static final fun toSink (Lio/vertx/core/streams/WriteStream;)Lkotlinx/io/Sink;
+}
+
+public final class com/huanshankeji/vertx/core/okio/VertxBufferSink : okio/Sink {
+	public static final synthetic fun box-impl (Lio/vertx/core/buffer/Buffer;)Lcom/huanshankeji/vertx/core/okio/VertxBufferSink;
+	public fun close ()V
+	public static fun close-impl (Lio/vertx/core/buffer/Buffer;)V
+	public static fun constructor-impl (Lio/vertx/core/buffer/Buffer;)Lio/vertx/core/buffer/Buffer;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Lio/vertx/core/buffer/Buffer;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Lio/vertx/core/buffer/Buffer;Lio/vertx/core/buffer/Buffer;)Z
+	public fun flush ()V
+	public static fun flush-impl (Lio/vertx/core/buffer/Buffer;)V
+	public final fun getVertxBuffer ()Lio/vertx/core/buffer/Buffer;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Lio/vertx/core/buffer/Buffer;)I
+	public fun timeout ()Lokio/Timeout;
+	public static fun timeout-impl (Lio/vertx/core/buffer/Buffer;)Lokio/Timeout;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Lio/vertx/core/buffer/Buffer;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Lio/vertx/core/buffer/Buffer;
+	public fun write (Lokio/Buffer;J)V
+	public static fun write-impl (Lio/vertx/core/buffer/Buffer;Lokio/Buffer;J)V
+}
+
+public final class com/huanshankeji/vertx/core/okio/VertxBufferSinkKt {
+	public static final fun toBufferedSink (Lio/vertx/core/buffer/Buffer;)Lokio/BufferedSink;
+	public static final fun toSink (Lio/vertx/core/buffer/Buffer;)Lokio/Sink;
+}
+
+public final class com/huanshankeji/vertx/core/okio/VertxBufferWriteStreamSink : okio/Sink {
+	public static final synthetic fun box-impl (Lio/vertx/core/streams/WriteStream;)Lcom/huanshankeji/vertx/core/okio/VertxBufferWriteStreamSink;
+	public fun close ()V
+	public static fun close-impl (Lio/vertx/core/streams/WriteStream;)V
+	public static fun constructor-impl (Lio/vertx/core/streams/WriteStream;)Lio/vertx/core/streams/WriteStream;
+	public fun equals (Ljava/lang/Object;)Z
+	public static fun equals-impl (Lio/vertx/core/streams/WriteStream;Ljava/lang/Object;)Z
+	public static final fun equals-impl0 (Lio/vertx/core/streams/WriteStream;Lio/vertx/core/streams/WriteStream;)Z
+	public fun flush ()V
+	public static fun flush-impl (Lio/vertx/core/streams/WriteStream;)V
+	public final fun getWriteStream ()Lio/vertx/core/streams/WriteStream;
+	public fun hashCode ()I
+	public static fun hashCode-impl (Lio/vertx/core/streams/WriteStream;)I
+	public fun timeout ()Lokio/Timeout;
+	public static fun timeout-impl (Lio/vertx/core/streams/WriteStream;)Lokio/Timeout;
+	public fun toString ()Ljava/lang/String;
+	public static fun toString-impl (Lio/vertx/core/streams/WriteStream;)Ljava/lang/String;
+	public final synthetic fun unbox-impl ()Lio/vertx/core/streams/WriteStream;
+	public fun write (Lokio/Buffer;J)V
+	public static fun write-impl (Lio/vertx/core/streams/WriteStream;Lokio/Buffer;J)V
+}
+
+public final class com/huanshankeji/vertx/core/okio/VertxBufferWriteStreamSinkKt {
+	public static final fun toBufferedSink (Lio/vertx/core/streams/WriteStream;)Lokio/Sink;
+	public static final fun toSink (Lio/vertx/core/streams/WriteStream;)Lokio/Sink;
+}
+
+public final class com/huanshankeji/vertx/ext/web/RoutingContextKt {
+	public static final fun checkedRun (Lio/vertx/ext/web/RoutingContext;Lkotlin/jvm/functions/Function0;)V
+}
+
+public abstract interface class com/huanshankeji/vertx/ext/web/SingleVirtualHostVerticle : com/huanshankeji/vertx/ext/web/VirtualHostCombinable, io/vertx/core/Verticle {
+	public abstract fun getVirtualHost ()Ljava/lang/String;
+	public abstract fun routesOnVirtualHost (Lio/vertx/ext/web/Router;)V
+	public abstract fun subRouter ()Lio/vertx/ext/web/Router;
+	public abstract fun virtualHostSubRouter (Lio/vertx/ext/web/Router;)V
+}
+
+public final class com/huanshankeji/vertx/ext/web/SingleVirtualHostVerticle$DefaultImpls {
+	public static fun routesOnVirtualHost (Lcom/huanshankeji/vertx/ext/web/SingleVirtualHostVerticle;Lio/vertx/ext/web/Router;)V
+	public static fun subRouter (Lcom/huanshankeji/vertx/ext/web/SingleVirtualHostVerticle;)Lio/vertx/ext/web/Router;
+}
+
+public abstract interface class com/huanshankeji/vertx/ext/web/VirtualHostCombinable {
+	public abstract fun routesOnVirtualHost (Lio/vertx/ext/web/Router;)V
+}
+
+public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions : com/huanshankeji/vertx/core/CombinedVerticleFunctions {
+	public abstract fun subVerticlesStart (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun subVerticlesStop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun toPromise (Lio/vertx/core/Handler;)Lio/vertx/core/Promise;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions$DefaultImpls {
+	public static fun runAllWithPromise (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Ljava/util/List;Lkotlin/jvm/functions/Function2;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesInit (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
+	public static fun subVerticlesStart (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesStart (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun subVerticlesStartUnit (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesStop (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun subVerticlesStop (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun subVerticlesStopUnit (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lio/vertx/core/Promise;)V
+	public static fun toPromise (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lio/vertx/core/Handler;)Lio/vertx/core/Promise;
+}
+
+public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI : io/vertx/core/Verticle, kotlinx/coroutines/CoroutineScope {
+	public abstract fun start (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public abstract fun stop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI$DefaultImpls {
+	public static fun start (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun stop (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/VertxCoroutineKt {
+	public static final fun awaitAll (Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun awaitExecuteBlocking (Lio/vertx/core/Vertx;Lkotlin/jvm/functions/Function0;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun awaitSuspendExecuteBlocking (Lio/vertx/core/Vertx;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun coroutineToFuture (Lkotlinx/coroutines/CoroutineScope;Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;)Lio/vertx/core/Future;
+	public static synthetic fun coroutineToFuture$default (Lkotlinx/coroutines/CoroutineScope;Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/core/Future;
+	public static final fun use (Lio/vertx/core/Vertx;Lkotlin/jvm/functions/Function1;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode : java/lang/Enum {
+	public static final field DefaultOnVertxEventLoop Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;
+	public static final field Unconfined Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;
+	public static fun values ()[Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlersKt {
+	public static final fun checkedCoroutineHandler (Lio/vertx/ext/web/Route;Lkotlinx/coroutines/CoroutineScope;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static final fun checkedCoroutineHandler (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static synthetic fun checkedCoroutineHandler$default (Lio/vertx/ext/web/Route;Lkotlinx/coroutines/CoroutineScope;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+	public static synthetic fun checkedCoroutineHandler$default (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+	public static final fun coroutineHandler (Lio/vertx/ext/web/Route;Lkotlinx/coroutines/CoroutineScope;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static final fun coroutineHandler (Lio/vertx/ext/web/Route;Lkotlinx/coroutines/CoroutineScope;Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static final fun coroutineHandler (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static synthetic fun coroutineHandler$default (Lio/vertx/ext/web/Route;Lkotlinx/coroutines/CoroutineScope;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+	public static synthetic fun coroutineHandler$default (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+}
+
+public abstract class com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticle : io/vertx/kotlin/coroutines/CoroutineVerticle, com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI {
+	public fun <init> ()V
+	public fun checkedCoroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public final fun checkedCoroutineHandlerInline (Lio/vertx/ext/web/Route;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public fun coroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public final fun coroutineHandlerInline (Lio/vertx/ext/web/Route;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public fun start (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun stop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI : com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI {
+	public abstract fun checkedCoroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public abstract fun coroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI$DefaultImpls {
+	public static fun checkedCoroutineHandler (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static synthetic fun checkedCoroutineHandler$default (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+	public static fun coroutineHandler (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static synthetic fun coroutineHandler$default (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+	public static fun start (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun stop (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/vertx/kotlin/coroutines/ext/web/RoutingContextKt {
+	public static final fun launchChecked (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/RoutingContext;Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;)Lkotlinx/coroutines/Job;
+	public static synthetic fun launchChecked$default (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/RoutingContext;Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/CoroutineStart;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lkotlinx/coroutines/Job;
+}
+
+public final class com/huanshankeji/vertx/kotlin/ext/web/RoutingContextKt {
+	public static final fun set (Lio/vertx/ext/web/RoutingContext;Ljava/lang/String;Ljava/lang/Object;)V
+}
+
+public final class com/huanshankeji/vertx/kotlin/sqlclient/BatchSqlResultSequencesKt {
+	public static final fun batchSqlResultRowCountSequence (Lio/vertx/sqlclient/SqlResult;)Lkotlin/sequences/Sequence;
+	public static final fun batchSqlResultRowSequenceSequence (Lio/vertx/sqlclient/RowSet;)Lkotlin/sequences/Sequence;
+	public static final fun batchSqlResultSequence (Lio/vertx/sqlclient/SqlResult;)Lkotlin/sequences/Sequence;
+}
+
+public final class com/huanshankeji/vertx/kotlin/sqlclient/PreparedQueryKt {
+	public static final fun executeBatchAwaitForSqlResultSequence (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/vertx/pgclient/PgPoolOptionsKt {
+	public static final fun setUpConventionally (Lio/vertx/pgclient/impl/PgPoolOptions;)V
+}
+
+public final class com/huanshankeji/vertx/sqlclient/ClientBuilderKt {
+	public static final fun withCoConnectHandler (Lio/vertx/sqlclient/ClientBuilder;Lkotlin/jvm/functions/Function2;)Lio/vertx/sqlclient/ClientBuilder;
+}
+
+public final class com/huanshankeji/vertx/sqlclient/PreparedQueryBatchExecutionKt {
+	public static final fun sortDataAndExecuteBatch (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lio/vertx/core/Future;
+	public static final fun sortTuplesAndExecuteBatch (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Ljava/util/List;)Lio/vertx/core/Future;
+	public static final fun sortTuplesAndExecuteBatch (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Lio/vertx/core/Future;
+}
+
+public final class com/huanshankeji/vertx/sqlclient/SqlConnectOptionsKt {
+	public static final fun setUpConventionally (Lio/vertx/sqlclient/SqlConnectOptions;)V
+}
+
+public final class com/huanshankeji/vertx/sqlclient/TupleKt {
+	public static final fun toList (Lio/vertx/sqlclient/Tuple;)Ljava/util/List;
+}
+

@@ -5,7 +5,7 @@ import io.vertx.core.Future
 import io.vertx.core.Handler
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
-import io.vertx.kotlin.coroutines.await
+import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.coroutineScope
@@ -18,8 +18,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  * Execute the [block] code and close the [Vertx] instance like [kotlin.use] on an [AutoCloseable].
  */
 suspend inline fun <R> Vertx.use(block: (Vertx) -> R): R =
-    @Suppress("MoveLambdaOutsideParentheses")
-    use(block, { close().await() })
+    use(block) { close().coAwait() }
 
 /**
  * Execute [blockingCode] that returns the a [T] instance with [Vertx.executeBlocking]
@@ -31,7 +30,7 @@ suspend inline fun <R> Vertx.use(block: (Vertx) -> R): R =
 suspend fun <T> Vertx.awaitExecuteBlocking(blockingCode: () -> T): T =
     executeBlocking(Callable {
         blockingCode()
-    }).await()
+    }).coAwait()
 
 // TODO: this should probably be removed
 /**
@@ -43,7 +42,7 @@ suspend fun <T> Vertx.awaitSuspendExecuteBlocking(blockingCode: suspend () -> T)
     coroutineScope {
         executeBlocking(Handler<Promise<T>> {
             launch { it.complete(blockingCode()) }
-        }).await()
+        }).coAwait()
     }
 
 /**
@@ -73,4 +72,4 @@ fun <T> CoroutineScope.coroutineToFuture(
  * @see kotlinx.coroutines.awaitAll
  */
 suspend fun <T> List<Future<T>>.awaitAll(): List<T> =
-    Future.all(this).await().list()
+    Future.all(this).coAwait().list()

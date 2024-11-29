@@ -1,0 +1,4 @@
+public final class com/huanshankeji/arrow/core/OptionKt {
+	public static final fun toOptionUnit (Z)Larrow/core/Option;
+}
+

@@ -7,9 +7,9 @@ import kotlin.test.assertTrue
 
 class ConcreteTypeTest {
     @Test
-    fun testIsConcreteType() {
-        assertTrue(typeOf<Unit>().isConcreteType())
-        assertTrue(typeOf<List<Unit>>().isConcreteType())
-        assertFalse(typeOf<List<*>>().isConcreteType())
+    fun testIsConcreteTypeWithAllActualKClasses() {
+        assertTrue(typeOf<Unit>().isConcreteTypeWithAllActualKClasses())
+        assertTrue(typeOf<List<Unit>>().isConcreteTypeWithAllActualKClasses())
+        assertFalse(typeOf<List<*>>().isConcreteTypeWithAllActualKClasses())
     }
 }

@@ -9,7 +9,7 @@ import kotlin.reflect.KTypeParameter
  * @return `null` when it fails
  */
 fun concreteTypeUnify(knowConcreteType: KType, typeWithVariables: KType): Substitution? {
-    require(knowConcreteType.isConcreteType())
+    require(knowConcreteType.isConcreteTypeWithAllActualKClasses())
     val result = mutableMapOf<KTypeParameter, KType>()
     return if (doConcreteTypeUnify(knowConcreteType, typeWithVariables, result)) result
     else null

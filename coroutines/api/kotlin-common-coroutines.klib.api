@@ -1,0 +1,23 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-coroutines>
+abstract fun interface com.huanshankeji.kotlinx.coroutine/CoroutineAutoCloseable { // com.huanshankeji.kotlinx.coroutine/CoroutineAutoCloseable|null[0]
+    abstract suspend fun close() // com.huanshankeji.kotlinx.coroutine/CoroutineAutoCloseable.close|close(){}[0]
+}
+
+abstract interface com.huanshankeji.kotlinx.coroutine/WithCoroutineScope { // com.huanshankeji.kotlinx.coroutine/WithCoroutineScope|null[0]
+    abstract val coroutineScope // com.huanshankeji.kotlinx.coroutine/WithCoroutineScope.coroutineScope|{}coroutineScope[0]
+        abstract fun <get-coroutineScope>(): kotlinx.coroutines/CoroutineScope // com.huanshankeji.kotlinx.coroutine/WithCoroutineScope.coroutineScope.<get-coroutineScope>|<get-coroutineScope>(){}[0]
+}
+
+final suspend fun (kotlin.collections/Collection<kotlinx.coroutines/Job>).com.huanshankeji.kotlinx.coroutine/joinAny() // com.huanshankeji.kotlinx.coroutine/joinAny|joinAny@kotlin.collections.Collection<kotlinx.coroutines.Job>(){}[0]
+final suspend fun <#A: kotlin/Any?> (kotlin.collections/Collection<kotlinx.coroutines/Deferred<#A>>).com.huanshankeji.kotlinx.coroutine/awaitAny(): #A // com.huanshankeji.kotlinx.coroutine/awaitAny|awaitAny@kotlin.collections.Collection<kotlinx.coroutines.Deferred<0:0>>(){0§<kotlin.Any?>}[0]
+final suspend fun <#A: kotlin/Any?> (kotlin.collections/Collection<kotlinx.coroutines/Deferred<#A>>).com.huanshankeji.kotlinx.coroutine/awaitAnyAndCancelOthers(): #A // com.huanshankeji.kotlinx.coroutine/awaitAnyAndCancelOthers|awaitAnyAndCancelOthers@kotlin.collections.Collection<kotlinx.coroutines.Deferred<0:0>>(){0§<kotlin.Any?>}[0]
+final suspend fun <#A: kotlin/Any?> com.huanshankeji.kotlinx.coroutine/awaitAny(kotlin/Array<out kotlinx.coroutines/Deferred<#A>>...): #A // com.huanshankeji.kotlinx.coroutine/awaitAny|awaitAny(kotlin.Array<out|kotlinx.coroutines.Deferred<0:0>>...){0§<kotlin.Any?>}[0]
+final suspend fun com.huanshankeji.kotlinx.coroutine/joinAny(kotlin/Array<out kotlinx.coroutines/Job>...) // com.huanshankeji.kotlinx.coroutine/joinAny|joinAny(kotlin.Array<out|kotlinx.coroutines.Job>...){}[0]
+final suspend inline fun <#A: com.huanshankeji.kotlinx.coroutine/CoroutineAutoCloseable?, #B: kotlin/Any?> (#A).com.huanshankeji.kotlinx.coroutine/use(kotlin/Function1<#A, #B>): #B // com.huanshankeji.kotlinx.coroutine/use|use@0:0(kotlin.Function1<0:0,0:1>){0§<com.huanshankeji.kotlinx.coroutine.CoroutineAutoCloseable?>;1§<kotlin.Any?>}[0]

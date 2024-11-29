@@ -1,0 +1,37 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, iosX64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-reflect>
+final class <#A: kotlin/Any> com.huanshankeji.kotlin.reflect/TypeAndClass { // com.huanshankeji.kotlin.reflect/TypeAndClass|null[0]
+    constructor <init>(kotlin.reflect/KType, kotlin.reflect/KClass<#A> = ...) // com.huanshankeji.kotlin.reflect/TypeAndClass.<init>|<init>(kotlin.reflect.KType;kotlin.reflect.KClass<1:0>){}[0]
+
+    final val clazz // com.huanshankeji.kotlin.reflect/TypeAndClass.clazz|{}clazz[0]
+        final fun <get-clazz>(): kotlin.reflect/KClass<#A> // com.huanshankeji.kotlin.reflect/TypeAndClass.clazz.<get-clazz>|<get-clazz>(){}[0]
+    final val type // com.huanshankeji.kotlin.reflect/TypeAndClass.type|{}type[0]
+        final fun <get-type>(): kotlin.reflect/KType // com.huanshankeji.kotlin.reflect/TypeAndClass.type.<get-type>|<get-type>(){}[0]
+
+    final fun component1(): kotlin.reflect/KType // com.huanshankeji.kotlin.reflect/TypeAndClass.component1|component1(){}[0]
+    final fun component2(): kotlin.reflect/KClass<#A> // com.huanshankeji.kotlin.reflect/TypeAndClass.component2|component2(){}[0]
+    final fun copy(kotlin.reflect/KType = ..., kotlin.reflect/KClass<#A> = ...): com.huanshankeji.kotlin.reflect/TypeAndClass<#A> // com.huanshankeji.kotlin.reflect/TypeAndClass.copy|copy(kotlin.reflect.KType;kotlin.reflect.KClass<1:0>){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // com.huanshankeji.kotlin.reflect/TypeAndClass.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // com.huanshankeji.kotlin.reflect/TypeAndClass.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // com.huanshankeji.kotlin.reflect/TypeAndClass.toString|toString(){}[0]
+}
+
+final val com.huanshankeji.kotlin.reflect/nothingType // com.huanshankeji.kotlin.reflect/nothingType|{}nothingType[0]
+    final fun <get-nothingType>(): kotlin.reflect/KType // com.huanshankeji.kotlin.reflect/nothingType.<get-nothingType>|<get-nothingType>(){}[0]
+final val com.huanshankeji.kotlin.reflect/nullableNothingType // com.huanshankeji.kotlin.reflect/nullableNothingType|{}nullableNothingType[0]
+    final fun <get-nullableNothingType>(): kotlin.reflect/KType // com.huanshankeji.kotlin.reflect/nullableNothingType.<get-nullableNothingType>|<get-nullableNothingType>(){}[0]
+
+final fun (kotlin.reflect/KType).com.huanshankeji.kotlin.reflect/copyWithArguments(kotlin.collections/List<kotlin.reflect/KTypeProjection>): kotlin.reflect/KType // com.huanshankeji.kotlin.reflect/copyWithArguments|copyWithArguments@kotlin.reflect.KType(kotlin.collections.List<kotlin.reflect.KTypeProjection>){}[0]
+final fun (kotlin.reflect/KType).com.huanshankeji.kotlin.reflect/isConcreteType(): kotlin/Boolean // com.huanshankeji.kotlin.reflect/isConcreteType|isConcreteType@kotlin.reflect.KType(){}[0]
+final fun (kotlin.reflect/KType).com.huanshankeji.kotlin.reflect/isConcreteTypeWithAllActualKClasses(): kotlin/Boolean // com.huanshankeji.kotlin.reflect/isConcreteTypeWithAllActualKClasses|isConcreteTypeWithAllActualKClasses@kotlin.reflect.KType(){}[0]
+final fun (kotlin.reflect/KType).com.huanshankeji.kotlin.reflect/isNothing(): kotlin/Boolean // com.huanshankeji.kotlin.reflect/isNothing|isNothing@kotlin.reflect.KType(){}[0]
+final fun (kotlin.reflect/KType).com.huanshankeji.kotlin.reflect/isNullableNothing(): kotlin/Boolean // com.huanshankeji.kotlin.reflect/isNullableNothing|isNullableNothing@kotlin.reflect.KType(){}[0]
+final fun com.huanshankeji.kotlin.reflect/throwNotAClassOrATypeParameter(kotlin.reflect/KClassifier?): kotlin/Nothing // com.huanshankeji.kotlin.reflect/throwNotAClassOrATypeParameter|throwNotAClassOrATypeParameter(kotlin.reflect.KClassifier?){}[0]
+final fun com.huanshankeji.kotlin.reflect/throwStarProjectionsNotSupported(): kotlin/Nothing // com.huanshankeji.kotlin.reflect/throwStarProjectionsNotSupported|throwStarProjectionsNotSupported(){}[0]
+final inline fun <#A: reified kotlin/Any> com.huanshankeji.kotlin.reflect/typeAndClassOf(): com.huanshankeji.kotlin.reflect/TypeAndClass<#A> // com.huanshankeji.kotlin.reflect/typeAndClassOf|typeAndClassOf(){0§<kotlin.Any>}[0]
