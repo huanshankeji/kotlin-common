@@ -5,10 +5,9 @@ plugins {
     id("com.huanshankeji.team.with-group")
     id("maven-central")
     id("com.huanshankeji.team.default-github-packages-maven-publish")
+    id("version")
     id("dokka-convention")
 }
-
-version = projectVersion
 
 afterEvaluate {
     publishing.publications.withType<MavenPublication> {
