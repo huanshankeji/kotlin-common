@@ -3,11 +3,10 @@ package com.huanshankeji.codec
 import io.kotest.property.Arb
 import io.kotest.property.Exhaustive
 import io.kotest.property.arbitrary.byteArray
-import io.kotest.property.arbitrary.default
 import io.kotest.property.arbitrary.list
 import io.kotest.property.checkAll
 import io.kotest.property.exhaustive.of
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import io.kotest.property.resolution.default
 import kotlinx.coroutines.test.TestResult
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
@@ -15,7 +14,7 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class BasicCodecsTest {
-    @OptIn(ExperimentalUnsignedTypes::class, ExperimentalCoroutinesApi::class)
+    @OptIn(ExperimentalUnsignedTypes::class)
     @Test
     fun testConversionBetweenLongAndBigEndianBytes(): TestResult {
         val long = 0x0123456789ABCDEFU.toLong()
@@ -23,13 +22,12 @@ class BasicCodecsTest {
         assertContentEquals(bytes, long.toBigEndianBytes())
         assertEquals(long, bytes.bigEndianToLong())
 
-        @OptIn(ExperimentalCoroutinesApi::class)
         return runTest {
             checkAll<Long> {
                 assertEquals(it, it.toBigEndianBytes().bigEndianToLong())
                 assertEquals(it, it.toBigEndianBytes().asList().bigEndianToLong())
             }
-            checkAll<ByteArray>(Arb.byteArray(Exhaustive.of(8), Arb.default())) {
+            checkAll(Arb.byteArray(Exhaustive.of(8), Arb.default())) {
                 assertContentEquals(it, it.bigEndianToLong().toBigEndianBytes())
             }
             checkAll<List<Byte>>(Arb.list(Arb.default(), 8..8)) {
