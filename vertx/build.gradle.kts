@@ -11,6 +11,9 @@ java {
     registerFeature("vertxSqlClient") {
         usingSourceSet(sourceSets["main"])
     }
+    registerFeature("vertxPgClient") {
+        usingSourceSet(sourceSets["main"])
+    }
     registerFeature("kotlinxIo") {
         usingSourceSet(sourceSets["main"])
     }
@@ -25,6 +28,7 @@ dependencies {
         implementation(moduleWithoutVersion("core"))
         "vertxWebImplementation"(moduleWithoutVersion("web"))
         "vertxSqlClientImplementation"(moduleWithoutVersion("sql-client"))
+        "vertxPgClientImplementation"(moduleWithoutVersion("pg-client"))
         implementation(moduleWithoutVersion("lang-kotlin"))
         implementation(moduleWithoutVersion("lang-kotlin-coroutines"))
     }

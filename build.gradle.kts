@@ -33,4 +33,10 @@ apiValidation {
     klib {
         enabled = true
     }
+
+    ignoredProjects += "kotlin-common".let {
+        "$it-serialization-benchmark".let {
+            listOf(it, "$it-jvm-only")
+        } + "$it-vertx-with-context-receivers"
+    }
 }

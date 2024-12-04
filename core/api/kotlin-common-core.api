@@ -3,6 +3,16 @@ public abstract interface class com/huanshankeji/BidirectionalConversion {
 	public abstract fun to (Ljava/lang/Object;)Ljava/lang/Object;
 }
 
+public abstract interface annotation class com/huanshankeji/ExperimentalApi : java/lang/annotation/Annotation {
+}
+
+public final class com/huanshankeji/FunctionImplementationRemovedKt {
+	public static final fun functionImplementationRemoved ()Ljava/lang/Void;
+}
+
+public abstract interface annotation class com/huanshankeji/InternalApi : java/lang/annotation/Annotation {
+}
+
 public final class com/huanshankeji/LambdasKt {
 	public static final fun emptyLambda ()Lkotlin/jvm/functions/Function0;
 	public static final fun lambdaOf (Lkotlin/jvm/functions/Function0;)Lkotlin/jvm/functions/Function0;
@@ -45,6 +55,10 @@ public final class com/huanshankeji/collections/LexicographicOrderListComparable
 	public static final fun lexicographicOrderComparable (Ljava/util/List;)Lcom/huanshankeji/collections/LexicographicOrderListComparable;
 }
 
+public final class com/huanshankeji/jdbc/JdbcUrlsKt {
+	public static final fun jdbcUrl (Ljava/lang/String;Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;)Ljava/lang/String;
+}
+
 public final class com/huanshankeji/kotlin/CallbacksKt {
 	public static final fun produceInCallback (Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
 }
@@ -56,6 +70,14 @@ public final class com/huanshankeji/kotlin/EnumKt {
 public final class com/huanshankeji/kotlin/UseKt {
 	public static final fun closeFinally (Ljava/lang/Object;Ljava/lang/Throwable;Lkotlin/jvm/functions/Function1;)V
 	public static final fun use (Ljava/lang/Object;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+}
+
+public final class com/huanshankeji/kotlin/function/parametertypeparameter/NullableUnitReturnTypeParameterFunctionKt {
+	public static final fun plus (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lkotlin/jvm/functions/Function1;
+}
+
+public final class com/huanshankeji/kotlin/function/receivertypeparameter/NullableUnitReturnTypeReceiverFunctionKt {
+	public static final fun plus (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lkotlin/jvm/functions/Function1;
 }
 
 public final class com/huanshankeji/os/OSKt {

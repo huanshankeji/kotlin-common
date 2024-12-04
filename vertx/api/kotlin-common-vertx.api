@@ -46,6 +46,10 @@ public final class com/huanshankeji/vertx/core/CombinedVerticleFunctions$Default
 	public static fun subVerticlesStopUnit (Lcom/huanshankeji/vertx/core/CombinedVerticleFunctions;Lio/vertx/core/Promise;)V
 }
 
+public final class com/huanshankeji/vertx/core/HandlerKt {
+	public static final fun plus (Lio/vertx/core/Handler;Lio/vertx/core/Handler;)Lio/vertx/core/Handler;
+}
+
 public final class com/huanshankeji/vertx/core/VertxKt {
 	public static final fun deployVerticleOnAllCores (Lio/vertx/core/Vertx;Ljava/util/function/Supplier;)Lio/vertx/core/Future;
 }
@@ -274,10 +278,22 @@ public final class com/huanshankeji/vertx/kotlin/sqlclient/PreparedQueryKt {
 	public static final fun executeBatchAwaitForSqlResultSequence (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/huanshankeji/vertx/pgclient/PgPoolOptionsKt {
+	public static final fun setUpConventionally (Lio/vertx/pgclient/impl/PgPoolOptions;)V
+}
+
+public final class com/huanshankeji/vertx/sqlclient/ClientBuilderKt {
+	public static final fun withCoConnectHandler (Lio/vertx/sqlclient/ClientBuilder;Lkotlin/jvm/functions/Function2;)Lio/vertx/sqlclient/ClientBuilder;
+}
+
 public final class com/huanshankeji/vertx/sqlclient/PreparedQueryBatchExecutionKt {
 	public static final fun sortDataAndExecuteBatch (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;)Lio/vertx/core/Future;
 	public static final fun sortTuplesAndExecuteBatch (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Ljava/util/List;)Lio/vertx/core/Future;
 	public static final fun sortTuplesAndExecuteBatch (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Lio/vertx/core/Future;
+}
+
+public final class com/huanshankeji/vertx/sqlclient/SqlConnectOptionsKt {
+	public static final fun setUpConventionally (Lio/vertx/sqlclient/SqlConnectOptions;)V
 }
 
 public final class com/huanshankeji/vertx/sqlclient/TupleKt {

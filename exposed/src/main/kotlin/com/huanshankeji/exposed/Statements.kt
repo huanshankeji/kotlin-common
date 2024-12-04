@@ -19,6 +19,7 @@ const val SELECT_DSL_DEPRECATION_MESSAGE =
     ReplaceWith("selectAllStatement().where(where)")
 )
 fun FieldSet.selectStatement(where: WhereOp): Query =
+    @Suppress("DEPRECATION_ERROR")
     select(where)
 
 /**
@@ -29,6 +30,7 @@ fun FieldSet.selectStatement(where: WhereOp): Query =
     ReplaceWith("selectAllStatement().where(where)")
 )
 fun FieldSet.selectStatement(where: BuildWhere): Query =
+    @Suppress("DEPRECATION_ERROR")
     select(where)
 
 @Deprecated(
@@ -66,15 +68,6 @@ fun Table.deleteWhereStatement(
     op: WhereOp, isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null
 ): DeleteStatement =
     DeleteStatement(this, op, isIgnore, limit, offset)
-
-/**
- * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
- */
-@Deprecated("Use the new table-aware APIs. See https://github.com/JetBrains/Exposed/commit/b9b53f8bbdfbf8cbab56d5602f92543e2ccd473c.")
-fun Table.deleteWhereStatement(
-    isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null, op: BuildWhere
-): DeleteStatement =
-    DeleteStatement(this, SqlExpressionBuilder.op(), isIgnore, limit, offset)
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.deleteWhere].

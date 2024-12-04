@@ -1,5 +1,0 @@
-public final class com/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlersKt {
-	public static final fun checkedCoroutineHandler (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/Route;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
-	public static final fun coroutineHandler (Lkotlinx/coroutines/CoroutineScope;Lio/vertx/ext/web/Route;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
-}
-
