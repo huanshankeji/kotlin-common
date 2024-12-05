@@ -2,9 +2,9 @@ import com.huanshankeji.CommonDependencies
 import com.huanshankeji.CommonGradleClasspathDependencies
 import com.huanshankeji.CommonVersions
 
-val projectVersion = "0.6.0"
+val projectVersion = "0.6.1"
 
-val commonVersions = CommonVersions(arrow = "2.0.0-alpha.4" /* for Wasm JS*/, exposed = "0.56.0")
+val commonVersions = CommonVersions()
 val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
 
