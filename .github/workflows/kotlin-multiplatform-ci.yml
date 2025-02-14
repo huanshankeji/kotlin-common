@@ -14,7 +14,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: huanshankeji/.github/workflow-templates/gradle-check@refactor-common-actions
+      - uses: huanshankeji/.github/actions/gradle-check@refactor-common-actions
         with:
           jdk-versions: 8-zulu
 
@@ -24,7 +24,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: huanshankeji/.github/workflow-templates/dependency-submission@refactor-common-actions
+      - uses: huanshankeji/.github/actions/dependency-submission@refactor-common-actions
         with:
           jdk-version: 8
           jdk-distribution: zulu
