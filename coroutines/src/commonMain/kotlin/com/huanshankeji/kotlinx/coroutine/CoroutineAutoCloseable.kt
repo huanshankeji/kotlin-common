@@ -4,7 +4,7 @@ import com.huanshankeji.ExperimentalApi
 import com.huanshankeji.kotlin.use
 
 /**
- * Also see https://github.com/Kotlin/kotlinx.coroutines/issues/1191.
+ * Also see [this issue](https://github.com/Kotlin/kotlinx.coroutines/issues/1191).
  * Made a functional interface so that there is no need to add a function like the [AutoCloseable] one.
  * @see AutoCloseable
  */
