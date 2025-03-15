@@ -4,9 +4,9 @@ import com.huanshankeji.ExperimentalApi
 import com.huanshankeji.kotlin.use
 
 /**
- * @see AutoCloseable
  * Also see https://github.com/Kotlin/kotlinx.coroutines/issues/1191.
  * Made a functional interface so that there is no need to add a function like the [AutoCloseable] one.
+ * @see AutoCloseable
  */
 @ExperimentalApi
 fun interface CoroutineAutoCloseable {
