@@ -26,5 +26,5 @@ jobs:
     steps:
       - uses: huanshankeji/.github/actions/dependency-submission@v0.1.0
         with:
-          jdk-version: 17
+          jdk-version: 8
           jdk-distribution: zulu
