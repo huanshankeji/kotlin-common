@@ -26,5 +26,4 @@ jobs:
     steps:
       - uses: huanshankeji/.github/actions/dependency-submission@32c6b97c242d68081a1338dd85d41ef379994a31
         with:
-          jdk-version: 8
-          jdk-distribution: 8-zulu, 17-temurin
+          jdk-versions: 8-zulu, 17-temurin
