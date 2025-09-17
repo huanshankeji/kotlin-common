@@ -17,12 +17,12 @@ Huanshankeji Kotlin Common is a collection of common code libraries in Kotlin th
 ## Build Instructions
 
 ### Prerequisites
-- **JDK 8 (Zulu distribution)** - Required for building and testing (as specified in CI workflows)
+- **JDK 17 (Temurin distribution)** - Required for building and testing (as specified in CI workflows)
 - **macOS environment** recommended for full multiplatform support (Linux has limited iOS target support)
 - Initial setup time: ~2-3 minutes for Gradle daemon initialization and dependency download
 
 ### Environment Setup
-Always ensure JDK 8 is properly configured before building. The project uses Gradle wrapper, so no manual Gradle installation is needed.
+Always ensure JDK 17 is properly configured before building. The project uses Gradle wrapper, so no manual Gradle installation is needed.
 
 **IMPORTANT**: On non-macOS systems, iOS targets (`iosArm64`, `iosSimulatorArm64`, `iosX64`) will be disabled. Add `kotlin.native.ignoreDisabledTargets=true` to suppress warnings.
 

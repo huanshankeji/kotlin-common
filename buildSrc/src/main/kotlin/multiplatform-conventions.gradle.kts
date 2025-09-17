@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(17)
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs()
