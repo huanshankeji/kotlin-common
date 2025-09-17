@@ -35,10 +35,12 @@ Always ensure JDK 8 is properly configured before building. The project uses Gra
 4. **Publish to local Maven**: `./gradlew publishToMavenLocal` (recommended for testing changes)
 
 #### Testing Commands:
-- **Run JVM tests for a module**: `./gradlew :kotlin-common-[module]:jvmTest`
-- **Run JS tests for a module**: `./gradlew :kotlin-common-[module]:jsTest` 
-- **Run all tests for a module**: `./gradlew :kotlin-common-[module]:allTests`
-- **Global test command**: There is no single `test` task - use `check` for comprehensive verification
+- **For multiplatform modules**: 
+  - Run JVM tests: `./gradlew :kotlin-common-[module]:jvmTest`
+  - Run JS tests: `./gradlew :kotlin-common-[module]:jsTest`
+  - Run all tests: `./gradlew :kotlin-common-[module]:allTests`
+- **For JVM-only modules** (using `kotlin("jvm")` plugin): `./gradlew :kotlin-common-[module]:test`
+- **Global verification**: `./gradlew check` (runs all tests and validation across all modules)
 
 #### Documentation:
 - **Generate API docs**: `./gradlew :dokkaGeneratePublicationHtml`
@@ -59,7 +61,8 @@ Always ensure JDK 8 is properly configured before building. The project uses Gra
 - Gradle deprecation warnings (project targets Gradle 8.11.1)
 
 **Error Handling**:
-- If build fails with "Cannot locate tasks that match 'test'", use target-specific tasks like `jvmTest`, `jsTest`
+- For multiplatform modules, use target-specific tasks like `jvmTest`, `jsTest`, `allTests` instead of `test`
+- For JVM-only modules, use the standard `test` task
 - Gradle daemon issues: Use `./gradlew --stop` then retry
 - Memory issues: Increase heap size in `gradle.properties` (currently set to 4GB for CI)
 
@@ -98,7 +101,7 @@ Always ensure JDK 8 is properly configured before building. The project uses Gra
 ### Configuration Files
 - **Build**: `build.gradle.kts` (root), `settings.gradle.kts`, `gradle.properties`
 - **CI/CD**: `.github/workflows/*.yml`
-- **Dependencies**: `buildSrc/build.gradle.kts` defines shared dependencies
+- **Dependencies**: `buildSrc/build.gradle.kts` defines buildSrc/meta-build dependencies; `buildSrc/src/main/kotlin/VersionsAndDependencies.kt` defines shared compilation dependencies
 - **API Validation**: Uses Kotlin Binary Compatibility Validator
 - **Documentation**: Dokka configuration in root build script
 
@@ -134,7 +137,8 @@ Before check-in, the following validations run:
 - `build.gradle.kts`: Dokka setup, API validation, module dependencies
 - `settings.gradle.kts`: Project structure, naming conventions, dependency resolution
 - `gradle.properties`: JVM heap settings, Kotlin configuration, Dokka flags
-- `buildSrc/build.gradle.kts`: Plugin dependencies and versions
+- `buildSrc/build.gradle.kts`: buildSrc/meta-build plugin dependencies and versions
+- `buildSrc/src/main/kotlin/VersionsAndDependencies.kt`: Shared compilation dependencies
 
 ### Documentation  
 - `README.md`: Maven coordinates, supported targets, API docs link
