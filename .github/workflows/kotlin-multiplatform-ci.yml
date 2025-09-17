@@ -24,6 +24,6 @@ jobs:
       contents: write
 
     steps:
-      - uses: huanshankeji/.github/actions/dependency-submission@b8b32179d9722d6bb315b9a0c1efff5f1c75e0b1
+      - uses: huanshankeji/.github/actions/gradle-dependency-submission@b8b32179d9722d6bb315b9a0c1efff5f1c75e0b1
         with:
           jdk-versions: 8-zulu, 17-temurin
