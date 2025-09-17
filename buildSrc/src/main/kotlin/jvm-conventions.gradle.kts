@@ -5,7 +5,7 @@ plugins {
     id("com.huanshankeji.kotlin-jvm-library-sonatype-ossrh-publish-conventions")
 }
 
-kotlin.jvmToolchain(17)
+kotlin.jvmToolchain(8)
 
 tasks.named<KotlinCompilationTask<*>>("compileKotlin").configure {
     forEachOptIn { compilerOptions.freeCompilerArgs.add("-opt-in=$it") }
