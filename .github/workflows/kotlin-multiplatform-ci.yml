@@ -14,7 +14,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: huanshankeji/.github/actions/gradle-test-and-check@v0.1.0
+      - uses: huanshankeji/.github/actions/gradle-test-and-check@32c6b97c242d68081a1338dd85d41ef379994a31
         with:
           jdk-versions: 8-zulu, 17-temurin
 
@@ -24,7 +24,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: huanshankeji/.github/actions/dependency-submission@v0.1.0
+      - uses: huanshankeji/.github/actions/dependency-submission@32c6b97c242d68081a1338dd85d41ef379994a31
         with:
           jdk-version: 8
-          jdk-distribution: zulu
+          jdk-distribution: 8-zulu, 17-temurin
