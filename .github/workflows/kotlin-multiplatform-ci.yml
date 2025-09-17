@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: huanshankeji/.github/actions/gradle-test-and-check@v0.1.0
         with:
-          jdk-versions: 8-zulu
+          jdk-versions: 17-temurin
 
   dependency-submission:
     runs-on: macos-latest
@@ -26,5 +26,5 @@ jobs:
     steps:
       - uses: huanshankeji/.github/actions/dependency-submission@v0.1.0
         with:
-          jdk-version: 8
+          jdk-version: 17
           jdk-distribution: zulu
