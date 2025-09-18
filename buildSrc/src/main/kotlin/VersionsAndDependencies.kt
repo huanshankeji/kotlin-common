@@ -2,7 +2,7 @@ import com.huanshankeji.CommonDependencies
 import com.huanshankeji.CommonGradleClasspathDependencies
 import com.huanshankeji.CommonVersions
 
-val projectVersion = "0.6.2-SNAPSHOT"
+val projectVersion = "0.7.0-SNAPSHOT"
 
 val commonVersions = CommonVersions(kotest = "5.9.1") // TODO Kotest 6 requires Java 11
 val commonDependencies = CommonDependencies(commonVersions)
