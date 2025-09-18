@@ -33,7 +33,7 @@ dependencies {
         implementation(moduleWithoutVersion("lang-kotlin-coroutines"))
     }
 
-    "kotlinxIoImplementation"("org.jetbrains.kotlinx:kotlinx-io-core:${DependencyVersions.kotlinxIo}")
+    "kotlinxIoImplementation"("org.jetbrains.kotlinx:kotlinx-io-core:${commonVersions.kotlinxIo}")
     "okioImplementation"("com.squareup.okio:okio:${DependencyVersions.okio}")
 
     implementation(cpnProject(project, ":core"))

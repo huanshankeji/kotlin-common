@@ -9,8 +9,7 @@ val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
 
 object DependencyVersions {
-    val protobufPlugin = "0.9.4"
-    val protobuf = "3.25.2" // Not bumped. The version is a bit chaotic.
-    val kotlinxIo = "0.5.4"
-    val okio = "3.9.1"
+    val protobufPlugin = "0.9.5"
+    val protobuf = "4.31.1"
+    val okio = "3.12.0"
 }
