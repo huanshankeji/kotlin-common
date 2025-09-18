@@ -2,7 +2,7 @@ import com.huanshankeji.CommonDependencies
 import com.huanshankeji.CommonGradleClasspathDependencies
 import com.huanshankeji.CommonVersions
 
-val projectVersion = "0.6.2-SNAPSHOT"
+val projectVersion = "0.7.0-SNAPSHOT"
 
 // TODO remove Exposed's explicit version when migration to Exposed 1.0.0 is complete
 // TODO Kotest 6 requires Java 11
