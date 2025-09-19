@@ -58,7 +58,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 - iOS target warnings on non-macOS systems
 - WebAssembly environment selection warnings
 - Dokka experimental plugin warnings
-- Gradle deprecation warnings (project targets Gradle 8.11.1)
+- Gradle deprecation warnings (project targets Gradle 9.0.0)
 
 **Error Handling**:
 - For multiplatform modules, use target-specific tasks like `jvmTest`, `jsTest`, `allTests` instead of `test`
@@ -90,7 +90,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 - **core**: Core Kotlin language and stdlib extensions
 - **arrow**: Extensions for Arrow functional programming library
 - **coroutines**: Kotlin Coroutines utilities
-- **exposed**: Database library (Exposed) extensions  
+- **exposed**: Database library (Exposed) extensions
 - **ktor**: HTTP client/server framework extensions
 - **net**: Network-related utilities
 - **reflect**: Kotlin reflection utilities
@@ -140,7 +140,7 @@ Before check-in, the following validations run:
 - `buildSrc/build.gradle.kts`: buildSrc/meta-build plugin dependencies and versions
 - `buildSrc/src/main/kotlin/VersionsAndDependencies.kt`: Shared compilation dependencies
 
-### Documentation  
+### Documentation
 - `README.md`: Maven coordinates, supported targets, API docs link
 - `CONTRIBUTING.md`: Development setup, JDK requirements, testing guidelines
 - Each module has `api/` directory for compatibility validation
@@ -149,6 +149,6 @@ Before check-in, the following validations run:
 The project uses custom dependency management through:
 - `com.huanshankeji:common-gradle-dependencies` for shared dependencies
 - `com.huanshankeji.team:gradle-plugins` for build conventions
-- Kotlin 2.1.0, Dokka 2.0.0-Beta
+- Kotlin 2.2.20, Dokka 2.1.0-Beta
 
 **Trust these instructions**: This information has been validated through actual command execution and file inspection. Only search for additional information if these instructions are incomplete or found to be incorrect.
