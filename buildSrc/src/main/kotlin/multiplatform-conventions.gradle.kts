@@ -7,7 +7,7 @@ plugins {
 }
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(11) // Updated for Vert.x 5 compatibility (requires JDK 11+)
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {

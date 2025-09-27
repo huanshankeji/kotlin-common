@@ -5,7 +5,7 @@ plugins {
     id("com.huanshankeji.kotlin-jvm-library-sonatype-ossrh-publish-conventions")
 }
 
-kotlin.jvmToolchain(8)
+kotlin.jvmToolchain(11) // Updated for Vert.x 5 compatibility (requires JDK 11+)
 
 tasks.named<KotlinCompilationTask<*>>("compileKotlin").configure {
     forEachOptIn { compilerOptions.freeCompilerArgs.add("-opt-in=$it") }
