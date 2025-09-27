@@ -13,5 +13,6 @@ fun ColumnSet.emptySlice() =
     slice(emptyList())
 
 @Untested
-fun ColumnSet.selectEmpty() =
-    select(emptyList())
+@Deprecated("This causes \"java.lang.IllegalArgumentException: Can't prepare SELECT statement without columns or expressions to retrieve\" in Exposed 1.0.0+.", level = DeprecationLevel.ERROR)
+fun ColumnSet.selectEmpty(): Nothing =
+    throw UnsupportedOperationException("selectEmpty() is not supported in Exposed 1.0.0+ as it causes IllegalArgumentException. Use a proper column selection instead.")

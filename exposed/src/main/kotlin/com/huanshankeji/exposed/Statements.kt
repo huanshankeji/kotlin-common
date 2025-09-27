@@ -112,13 +112,13 @@ fun <T : Table> T.insertIgnoreStatement(body: T.(InsertStatement<Number>) -> Uni
     }
 
 fun Table.defaultColumnsForInsertSelect() =
-    columns.filter { !it.columnType.isAutoInc || it.autoIncColumnType?.nextValExpression != null }
+    columns.filter { !it.columnType.isAutoInc }
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.insert].
  */
 fun <T : Table> T.insertSelectStatement(
-    selectQuery: AbstractQuery<*>,
+    selectQuery: Query,
     columns: List<Column<*>> = defaultColumnsForInsertSelect(),
     isIgnore: Boolean = false
 ): InsertSelectStatement =
