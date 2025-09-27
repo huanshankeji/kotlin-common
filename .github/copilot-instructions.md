@@ -143,7 +143,7 @@ Before check-in, the following validations run:
 ### Documentation
 - `README.md`: Maven coordinates, supported targets, API docs link
 - `CONTRIBUTING.md`: Development setup, JDK requirements, testing guidelines
-- [@huanshankeji/.github/files/dev-instructions.md](https://github.com/huanshankeji/.github/blob/main/files/dev-instructions.md): Additional development instructions from the organization
+- [@huanshankeji/.github/dev-instructions.md](https://github.com/huanshankeji/.github/blob/main/dev-instructions.md): Additional development instructions from the organization
 - Each module has `api/` directory for compatibility validation
 
 ### Dependencies
