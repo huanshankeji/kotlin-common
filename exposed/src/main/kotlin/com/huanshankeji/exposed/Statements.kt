@@ -5,6 +5,7 @@ package com.huanshankeji.exposed
 import com.huanshankeji.InternalApi
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.*
+import org.jetbrains.exposed.sql.statements.DeleteStatement
 
 @InternalApi
 const val SELECT_DSL_DEPRECATION_MESSAGE =
@@ -19,8 +20,7 @@ const val SELECT_DSL_DEPRECATION_MESSAGE =
     ReplaceWith("selectAllStatement().where(where)")
 )
 fun FieldSet.selectStatement(where: WhereOp): Query =
-    @Suppress("DEPRECATION_ERROR")
-    select(where)
+    throw NotImplementedError("The original API in Exposed is hidden.")
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.select].
@@ -30,8 +30,7 @@ fun FieldSet.selectStatement(where: WhereOp): Query =
     ReplaceWith("selectAllStatement().where(where)")
 )
 fun FieldSet.selectStatement(where: BuildWhere): Query =
-    @Suppress("DEPRECATION_ERROR")
-    select(where)
+    throw NotImplementedError("The original API in Exposed is hidden.")
 
 @Deprecated(
     SELECT_DSL_DEPRECATION_MESSAGE,
@@ -65,30 +64,33 @@ fun Table.deleteAllStatement() =
     DeleteStatement(this)
 
 fun Table.deleteWhereStatement(
-    op: WhereOp, isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null
+    where: WhereOp, isIgnore: Boolean = false, limit: Int? = null, offset: Long? = null
 ): DeleteStatement =
-    DeleteStatement(this, op, isIgnore, limit, offset)
+    // TODO `offset` unused
+    DeleteStatement(targetsSet = this, where, isIgnore, limit, emptyList())
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
  */
 fun <T : Table> T.deleteWhereStatement(
-    limit: Int? = null, offset: Long? = null, op: TableAwareWithSqlExpressionBuilderBuildWhere<T>
+    limit: Int? = null, offset: Long? = null, where: TableAwareWithSqlExpressionBuilderBuildWhere<T>
 ): DeleteStatement =
-    DeleteStatement(this, op(SqlExpressionBuilder), false, limit, offset)
+    // TODO `offset` unused
+    DeleteStatement(targetsSet = this, where(SqlExpressionBuilder), false, limit, emptyList())
 
 /**
  * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
  */
 fun <T : Table> T.deleteIgnoreWhereStatement(
-    limit: Int? = null, offset: Long? = null, op: TableAwareWithSqlExpressionBuilderBuildWhere<T>
+    limit: Int? = null, offset: Long? = null, where: TableAwareWithSqlExpressionBuilderBuildWhere<T>
 ): DeleteStatement =
-    DeleteStatement(this, op(SqlExpressionBuilder), true, limit, offset)
+    // TODO `offset` unused
+    DeleteStatement(targetsSet = this, where(SqlExpressionBuilder), true, limit, emptyList())
 
 // to access the protected `arguments` in the super class
 class HelperInsertStatement<Key : Any>(table: Table, isIgnore: Boolean = false) :
     InsertStatement<Key>(table, isIgnore) {
-    public override var arguments: List<List<Pair<Column<*>, Any?>>>?
+    override var arguments: List<List<Pair<Column<*>, Any?>>>?
         get() = super.arguments
         set(value) {
             super.arguments = value

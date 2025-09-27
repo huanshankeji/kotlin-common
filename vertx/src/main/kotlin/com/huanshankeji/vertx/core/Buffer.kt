@@ -8,5 +8,6 @@ import io.vertx.core.buffer.impl.BufferImpl
  * Creates a wrapped [Buffer] so that unnecessary copy is avoided.
  * Also see https://github.com/eclipse-vertx/vert.x/issues/4407.
  */
+@Deprecated("Creating a wrapped buffer seems no longer allowed by Vert.x.")
 fun wrappedBuffer(byteArray: ByteArray): Buffer =
-    BufferImpl.buffer(Unpooled.wrappedBuffer(byteArray))
+    throw NotImplementedError()
