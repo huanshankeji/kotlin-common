@@ -3,8 +3,8 @@
 package com.huanshankeji.exposed
 
 import com.huanshankeji.InternalApi
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.statements.*
+import org.jetbrains.exposed.v1.core.*
+import org.jetbrains.exposed.v1.core.statements.*
 
 @InternalApi
 const val SELECT_DSL_DEPRECATION_MESSAGE =

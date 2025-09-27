@@ -1,8 +1,8 @@
 package com.huanshankeji.exposed
 
-import org.jetbrains.exposed.sql.ISqlExpressionBuilder
-import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SqlExpressionBuilder
+import org.jetbrains.exposed.v1.core.ISqlExpressionBuilder
+import org.jetbrains.exposed.v1.core.Op
+import org.jetbrains.exposed.v1.core.SqlExpressionBuilder
 
 typealias BuildWhere = SqlExpressionBuilder.() -> Op<Boolean>
 @Deprecated("Renamed to `WhereBuilder`", ReplaceWith("BuildWhere"/*, "com.huanshankeji.exposed.BuildWhere"*/))

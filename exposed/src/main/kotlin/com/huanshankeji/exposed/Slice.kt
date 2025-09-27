@@ -1,7 +1,7 @@
 package com.huanshankeji.exposed
 
 import com.huanshankeji.Untested
-import org.jetbrains.exposed.sql.ColumnSet
+import org.jetbrains.exposed.v1.core.ColumnSet
 
 /**
  * To simplify the SQL in some expression queries.

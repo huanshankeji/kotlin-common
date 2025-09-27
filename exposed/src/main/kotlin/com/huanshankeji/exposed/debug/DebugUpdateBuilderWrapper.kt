@@ -1,6 +1,7 @@
 package com.huanshankeji.exposed.debug
 
-import org.jetbrains.exposed.sql.statements.UpdateBuilder
+import org.jetbrains.exposed.v1.core.*
+import org.jetbrains.exposed.v1.core.statements.*
 import java.io.PrintStream
 
 // TODO remove or update this class
