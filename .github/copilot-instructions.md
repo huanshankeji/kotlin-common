@@ -26,6 +26,8 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 
 **IMPORTANT**: On non-macOS systems, iOS targets (`iosArm64`, `iosSimulatorArm64`, `iosX64`) will be disabled. Add `kotlin.native.ignoreDisabledTargets=true` to suppress warnings.
 
+If there are snapshot dependencies of our own libraries, set them up referring to <https://github.com/huanshankeji/.github/blob/main/dev-instructions.md#about-snapshot-dependencies-of-our-library-projects>.
+
 ### Bootstrap and Build Commands
 
 #### Essential Commands (validated and working):
