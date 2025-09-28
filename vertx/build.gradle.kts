@@ -54,6 +54,8 @@ dependencies {
     testImplementation(cpnProject(project, ":net"))
 }
 
+kotlin.jvmToolchain(11)
+
 kotlin.sourceSets["test"].languageSettings {
     optIn("kotlin.RequiresOptIn")
     optIn("kotlinx.coroutines.ExperimentalCoroutinesApi")
