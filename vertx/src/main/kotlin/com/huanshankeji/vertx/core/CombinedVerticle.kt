@@ -25,13 +25,17 @@ interface CombinedVerticleFunctions : Verticle {
         subVerticlesStop(stopPromise as Promise<Void?>)
 
     fun <E> List<E>.runAllWithPromise(block: E.(promise: Promise<Void?>) -> Unit, promise: Promise<Void?>) {
-        Future.all(map {
+        Future.all<Void?>(map {
             @Suppress("NAME_SHADOWING") val promise = Promise.promise<Void?>()
             vertx.runOnContext { _ -> it.block(promise) }
             //it.block(promise)
             promise.future()
-        }).onComplete {
-            promise.handle(it.map { null })
+        }).onComplete { asyncResult ->
+            if (asyncResult.succeeded()) {
+                promise.complete(null)
+            } else {
+                promise.fail(asyncResult.cause())
+            }
         }
     }
 }
