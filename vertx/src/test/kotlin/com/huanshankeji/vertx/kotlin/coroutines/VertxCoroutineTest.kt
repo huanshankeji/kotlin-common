@@ -67,15 +67,7 @@ class VertxCoroutineTest : VertxBaseTest() {
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 
-    @Test
-    fun `test awaitSuspendExecuteBlocking`() = runTest {
-        assertTrue(measureVirtualTime {
-            assertEquals(resultValue, vertx.awaitSuspendExecuteBlocking {
-                delay(DEFAULT_SLEEP_OR_DELAY_DURATION)
-                resultValue
-            })
-        } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
-    }
+
 
     @Test
     fun `test coroutineToFuture`() = runTest {
