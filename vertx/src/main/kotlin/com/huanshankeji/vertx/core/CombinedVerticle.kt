@@ -1,6 +1,7 @@
 package com.huanshankeji.vertx.core
 
 import io.vertx.core.*
+import io.vertx.core.CompositeFuture
 
 interface CombinedVerticleFunctions : Verticle {
     val subVerticles: List<Verticle>
@@ -25,13 +26,17 @@ interface CombinedVerticleFunctions : Verticle {
         subVerticlesStop(stopPromise as Promise<Void?>)
 
     fun <E> List<E>.runAllWithPromise(block: E.(promise: Promise<Void?>) -> Unit, promise: Promise<Void?>) {
-        Future.all(map {
-            @Suppress("NAME_SHADOWING") val promise = Promise.promise<Void?>()
-            vertx.runOnContext { _ -> it.block(promise) }
-            //it.block(promise)
-            promise.future()
-        }).onComplete {
-            promise.handle(it.map { null })
+        val futures = map { verticle ->
+            val verticlePromise = Promise.promise<Void?>()
+            vertx.runOnContext { _ -> verticle.block(verticlePromise) }
+            verticlePromise.future()
+        }
+        Future.all(futures).onComplete { result: AsyncResult<CompositeFuture> ->
+            if (result.succeeded()) {
+                promise.complete(null)
+            } else {
+                promise.fail(result.cause())
+            }
         }
     }
 }
