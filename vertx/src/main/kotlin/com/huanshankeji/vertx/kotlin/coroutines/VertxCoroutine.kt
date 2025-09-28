@@ -59,4 +59,4 @@ fun <T> CoroutineScope.coroutineToFuture(
  * @see kotlinx.coroutines.awaitAll
  */
 suspend fun <T> List<Future<T>>.awaitAll(): List<T> =
-    Future.all(this).coAwait().list()
+    Future.all<T>(this).coAwait().list()

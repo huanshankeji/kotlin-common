@@ -6,7 +6,6 @@ import com.huanshankeji.vertx.VertxBaseTest
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
-import io.vertx.core.impl.NoStackTraceThrowable
 import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -25,7 +24,7 @@ class VertxCoroutineTest : VertxBaseTest() {
     class DummyVerticle : AbstractVerticle()
 
     suspend fun assertClosed(vertx: Vertx) =
-        assertThrows<NoStackTraceThrowable> {
+        assertThrows<Exception> {
             vertx.deployVerticle(DummyVerticle()).coAwait()
         }
 
