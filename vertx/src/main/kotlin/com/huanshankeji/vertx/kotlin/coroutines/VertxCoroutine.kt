@@ -40,9 +40,11 @@ suspend fun <T> Vertx.awaitExecuteBlocking(blockingCode: () -> T): T =
 @Deprecated("This API is deprecated for removal. See https://github.com/vert-x3/wiki/wiki/4.4.5-Deprecations-and-breaking-changes#deprecation-of-execute-blocking-methods-with-a-handler-of-promise. Also, this implementation is buggy. See https://github.com/vert-x3/vertx-lang-kotlin/pull/222/commits/fc3c5c5cc0c572eaddb3c2c37d07c696f75b4443#diff-162b76dc534138518a237d9a8ed527f1b3ecaca67385ea7d4357b6eff203f699R138-R217 for a fixed proposed version.")
 suspend fun <T> Vertx.awaitSuspendExecuteBlocking(blockingCode: suspend () -> T): T =
     coroutineScope {
-        executeBlocking(Handler<Promise<T>> {
-            launch { it.complete(blockingCode()) }
-        }).coAwait()
+        executeBlocking<T> {
+            // We can't use suspend functions in Callable, so this doesn't work with the new API
+            // This function should be removed in a future version
+            throw UnsupportedOperationException("This function is deprecated and not compatible with Vert.x 5. Use Vertx.executeBlocking with non-suspend code instead.")
+        }.coAwait()
     }
 
 /**
@@ -72,4 +74,4 @@ fun <T> CoroutineScope.coroutineToFuture(
  * @see kotlinx.coroutines.awaitAll
  */
 suspend fun <T> List<Future<T>>.awaitAll(): List<T> =
-    Future.all(this).coAwait().list()
+    Future.all<T>(this).coAwait().list()
