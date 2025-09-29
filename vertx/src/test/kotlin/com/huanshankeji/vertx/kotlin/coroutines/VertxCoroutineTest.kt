@@ -20,7 +20,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-//@RunWith(VertxUnitRunner::class)
 class VertxCoroutineTest : VertxBaseTest() {
     class DummyVerticle : AbstractVerticle()
 
