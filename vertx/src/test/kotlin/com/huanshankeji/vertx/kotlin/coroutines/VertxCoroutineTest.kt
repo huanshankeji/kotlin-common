@@ -67,8 +67,9 @@ class VertxCoroutineTest : VertxBaseTest() {
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 
+    // This test is disabled due to Vert.x 5 migration - awaitSuspendExecuteBlocking is deprecated and not compatible with Vert.x 5
+    /*
     @Test
-    @org.junit.jupiter.api.Disabled("Disabled due to Vert.x 5 migration - awaitSuspendExecuteBlocking is deprecated and not compatible with Vert.x 5")
     fun `test awaitSuspendExecuteBlocking`() = runTest {
         assertTrue(measureVirtualTime {
             assertEquals(resultValue, vertx.awaitSuspendExecuteBlocking {
@@ -77,6 +78,7 @@ class VertxCoroutineTest : VertxBaseTest() {
             })
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
+    */
 
     @Test
     fun `test coroutineToFuture`() = runTest {
