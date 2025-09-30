@@ -126,6 +126,9 @@ Before check-in, the following validations run:
 3. **API Compatibility**: Binary compatibility validation
 4. **Dependency Analysis**: Automated dependency submission to GitHub
 
+**Code Style:**
+- Follow [our Kotlin code style guide](https://github.com/huanshankeji/.github/blob/main/kotlin-code-style.md) for all Kotlin code contributions
+
 ### Architecture Notes
 - **Multi-module**: Each library extension is a separate Gradle subproject
 - **Convention Plugins**: Custom build logic in `buildSrc` for consistency
