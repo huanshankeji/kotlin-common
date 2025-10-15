@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 plugins {
     `multiplatform-conventions`
 }
@@ -15,3 +18,16 @@ kotlin.sourceSets {
         }
     }
 }
+
+tasks.named<KotlinJvmCompile>("compileTestKotlinJvm") {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
+}
+
+// TODO remove this if not needed
+tasks.named<JavaCompile>("compileJvmTestJava") {
+    sourceCompatibility = "11"
+    targetCompatibility = "11"
+}
+
