@@ -3,9 +3,11 @@
 package com.huanshankeji.exposed
 
 import com.huanshankeji.InternalApi
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.statements.*
-import org.jetbrains.exposed.sql.statements.DeleteStatement
+import org.jetbrains.exposed.v1.core.*
+import org.jetbrains.exposed.v1.core.statements.*
+import org.jetbrains.exposed.v1.jdbc.Query
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
 @InternalApi
 const val SELECT_DSL_DEPRECATION_MESSAGE =
@@ -13,7 +15,7 @@ const val SELECT_DSL_DEPRECATION_MESSAGE =
 
 // The select queries are not executed eagerly so just use them directly.
 /**
- * Adapted from [org.jetbrains.exposed.sql.select].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.Query].
  */
 @Deprecated(
     SELECT_DSL_DEPRECATION_MESSAGE,
@@ -23,7 +25,7 @@ fun FieldSet.selectStatement(where: WhereOp): Query =
     throw NotImplementedError("The original API in Exposed is hidden.")
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.select].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.Query].
  */
 @Deprecated(
     SELECT_DSL_DEPRECATION_MESSAGE,
@@ -58,7 +60,7 @@ fun ColumnSet.selectStatement(column: Expression<*>, vararg columns: Expression<
     select(column, *columns)
 
 /**
- * @see org.jetbrains.exposed.sql.deleteAll
+ * @see org.jetbrains.exposed.v1.jdbc.deleteAll
  */
 fun Table.deleteAllStatement() =
     DeleteStatement(this)
@@ -70,22 +72,22 @@ fun Table.deleteWhereStatement(
     DeleteStatement(targetsSet = this, where, isIgnore, limit, emptyList())
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.deleteWhere].
  */
 fun <T : Table> T.deleteWhereStatement(
     limit: Int? = null, offset: Long? = null, where: TableAwareWithSqlExpressionBuilderBuildWhere<T>
 ): DeleteStatement =
     // TODO `offset` unused
-    DeleteStatement(targetsSet = this, where(SqlExpressionBuilder), false, limit, emptyList())
+    DeleteStatement(targetsSet = this, where(), false, limit, emptyList())
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.deleteWhere].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.deleteWhere].
  */
 fun <T : Table> T.deleteIgnoreWhereStatement(
     limit: Int? = null, offset: Long? = null, where: TableAwareWithSqlExpressionBuilderBuildWhere<T>
 ): DeleteStatement =
     // TODO `offset` unused
-    DeleteStatement(targetsSet = this, where(SqlExpressionBuilder), true, limit, emptyList())
+    DeleteStatement(targetsSet = this, where(), true, limit, emptyList())
 
 // to access the protected `arguments` in the super class
 class HelperInsertStatement<Key : Any>(table: Table, isIgnore: Boolean = false) :
@@ -98,7 +100,7 @@ class HelperInsertStatement<Key : Any>(table: Table, isIgnore: Boolean = false) 
 }
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.insert].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.insert].
  */
 fun <T : Table> T.insertStatement(body: T.(InsertStatement<Number>) -> Unit): HelperInsertStatement<Number> =
     HelperInsertStatement<Number>(this).apply {
@@ -106,7 +108,7 @@ fun <T : Table> T.insertStatement(body: T.(InsertStatement<Number>) -> Unit): He
     }
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.insertIgnore].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.insertIgnore].
  */
 fun <T : Table> T.insertIgnoreStatement(body: T.(InsertStatement<Number>) -> Unit): HelperInsertStatement<Number> =
     HelperInsertStatement<Number>(this, true).apply {
@@ -117,7 +119,7 @@ fun Table.defaultColumnsForInsertSelect() =
     columns.filter { !it.columnType.isAutoInc || it.autoIncColumnType?.nextValExpression != null }
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.insert].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.insert].
  */
 fun <T : Table> T.insertSelectStatement(
     selectQuery: AbstractQuery<*>,
@@ -135,12 +137,12 @@ fun <T : Table> T.updateStatementWithWhereOp(
 }
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.update].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.update].
  */
 fun <T : Table> T.updateStatement(
     where: BuildWhere? = null, limit: Int? = null, body: T.(UpdateStatement) -> Unit
 ): UpdateStatement {
-    val query = UpdateStatement(this, limit, where?.let { SqlExpressionBuilder.it() })
+    val query = UpdateStatement(this, limit, where?.invoke())
     body(query)
     return query
 }
@@ -154,7 +156,7 @@ fun <T : Table> T.updateStatementTableAware(
 }
 
 /**
- * Adapted from [org.jetbrains.exposed.sql.replace].
+ * Adapted from [org.jetbrains.exposed.v1.jdbc.replace].
  */
 fun <T : Table> T.replaceStatement(body: T.(UpdateBuilder<*>) -> Unit): ReplaceStatement<Long> =
     ReplaceStatement<Long>(this).apply {

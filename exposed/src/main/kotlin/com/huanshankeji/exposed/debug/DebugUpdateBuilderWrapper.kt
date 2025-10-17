@@ -1,11 +1,11 @@
 package com.huanshankeji.exposed.debug
 
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.IColumnType
-import org.jetbrains.exposed.sql.Query
-import org.jetbrains.exposed.sql.Transaction
-import org.jetbrains.exposed.sql.statements.UpdateBuilder
-import org.jetbrains.exposed.sql.statements.api.PreparedStatementApi
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.IColumnType
+import org.jetbrains.exposed.v1.core.Transaction
+import org.jetbrains.exposed.v1.core.statements.UpdateBuilder
+import org.jetbrains.exposed.v1.core.statements.api.PreparedStatementApi
+import org.jetbrains.exposed.v1.jdbc.Query
 import java.io.PrintStream
 
 // TODO remove or update this class
