@@ -180,9 +180,7 @@ public abstract interface class com/huanshankeji/vertx/ext/web/VirtualHostCombin
 
 public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions : com/huanshankeji/vertx/core/CombinedVerticleFunctions {
 	public fun subVerticlesStart (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun subVerticlesStart$suspendImpl (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun subVerticlesStop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun subVerticlesStop$suspendImpl (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun toPromise (Lio/vertx/core/Handler;)Lio/vertx/core/Promise;
 }
 
@@ -200,9 +198,7 @@ public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVer
 
 public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI : io/vertx/core/Verticle, kotlinx/coroutines/CoroutineScope {
 	public fun start (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun start$suspendImpl (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public fun stop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public static synthetic fun stop$suspendImpl (Lcom/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI$DefaultImpls {

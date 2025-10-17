@@ -26,7 +26,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 
 **IMPORTANT**: On non-macOS systems, iOS targets (`iosArm64`, `iosSimulatorArm64`, `iosX64`) will be disabled. Add `kotlin.native.ignoreDisabledTargets=true` to suppress warnings.
 
-If the project uses snapshot dependencies of other `com.huanshankeji` libraries, especially in a branch other than `main` such as `dev`, refer to the setup instructions at <https://github.com/huanshankeji/.github/blob/main/dev-instructions.md#about-snapshot-dependencies-of-our-library-projects>.
+**IMPORTANT**: If the project uses snapshot dependencies of other `com.huanshankeji` libraries, especially in a branch other than `main` such as `dev`, refer to the setup instructions at <https://github.com/huanshankeji/.github/blob/main/dev-instructions.md#about-snapshot-dependencies-of-our-library-projects>.
 
 ### Bootstrap and Build Commands
 
@@ -126,6 +126,9 @@ Before check-in, the following validations run:
 3. **API Compatibility**: Binary compatibility validation
 4. **Dependency Analysis**: Automated dependency submission to GitHub
 
+**Code Style:**
+- Follow [our Kotlin code style guide](https://github.com/huanshankeji/.github/blob/main/kotlin-code-style.md) for all Kotlin code contributions
+
 ### Architecture Notes
 - **Multi-module**: Each library extension is a separate Gradle subproject
 - **Convention Plugins**: Custom build logic in `buildSrc` for consistency
@@ -152,6 +155,6 @@ Before check-in, the following validations run:
 The project uses custom dependency management through:
 - `com.huanshankeji:common-gradle-dependencies` for shared dependencies
 - `com.huanshankeji.team:gradle-plugins` for build conventions
-- Kotlin 2.2.20, Dokka 2.1.0-Beta
+- Kotlin 2.2.10, Dokka 2.1.0-Beta
 
 **Trust these instructions**: This information has been validated through actual command execution and file inspection. Only search for additional information if these instructions are incomplete or found to be incorrect.
