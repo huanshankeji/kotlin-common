@@ -24,8 +24,9 @@ interface CombinedVerticleFunctions : Verticle {
         @Suppress("UNCHECKED_CAST")
         subVerticlesStop(stopPromise as Promise<Void?>)
 
+    @Deprecated("APIs using `Promise` are deprecated. See https://vertx.io/docs/guides/vertx-5-migration-guide/#_embracing_the_future_model .")
     fun <E> List<E>.runAllWithPromise(block: E.(promise: Promise<Void?>) -> Unit, promise: Promise<Void?>) {
-        Future.all(map {
+        Future.all<E>(map {
             @Suppress("NAME_SHADOWING") val promise = Promise.promise<Void?>()
             vertx.runOnContext { _ -> it.block(promise) }
             //it.block(promise)
