@@ -21,6 +21,8 @@ dependencies {
     }
 }
 
+kotlin.jvmToolchain(11)
+
 tasks.withType<KotlinCompile> {
     compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
 }
