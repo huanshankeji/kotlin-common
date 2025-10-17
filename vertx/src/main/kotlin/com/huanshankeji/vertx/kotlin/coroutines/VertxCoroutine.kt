@@ -22,9 +22,6 @@ suspend inline fun <R> Vertx.use(block: (Vertx) -> R): R =
 /**
  * Execute [blockingCode] that returns the a [T] instance with [Vertx.executeBlocking]
  * and awaits its completion.
- *
- * Compared to [Vertx.executeBlocking]'s `blockingCodeHandler` argument,
- * [blockingCode] returns the result when the operation completes instead of calling [Promise.complete].
  */
 suspend fun <T> Vertx.awaitExecuteBlocking(blockingCode: () -> T): T =
     executeBlocking(blockingCode).coAwait()
@@ -55,6 +52,7 @@ fun <T> CoroutineScope.coroutineToFuture(
     start: CoroutineStart = CoroutineStart.DEFAULT,
     block: suspend CoroutineScope.() -> T
 ): Future<T> {
+    // Tried refactoring this function using `Future.future` but it seems not feasible.
     val promise = Promise.promise<T>()
     launch(context, start) {
         try {
