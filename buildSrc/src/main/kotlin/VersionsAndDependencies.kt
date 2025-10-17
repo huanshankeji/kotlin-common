@@ -4,9 +4,8 @@ import com.huanshankeji.CommonVersions
 
 val projectVersion = "0.7.0-SNAPSHOT"
 
-// TODO remove Exposed's explicit version when migration to Exposed 1.0.0 is complete
 // Kotest 6 requires Java 11
-val commonVersions = CommonVersions(exposed = "0.61.0", kotest = "5.9.1")
+val commonVersions = CommonVersions(kotest = "5.9.1")
 val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
 
