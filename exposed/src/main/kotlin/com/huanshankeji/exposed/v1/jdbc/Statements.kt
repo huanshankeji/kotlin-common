@@ -1,8 +1,12 @@
 @file:OptIn(InternalApi::class)
 
-package com.huanshankeji.exposed
+package com.huanshankeji.exposed.v1.jdbc
 
 import com.huanshankeji.InternalApi
+import com.huanshankeji.exposed.v1.core.BuildWhere
+import com.huanshankeji.exposed.v1.core.TableAwareBuildWhere
+import com.huanshankeji.exposed.v1.core.TableAwareWithSqlExpressionBuilderBuildWhere
+import com.huanshankeji.exposed.v1.core.WhereOp
 import org.jetbrains.exposed.v1.core.*
 import org.jetbrains.exposed.v1.core.statements.*
 import org.jetbrains.exposed.v1.jdbc.Query
@@ -15,7 +19,7 @@ const val SELECT_DSL_DEPRECATION_MESSAGE =
 
 // The select queries are not executed eagerly so just use them directly.
 /**
- * Adapted from [org.jetbrains.exposed.v1.jdbc.Query].
+ * Adapted from [Query].
  */
 @Deprecated(
     SELECT_DSL_DEPRECATION_MESSAGE,
@@ -25,7 +29,7 @@ fun FieldSet.selectStatement(where: WhereOp): Query =
     throw NotImplementedError("The original API in Exposed is hidden.")
 
 /**
- * Adapted from [org.jetbrains.exposed.v1.jdbc.Query].
+ * Adapted from [Query].
  */
 @Deprecated(
     SELECT_DSL_DEPRECATION_MESSAGE,

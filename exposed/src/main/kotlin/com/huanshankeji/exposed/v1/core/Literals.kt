@@ -1,4 +1,4 @@
-package com.huanshankeji.exposed
+package com.huanshankeji.exposed.v1.core
 
 import org.jetbrains.exposed.v1.core.stringLiteral
 
