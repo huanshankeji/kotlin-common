@@ -1,6 +1,6 @@
 @file:OptIn(InternalApi::class)
 
-package com.huanshankeji.exposed.v1.jdbc
+package com.huanshankeji.exposed
 
 import com.huanshankeji.InternalApi
 import com.huanshankeji.exposed.v1.core.BuildWhere

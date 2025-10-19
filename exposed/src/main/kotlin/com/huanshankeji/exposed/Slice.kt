@@ -1,4 +1,4 @@
-package com.huanshankeji.exposed.v1.core
+package com.huanshankeji.exposed
 
 import org.jetbrains.exposed.v1.core.ColumnSet
 import org.jetbrains.exposed.v1.core.FieldSet
