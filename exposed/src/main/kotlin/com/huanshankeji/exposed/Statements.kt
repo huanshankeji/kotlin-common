@@ -17,8 +17,8 @@ import org.jetbrains.exposed.v1.jdbc.selectAll
 const val SELECT_DSL_DEPRECATION_MESSAGE =
     "As part of Exposed SELECT DSL design changes, this will be removed in future releases."
 internal const val USE_EXPOSED_JDBC_API_DEPRECATION_MESSAGE = "Use the API in `org.jetbrains.exposed.v1.jdbc` directly."
-internal const val USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE =
-    "Use `buildStatement` in Exposed and the corresponding function API."
+internal const val USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE =
+    "Use the new `buildStatement` API in Exposed."
 
 // The select queries are not executed eagerly so just use them directly.
 /**
@@ -82,7 +82,7 @@ fun ColumnSet.selectStatement(column: Expression<*>, vararg columns: Expression<
  * @see org.jetbrains.exposed.v1.jdbc.deleteAll
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith("buildStatement { deleteAll() }", "org.jetbrains.exposed.v1.core.statements.buildStatement")
 )
 fun Table.deleteAllStatement() =
@@ -95,7 +95,7 @@ fun Table.deleteAllStatement() =
  * @param offset no longer used
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { if (isIgnore) deleteIgnoreWhere(limit) { where } else deleteWhere(limit) { where } }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -111,7 +111,7 @@ fun Table.deleteWhereStatement(
  * @param offset no longer used
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { deleteWhere(limit, where) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -127,7 +127,7 @@ fun <T : Table> T.deleteWhereStatement(
  * @param offset no longer used
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { deleteIgnoreWhere(limit, where) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -153,7 +153,7 @@ class HelperInsertStatement<Key : Any>(table: Table, isIgnore: Boolean = false) 
  * Adapted from [org.jetbrains.exposed.v1.jdbc.insert].
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { insert(body) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -166,7 +166,7 @@ fun <T : Table> T.insertStatement(body: T.(InsertStatement<Number>) -> Unit): In
  * Adapted from [org.jetbrains.exposed.v1.jdbc.insertIgnore].
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { insertIgnore(body) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -187,7 +187,7 @@ fun Table.defaultColumnsForInsertSelect() =
  * Adapted from [org.jetbrains.exposed.v1.jdbc.insert].
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { if (isIgnore) insertIgnore(selectQuery, columns) else insert(selectQuery, columns) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -201,7 +201,7 @@ fun <T : Table> T.insertSelectStatement(
     buildStatement { if (isIgnore) insertIgnore(selectQuery, columns) else insert(selectQuery, columns) }
 
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { update(where?.let { { it } }, limit, body) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -216,7 +216,7 @@ fun <T : Table> T.updateStatementWithWhereOp(
  * Adapted from [org.jetbrains.exposed.v1.jdbc.update].
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { update(where, limit, body) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -228,7 +228,7 @@ fun <T : Table> T.updateStatement(
     buildStatement { update(where, limit, body) }
 
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { update(where?.let { { it() } }, limit, body) }   ",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
@@ -243,7 +243,7 @@ fun <T : Table> T.updateStatementTableAware(
  * Adapted from [org.jetbrains.exposed.v1.jdbc.replace].
  */
 @Deprecated(
-    USE_EXPOSED_API_WITH_BUILD_STATEMENT_DEPRECATION_MESSAGE,
+    USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
         "buildStatement { replace(body) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
