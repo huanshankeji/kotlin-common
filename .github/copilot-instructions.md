@@ -155,6 +155,6 @@ Before check-in, the following validations run:
 The project uses custom dependency management through:
 - `com.huanshankeji:common-gradle-dependencies` for shared dependencies
 - `com.huanshankeji.team:gradle-plugins` for build conventions
-- Kotlin 2.2.10, Dokka 2.1.0-Beta
+- Kotlin 2.2.10, Dokka 2.1.0
 
 **Trust these instructions**: This information has been validated through actual command execution and file inspection. Only search for additional information if these instructions are incomplete or found to be incorrect.
