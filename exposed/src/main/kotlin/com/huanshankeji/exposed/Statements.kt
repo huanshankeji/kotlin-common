@@ -230,7 +230,7 @@ fun <T : Table> T.updateStatement(
 @Deprecated(
     USE_EXPOSED_BUILD_STATEMENT_API_DEPRECATION_MESSAGE,
     ReplaceWith(
-        "buildStatement { update(where?.let { { it() } }, limit, body) }   ",
+        "buildStatement { update(where?.let { { it() } }, limit, body) }",
         "org.jetbrains.exposed.v1.core.statements.buildStatement"
     )
 )
