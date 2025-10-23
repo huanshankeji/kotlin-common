@@ -1,8 +1,7 @@
 package com.huanshankeji.exposed
 
-import com.huanshankeji.Untested
-import org.jetbrains.exposed.sql.ColumnSet
-import org.jetbrains.exposed.sql.FieldSet
+import org.jetbrains.exposed.v1.core.ColumnSet
+import org.jetbrains.exposed.v1.core.FieldSet
 
 /**
  * To simplify the SQL in some expression queries.
@@ -14,7 +13,3 @@ import org.jetbrains.exposed.sql.FieldSet
 )
 fun ColumnSet.emptySlice(): FieldSet =
     throw NotImplementedError("The original API in Exposed is removed.")
-
-@Untested
-fun ColumnSet.selectEmpty() =
-    select(emptyList())
