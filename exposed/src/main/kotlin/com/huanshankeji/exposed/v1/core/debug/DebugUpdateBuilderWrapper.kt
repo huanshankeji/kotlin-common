@@ -5,7 +5,7 @@ import org.jetbrains.exposed.v1.core.statements.UpdateBuilder
 import java.io.PrintStream
 
 /**
- * An [UpdateBuilder] wrapper that print the columns set.
+ * An [UpdateBuilder] wrapper that prints the columns set.
  */
 class DebugUpdateBuilderWrapper<out T>(val updateBuilder: UpdateBuilder<T>, val out: PrintStream = System.out) :
     UpdateBuilder<T>(updateBuilder.type, updateBuilder.targets) {
