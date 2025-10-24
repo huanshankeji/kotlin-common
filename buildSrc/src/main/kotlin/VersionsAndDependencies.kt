@@ -10,7 +10,12 @@ val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
 
 object DependencyVersions {
+    // https://github.com/google/protobuf-gradle-plugin/releases
     val protobufPlugin = "0.9.5"
-    val protobuf = "4.31.1"
-    val okio = "3.12.0"
+
+    // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+    val protobuf = "4.33.0"
+
+    // https://github.com/square/okio/tags
+    val okio = "3.16.2"
 }
