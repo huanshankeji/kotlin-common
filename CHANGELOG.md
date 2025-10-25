@@ -1,5 +1,10 @@
 # Change log
 
+## v0.6.1 / 2024-12-05
+
+* bump Kotlin to 2.1.0 and our library and build dependencies to the latest (including pre-release versions except for Vert.x 5)
+* deprecate `PgPoolOptions.setUpConventionally`, which should've been included in v0.6.0 but was not
+
 ## v0.6.0 / 2024-11-29
 
 * add conversion functions to convert Vert.x `Buffer`s to kotlinx-io `RawSink`s and `Sink`s and Okio `Sink`s and `BufferedSink`s

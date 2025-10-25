@@ -33,7 +33,7 @@ dependencies {
         implementation(moduleWithoutVersion("lang-kotlin-coroutines"))
     }
 
-    "kotlinxIoImplementation"("org.jetbrains.kotlinx:kotlinx-io-core:${DependencyVersions.kotlinxIo}")
+    "kotlinxIoImplementation"("org.jetbrains.kotlinx:kotlinx-io-core:${commonVersions.kotlinxIo}")
     "okioImplementation"("com.squareup.okio:okio:${DependencyVersions.okio}")
 
     implementation(cpnProject(project, ":core"))
@@ -53,6 +53,8 @@ dependencies {
     }
     testImplementation(cpnProject(project, ":net"))
 }
+
+kotlin.jvmToolchain(11)
 
 kotlin.sourceSets["test"].languageSettings {
     optIn("kotlin.RequiresOptIn")

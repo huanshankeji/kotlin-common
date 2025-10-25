@@ -7,7 +7,7 @@ kotlin.sourceSets {
         languageSettings.optIn("kotlin.RequiresOptIn")
     }
 
-    val commonTest by getting {
+    commonTest {
         dependencies {
             implementation(kotlin("test"))
             implementation(commonDependencies.kotest.property())
