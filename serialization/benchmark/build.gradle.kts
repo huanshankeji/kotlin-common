@@ -5,6 +5,10 @@ plugins {
     kotlin("multiplatform")
     with(commonGradleClasspathDependencies.kotlin.plugin.serialization) { applyPluginWithVersion() }
     `maven-central`
+    // Note: The kotlinx-benchmark plugin (v0.4.14) currently logs a warning about the metadata compilation
+    // in Kotlin 2.2+: "Unsupported compilation 'compilation 'main' (target metadata (common))'"
+    // This is expected and harmless - the plugin correctly ignores the metadata compilation.
+    // The warning will be resolved when kotlinx-benchmark releases a Kotlin 2.2+ compatible version.
     id("com.huanshankeji.benchmark.kotlinx-benchmark-multiplatform-conventions")
 }
 
@@ -19,6 +23,8 @@ kotlin {
     //linuxX64()
     //wasmJs { nodejs() }
 }
+
+
 
 kotlin {
     sourceSets {
@@ -40,3 +46,4 @@ kotlin {
         }
     }
 }
+
