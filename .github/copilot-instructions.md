@@ -60,7 +60,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 - iOS target warnings on non-macOS systems
 - WebAssembly environment selection warnings
 - Dokka experimental plugin warnings
-- Gradle deprecation warnings (project targets Gradle 9.0.0)
+- Gradle deprecation warnings (project targets Gradle 9.1.0)
 
 **Error Handling**:
 - For multiplatform modules, use target-specific tasks like `jvmTest`, `jsTest`, `allTests` instead of `test`
