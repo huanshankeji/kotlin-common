@@ -10,7 +10,10 @@ kotlin {
     jvmToolchain(8)
 
     @OptIn(ExperimentalWasmDsl::class)
-    wasmJs()
+    wasmJs {
+        browser()
+        //nodejs()
+    }
 
     sourceSets {
         all {

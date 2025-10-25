@@ -9,4 +9,4 @@ import io.vertx.core.buffer.impl.BufferImpl
  * Also see https://github.com/eclipse-vertx/vert.x/issues/4407.
  */
 fun wrappedBuffer(byteArray: ByteArray): Buffer =
-    BufferImpl.buffer(Unpooled.wrappedBuffer(byteArray))
+    BufferImpl(Unpooled.wrappedBuffer(byteArray))

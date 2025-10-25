@@ -26,6 +26,8 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 
 **IMPORTANT**: On non-macOS systems, iOS targets (`iosArm64`, `iosSimulatorArm64`, `iosX64`) will be disabled. Add `kotlin.native.ignoreDisabledTargets=true` to suppress warnings.
 
+**IMPORTANT**: If the project uses snapshot dependencies of other `com.huanshankeji` libraries, especially in a branch other than `main` such as `dev`, refer to the setup instructions at <https://github.com/huanshankeji/.github/blob/main/dev-instructions.md#about-snapshot-dependencies-of-our-library-projects>.
+
 ### Bootstrap and Build Commands
 
 #### Essential Commands (validated and working):
@@ -58,7 +60,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 - iOS target warnings on non-macOS systems
 - WebAssembly environment selection warnings
 - Dokka experimental plugin warnings
-- Gradle deprecation warnings (project targets Gradle 8.11.1)
+- Gradle deprecation warnings (project targets Gradle 9.1.0)
 
 **Error Handling**:
 - For multiplatform modules, use target-specific tasks like `jvmTest`, `jsTest`, `allTests` instead of `test`
@@ -90,7 +92,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 - **core**: Core Kotlin language and stdlib extensions
 - **arrow**: Extensions for Arrow functional programming library
 - **coroutines**: Kotlin Coroutines utilities
-- **exposed**: Database library (Exposed) extensions  
+- **exposed**: Database library (Exposed) extensions
 - **ktor**: HTTP client/server framework extensions
 - **net**: Network-related utilities
 - **reflect**: Kotlin reflection utilities
@@ -124,6 +126,9 @@ Before check-in, the following validations run:
 3. **API Compatibility**: Binary compatibility validation
 4. **Dependency Analysis**: Automated dependency submission to GitHub
 
+**Code Style:**
+- Follow [our Kotlin code style guide](https://github.com/huanshankeji/.github/blob/main/kotlin-code-style.md) for all Kotlin code contributions
+
 ### Architecture Notes
 - **Multi-module**: Each library extension is a separate Gradle subproject
 - **Convention Plugins**: Custom build logic in `buildSrc` for consistency
@@ -140,15 +145,16 @@ Before check-in, the following validations run:
 - `buildSrc/build.gradle.kts`: buildSrc/meta-build plugin dependencies and versions
 - `buildSrc/src/main/kotlin/VersionsAndDependencies.kt`: Shared compilation dependencies
 
-### Documentation  
+### Documentation
 - `README.md`: Maven coordinates, supported targets, API docs link
 - `CONTRIBUTING.md`: Development setup, JDK requirements, testing guidelines
+- [@huanshankeji/.github/dev-instructions.md](https://github.com/huanshankeji/.github/blob/main/dev-instructions.md): Additional development instructions from the organization
 - Each module has `api/` directory for compatibility validation
 
 ### Dependencies
 The project uses custom dependency management through:
 - `com.huanshankeji:common-gradle-dependencies` for shared dependencies
 - `com.huanshankeji.team:gradle-plugins` for build conventions
-- Kotlin 2.1.0, Dokka 2.0.0-Beta
+- Kotlin 2.2.21, Dokka 2.1.0
 
 **Trust these instructions**: This information has been validated through actual command execution and file inspection. Only search for additional information if these instructions are incomplete or found to be incorrect.

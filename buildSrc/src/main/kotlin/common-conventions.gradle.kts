@@ -1,4 +1,4 @@
-import com.huanshankeji.team.`Shreck Ye`
+import com.huanshankeji.team.ShreckYe
 import com.huanshankeji.team.pomForTeamDefaultOpenSource
 
 plugins {
@@ -16,7 +16,7 @@ afterEvaluate {
             "Huanshankeji Kotlin Common",
             "Huanshankeji's common code libraries in Kotlin"
         ) {
-            `Shreck Ye`()
+            ShreckYe()
         }
     }
 }

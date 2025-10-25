@@ -29,12 +29,12 @@ public class com/huanshankeji/vertx/core/CombinedVerticle : io/vertx/core/Abstra
 
 public abstract interface class com/huanshankeji/vertx/core/CombinedVerticleFunctions : io/vertx/core/Verticle {
 	public abstract fun getSubVerticles ()Ljava/util/List;
-	public abstract fun runAllWithPromise (Ljava/util/List;Lkotlin/jvm/functions/Function2;Lio/vertx/core/Promise;)V
-	public abstract fun subVerticlesInit (Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
-	public abstract fun subVerticlesStart (Lio/vertx/core/Promise;)V
-	public abstract fun subVerticlesStartUnit (Lio/vertx/core/Promise;)V
-	public abstract fun subVerticlesStop (Lio/vertx/core/Promise;)V
-	public abstract fun subVerticlesStopUnit (Lio/vertx/core/Promise;)V
+	public fun runAllWithPromise (Ljava/util/List;Lkotlin/jvm/functions/Function2;Lio/vertx/core/Promise;)V
+	public fun subVerticlesInit (Lio/vertx/core/Vertx;Lio/vertx/core/Context;)V
+	public fun subVerticlesStart (Lio/vertx/core/Promise;)V
+	public fun subVerticlesStartUnit (Lio/vertx/core/Promise;)V
+	public fun subVerticlesStop (Lio/vertx/core/Promise;)V
+	public fun subVerticlesStopUnit (Lio/vertx/core/Promise;)V
 }
 
 public final class com/huanshankeji/vertx/core/CombinedVerticleFunctions$DefaultImpls {
@@ -164,8 +164,8 @@ public final class com/huanshankeji/vertx/ext/web/RoutingContextKt {
 
 public abstract interface class com/huanshankeji/vertx/ext/web/SingleVirtualHostVerticle : com/huanshankeji/vertx/ext/web/VirtualHostCombinable, io/vertx/core/Verticle {
 	public abstract fun getVirtualHost ()Ljava/lang/String;
-	public abstract fun routesOnVirtualHost (Lio/vertx/ext/web/Router;)V
-	public abstract fun subRouter ()Lio/vertx/ext/web/Router;
+	public fun routesOnVirtualHost (Lio/vertx/ext/web/Router;)V
+	public fun subRouter ()Lio/vertx/ext/web/Router;
 	public abstract fun virtualHostSubRouter (Lio/vertx/ext/web/Router;)V
 }
 
@@ -179,9 +179,9 @@ public abstract interface class com/huanshankeji/vertx/ext/web/VirtualHostCombin
 }
 
 public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions : com/huanshankeji/vertx/core/CombinedVerticleFunctions {
-	public abstract fun subVerticlesStart (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun subVerticlesStop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun toPromise (Lio/vertx/core/Handler;)Lio/vertx/core/Promise;
+	public fun subVerticlesStart (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun subVerticlesStop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun toPromise (Lio/vertx/core/Handler;)Lio/vertx/core/Promise;
 }
 
 public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVerticleFunctions$DefaultImpls {
@@ -197,8 +197,8 @@ public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineCombinedVer
 }
 
 public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI : io/vertx/core/Verticle, kotlinx/coroutines/CoroutineScope {
-	public abstract fun start (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
-	public abstract fun stop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun start (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun stop (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI$DefaultImpls {
@@ -246,8 +246,10 @@ public abstract class com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedW
 }
 
 public abstract interface class com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI : com/huanshankeji/vertx/kotlin/coroutines/CoroutineVerticleI {
-	public abstract fun checkedCoroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
-	public abstract fun coroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public fun checkedCoroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static synthetic fun checkedCoroutineHandler$default (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
+	public fun coroutineHandler (Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;)Lio/vertx/ext/web/Route;
+	public static synthetic fun coroutineHandler$default (Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI;Lio/vertx/ext/web/Route;Lcom/huanshankeji/vertx/kotlin/coroutines/ext/web/CoroutineHandlerLaunchMode;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lio/vertx/ext/web/Route;
 }
 
 public final class com/huanshankeji/vertx/kotlin/coroutines/ext/web/ExtendedWebCoroutineVerticleI$DefaultImpls {

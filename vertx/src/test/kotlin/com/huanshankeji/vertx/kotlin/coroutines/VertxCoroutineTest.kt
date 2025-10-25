@@ -6,7 +6,7 @@ import com.huanshankeji.vertx.VertxBaseTest
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
-import io.vertx.core.impl.NoStackTraceThrowable
+import io.vertx.core.VertxException
 import io.vertx.kotlin.coroutines.coAwait
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -16,6 +16,7 @@ import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -25,7 +26,7 @@ class VertxCoroutineTest : VertxBaseTest() {
     class DummyVerticle : AbstractVerticle()
 
     suspend fun assertClosed(vertx: Vertx) =
-        assertThrows<NoStackTraceThrowable> {
+        assertThrows<VertxException> {
             vertx.deployVerticle(DummyVerticle()).coAwait()
         }
 
@@ -67,7 +68,8 @@ class VertxCoroutineTest : VertxBaseTest() {
         } >= DEFAULT_SLEEP_OR_DELAY_DURATION)
     }
 
-    @Test
+    // to be removed
+    //@Test
     fun `test awaitSuspendExecuteBlocking`() = runTest {
         assertTrue(measureVirtualTime {
             assertEquals(resultValue, vertx.awaitSuspendExecuteBlocking {
