@@ -7,14 +7,10 @@ plugins {
     id("com.huanshankeji.team.default-github-packages-maven-publish")
     id("version")
     id("dokka-convention")
-    id("com.vanniktech.maven.publish")
+    id("com.huanshankeji.maven-central-publish-conventions")
 }
 
 mavenPublishing {
-    publishToMavenCentral()
-
-    signAllPublications()
-
     pom {
         setUpPomForTeamDefaultOpenSource(
             project,
