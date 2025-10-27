@@ -1,5 +1,17 @@
 # Change log
 
+## v0.7.0 / 2025-10-28
+
+* ci: use our extracted composite actions by @OpenWaygate
+* onboard this project with the GitHub Copilot coding agent
+* keep the project updated, updating toolchains and dependencies to the latest
+    * bump the Gradle wrapper to the latest 9.1.0
+    * bump Kotlin to the latest 2.2.21
+    * migrate to Vert.x 5
+    * migrate to Exposed v1, reorganize the code, and deprecate the statement creation APIs
+    * remove the `iosX64` target [whose support has been moved to Tier 2](https://kotlinlang.org/docs/native-target-support.html#tier-2)
+* fix Maven Central publishing with our new plugin and add `inceptionYear` for the POM
+
 ## v0.6.1 / 2024-12-05
 
 * bump Kotlin to 2.1.0 and our library and build dependencies to the latest (including pre-release versions except for Vert.x 5)
