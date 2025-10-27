@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("common-conventions")
-    id("com.huanshankeji.kotlin-jvm-library-sonatype-ossrh-publish-conventions")
+    kotlin("jvm")
 }
 
 kotlin.jvmToolchain(8)
