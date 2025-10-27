@@ -15,7 +15,8 @@ mavenPublishing {
         setUpPomForTeamDefaultOpenSource(
             project,
             "Huanshankeji Kotlin Common",
-            "Huanshankeji's common code libraries in Kotlin"
+            "Huanshankeji's common code libraries in Kotlin",
+            "2022"
         ) {
             ShreckYe()
         }
