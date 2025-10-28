@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     id("common-conventions")
-    kotlin("jvm")
+    id("com.huanshankeji.kotlin-jvm-library-maven-publish-conventions")
 }
 
 kotlin.jvmToolchain(8)

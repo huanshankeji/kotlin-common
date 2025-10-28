@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 plugins {
     id("common-conventions")
     id("com.huanshankeji.kotlin-multiplatform-conventional-targets")
+    id("com.huanshankeji.kotlin-multiplatform-maven-publish-conventions")
 }
 
 kotlin {
