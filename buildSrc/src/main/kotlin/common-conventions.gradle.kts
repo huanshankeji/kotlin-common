@@ -10,15 +10,13 @@ plugins {
     id("com.huanshankeji.maven-central-publish-conventions")
 }
 
-mavenPublishing {
-    pom {
-        setUpPomForTeamDefaultOpenSource(
-            project,
-            "Huanshankeji Kotlin Common",
-            "Huanshankeji's common code libraries in Kotlin",
-            "2022"
-        ) {
-            ShreckYe()
-        }
+mavenPublishing.pom {
+    setUpPomForTeamDefaultOpenSource(
+        project,
+        "Huanshankeji Kotlin Common",
+        "Huanshankeji's common code libraries in Kotlin",
+        "2022"
+    ) {
+        ShreckYe()
     }
 }
