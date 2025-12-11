@@ -278,6 +278,7 @@ public final class com/huanshankeji/vertx/kotlin/sqlclient/BatchSqlResultSequenc
 
 public final class com/huanshankeji/vertx/kotlin/sqlclient/PreparedQueryKt {
 	public static final fun executeBatchAwaitForSqlResultSequence (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static final fun executeBatchCoAwaitForSqlResultSequence (Lio/vertx/sqlclient/PreparedQuery;Ljava/util/List;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/huanshankeji/vertx/pgclient/PgPoolOptionsKt {
