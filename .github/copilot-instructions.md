@@ -36,6 +36,16 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 3. **Run verification checks**: `./gradlew check` (comprehensive testing, takes 5-15 minutes)
 4. **Publish to local Maven**: `./gradlew publishToMavenLocal` (recommended for testing changes)
 
+> **Do NOT run `apiDump` automatically** — even if `check` fails due to API changes (i.e. `apiCheck` fails). Leave `apiDump` for the human developer to run after they have reviewed the API changes. Running `apiDump` automatically generates unnecessary Git-tracked churn before the developer has had a chance to review the API surface.
+> Only run `apiDump` if you are **very confident** you have completely and correctly finished all the task goals and no further API edits from the developer will be needed.
+
+> If `check` fails solely due to `apiCheck` failures (because public APIs have changed), do **not** run `apiDump` automatically. Instead, validate using:
+> ```bash
+> ./gradlew test             # or jvmTest / jsTest / allTests for multiplatform modules
+> ./gradlew publishToMavenLocal
+> ```
+> Then leave the `apiDump` step to the human developer to perform after reviewing API changes.
+
 #### Testing Commands:
 - **For multiplatform modules**: 
   - Run JVM tests: `./gradlew :kotlin-common-[module]:jvmTest`
@@ -43,6 +53,7 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
   - Run all tests: `./gradlew :kotlin-common-[module]:allTests`
 - **For JVM-only modules** (using `kotlin("jvm")` plugin): `./gradlew :kotlin-common-[module]:test`
 - **Global verification**: `./gradlew check` (runs all tests and validation across all modules)
+- **When `check` fails due to `apiCheck`**: use `./gradlew test` (or `jvmTest`/`jsTest`/`allTests` for multiplatform modules) and `./gradlew publishToMavenLocal` as the fallback — do **not** run `apiDump` automatically
 
 #### Documentation:
 - **Generate API docs**: `./gradlew :dokkaGeneratePublicationHtml`
@@ -123,8 +134,10 @@ Always ensure JDK 8 and JDK 17 are properly configured before building. JDK 17 s
 Before check-in, the following validations run:
 1. **Compilation**: All target platforms compile successfully
 2. **Tests**: Platform-specific test suites pass
-3. **API Compatibility**: Binary compatibility validation
+3. **API Compatibility**: Binary compatibility validation (`apiCheck`) — the `api/` directory in each module tracks the public API surface
 4. **Dependency Analysis**: Automated dependency submission to GitHub
+
+> **`apiDump` policy**: Do **not** run `apiDump` automatically — even when `check` fails because `apiCheck` detects API changes. Instead, use `./gradlew test` (or `jvmTest`/`jsTest`/`allTests`) and `./gradlew publishToMavenLocal` to validate correctness and the build. Leave `apiDump` for the human developer to run after reviewing the API surface changes. Only run `apiDump` if you are very confident the task is fully complete and no further API edits will be needed.
 
 **Code Style:**
 - Follow [our Kotlin code style guide](https://github.com/huanshankeji/.github/blob/main/kotlin-code-style.md) for all Kotlin code contributions
