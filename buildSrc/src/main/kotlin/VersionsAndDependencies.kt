@@ -4,8 +4,7 @@ import com.huanshankeji.CommonVersions
 
 val projectVersion = "0.7.0-SNAPSHOT"
 
-// Kotest 6 requires Java 11
-val commonVersions = CommonVersions(kotest = "5.9.1")
+val commonVersions = CommonVersions(kotest = "6.1.11")
 val commonDependencies = CommonDependencies(commonVersions)
 val commonGradleClasspathDependencies = CommonGradleClasspathDependencies(commonVersions)
 
@@ -14,8 +13,8 @@ object DependencyVersions {
     val protobufPlugin = "0.9.5"
 
     // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
-    val protobuf = "4.33.0"
+    val protobuf = "4.34.1"
 
     // https://github.com/square/okio/tags
-    val okio = "3.16.2"
+    val okio = "3.17.0"
 }
