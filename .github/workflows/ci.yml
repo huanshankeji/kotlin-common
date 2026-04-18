@@ -19,6 +19,7 @@ jobs:
           jdk-versions: 8-zulu, 17-temurin
 
   dependency-submission:
+    if: github.ref == 'refs/heads/main'
     runs-on: macos-latest
     permissions:
       contents: write
