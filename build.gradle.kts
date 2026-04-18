@@ -22,7 +22,7 @@ dependencies {
         "reflect",
         "serialization",
         "vertx",
-        //"vertx:with-context-receivers",
+        //"vertx:with-context-parameters",
     ).forEach {
         dokka(cpnProject(project, ":$it"))
     }
@@ -37,6 +37,6 @@ apiValidation {
     ignoredProjects += "kotlin-common".let {
         "$it-serialization-benchmark".let {
             listOf(it, "$it-jvm-only")
-        } + "$it-vertx-with-context-receivers"
+        } + "$it-vertx-with-context-parameters"
     }
 }
