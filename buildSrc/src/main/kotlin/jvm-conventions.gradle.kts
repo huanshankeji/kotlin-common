@@ -6,7 +6,7 @@ plugins {
     `java-library`
 }
 
-kotlin.jvmToolchain(8)
+kotlin.jvmToolchain(11)
 
 tasks.named<KotlinCompilationTask<*>>("compileKotlin").configure {
     forEachOptIn { compilerOptions.freeCompilerArgs.add("-opt-in=$it") }

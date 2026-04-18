@@ -14,7 +14,7 @@ include(
     "serialization:benchmark",
     "serialization:benchmark:jvm-only",
     "vertx",
-    "vertx:with-context-receivers",
+    "vertx:with-context-parameters",
     /*
     "vertx:kotlinx-io",
     "vertx:okio",
