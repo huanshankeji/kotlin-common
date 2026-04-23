@@ -1,3 +1,5 @@
+// TODO consider deprecating this whole module in favor of Arrow coroutines (https://arrow-kt.io/learn/coroutines/)
+
 import com.huanshankeji.cpnProject
 
 plugins {
