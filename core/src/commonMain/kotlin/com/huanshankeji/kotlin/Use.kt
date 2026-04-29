@@ -13,6 +13,7 @@ private const val USE_FUNCTION_DEPRECATION_MESSAGE = "Use https://kotlinlang.org
  * Copied and adapted from [kotlin.use].
  */
 @Deprecated(USE_FUNCTION_DEPRECATION_MESSAGE)
+@Suppress("DEPRECATION")
 @ExperimentalApi
 @OptIn(ExperimentalContracts::class)
 inline fun <T, R> T.use(block: (T) -> R, close: T.() -> Unit): R {
