@@ -23,6 +23,8 @@ dependencies {
         "serialization",
         "vertx",
         //"vertx:with-context-parameters",
+
+        "testcontainers",
     ).forEach {
         dokka(cpnProject(project, ":$it"))
     }
