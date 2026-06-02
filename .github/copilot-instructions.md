@@ -26,7 +26,7 @@ Always ensure JDK 11 and JDK 17 are properly configured before building. JDK 17 
 
 **IMPORTANT**: On non-macOS systems, iOS targets (`iosArm64`, `iosSimulatorArm64`, `iosX64`) will be disabled. Add `kotlin.native.ignoreDisabledTargets=true` to suppress warnings.
 
-**IMPORTANT**: If the project uses snapshot dependencies of other `com.huanshankeji` libraries, especially in a branch other than `main` such as `dev`, refer to the setup instructions at <https://github.com/huanshankeji/.github/blob/main/dev-instructions.md#about-snapshot-dependencies-of-our-library-projects>.
+**IMPORTANT**: If the project uses snapshot dependencies of other `com.huanshankeji` libraries, especially in a branch other than `main` such as `dev`, refer to the setup instructions at <https://github.com/huanshankeji/.github/blob/main/docs/dev-instructions.md#publish-snapshot-dependencies-of-our-library-projects-to-maven-local>.
 
 ### Bootstrap and Build Commands
 
@@ -144,7 +144,7 @@ Before check-in, the following validations run:
 > ```
 
 **Code Style:**
-- Follow [our Kotlin code style guide](https://github.com/huanshankeji/.github/blob/main/kotlin-code-style.md) for all Kotlin code contributions
+- Follow [our Kotlin code style guide](https://github.com/huanshankeji/.github/blob/main/docs/kotlin-code-style.md) for all Kotlin code contributions
 
 ### Architecture Notes
 - **Multi-module**: Each library extension is a separate Gradle subproject
@@ -165,7 +165,7 @@ Before check-in, the following validations run:
 ### Documentation
 - `README.md`: Maven coordinates, supported targets, API docs link
 - `CONTRIBUTING.md`: Development setup, JDK requirements, testing guidelines
-- [@huanshankeji/.github/dev-instructions.md](https://github.com/huanshankeji/.github/blob/main/dev-instructions.md): Additional development instructions from the organization
+- [@huanshankeji/.github/dev-instructions.md](https://github.com/huanshankeji/.github/blob/main/docs/dev-instructions.md): Additional development instructions from the organization
 - Each module has `api/` directory for compatibility validation
 
 ### Dependencies
