@@ -1,5 +1,6 @@
 import com.huanshankeji.team.ShreckYe
 import com.huanshankeji.team.setUpPomForTeamDefaultOpenSource
+import org.gradle.plugins.signing.Sign
 
 plugins {
     id("com.huanshankeji.team.with-group")
@@ -18,5 +19,22 @@ mavenPublishing.pom {
         "2022"
     ) {
         ShreckYe()
+    }
+}
+
+// solution by AI agent
+// GitHub Packages does not require signed artifacts.
+gradle.taskGraph.whenReady {
+    val publishingToGitHubPackages = allTasks.any {
+        it.name == "publishAllPublicationsToGitHubPackagesRepository" ||
+            it.name.endsWith("PublicationToGitHubPackagesRepository")
+    }
+    val publishingToMavenCentral = allTasks.any {
+        it.name == "publishAllPublicationsToMavenCentralRepository" ||
+            it.name == "publishAndReleaseToMavenCentral" ||
+            it.name.endsWith("PublicationToMavenCentralRepository")
+    }
+    if (publishingToGitHubPackages && !publishingToMavenCentral) {
+        allTasks.filterIsInstance<Sign>().forEach { it.enabled = false }
     }
 }
