@@ -14,9 +14,7 @@ kotlin {
         //nodejs()
     }
 
-    sourceSets {
-        all {
-            forEachOptIn(languageSettings::optIn)
-        }
+    compilerOptions {
+        optIn.addAll(optIns)
     }
 }
