@@ -14,9 +14,24 @@ jobs:
       contents: read
 
     steps:
-      - uses: huanshankeji/.github/actions/gradle-test-and-check@v0.3.0
+      - uses: actions/checkout@v4
+
+      - name: Set up JDKs
+        uses: huanshankeji/.github/actions/setup-javas@v0.2.0
         with:
           jdk-versions: 11-temurin, 17-temurin
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          # Persist configuration-cache data across CI runs. Generate a key with:
+          # `./gradlew encryptConfigurationCacheKey` and store it as the GRADLE_ENCRYPTION_KEY repository secret.
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          # Write cache entries from every branch so successive commits on the same branch reuse build outputs.
+          cache-read-only: false
+
+      - name: Check with Gradle Wrapper
+        run: ./gradlew check
 
   dependency-submission:
     if: github.ref == 'refs/heads/main'

@@ -35,3 +35,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
+buildCache {
+    local {
+        isEnabled = true
+    }
+}
