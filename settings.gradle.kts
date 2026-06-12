@@ -1,3 +1,21 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+plugins {
+    id("public-open-source-dependency-repositories") version
+        "0.13.0-dev-commit-dcac1d6c7871d46082c1fc71b411077daa199c6f"
+}
+
+publicOpenSourceDependencyRepositories {
+    huanshankejiMavenLocal()
+    githubPackages("kotlin-common")
+    mavenCentralExcludingHuanshankejiNonStable()
+}
+
 rootProject.name = "kotlin-common"
 
 include(
@@ -15,10 +33,6 @@ include(
     "serialization:benchmark:jvm-only",
     "vertx",
     "vertx:with-context-parameters",
-    /*
-    "vertx:kotlinx-io",
-    "vertx:okio",
-    */
 )
 
 fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
@@ -27,11 +41,3 @@ fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
         child.setProjectConcatenatedNames("$name-")
 }
 rootProject.setProjectConcatenatedNames("")
-
-// This is needed for Kotlin Native and Dokka.
-dependencyResolutionManagement {
-    @Suppress("UnstableApiUsage")
-    repositories {
-        mavenCentral()
-    }
-}
