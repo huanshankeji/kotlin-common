@@ -3,9 +3,9 @@ name: CI
 on:
   workflow_dispatch:
   push:
-    branches: ["*"]
+    branches: ["**"]
 #  pull_request:
-#    branches: [ "*" ]
+#    branches: [ "**" ]
 
 jobs:
   test-and-check:
