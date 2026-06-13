@@ -19,6 +19,8 @@ include(
     "vertx:kotlinx-io",
     "vertx:okio",
     */
+
+    "testcontainers",
 )
 
 fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
