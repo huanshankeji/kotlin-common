@@ -44,7 +44,10 @@ jobs:
           distribution: "temurin"
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          cache-read-only: false
 
       - name: Build the distribution with Gradle Wrapper
         run: ./gradlew :dokkaGeneratePublicationHtml
