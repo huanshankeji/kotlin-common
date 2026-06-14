@@ -32,7 +32,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
 
       - name: Check with Gradle Wrapper
-        run: ./gradlew publishToMavenLocal --no-daemon --parallel
+        run: ./gradlew check --no-daemon --parallel
 
   dependency-submission:
     if: github.ref == 'refs/heads/main'
