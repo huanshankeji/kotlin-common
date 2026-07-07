@@ -1,9 +1,5 @@
 import com.huanshankeji.cpnProject
 
-tasks.wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
 plugins {
     id("org.jetbrains.dokka")
     id("com.huanshankeji.root-project-conventions")
