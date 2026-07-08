@@ -6,7 +6,7 @@ val projectBaseVersion = "0.8.0"
 
 // Published from local gradle-common on branch improve-cross-repo-dependency
 val gradleCommonPluginsVersion =
-    "0.12.0-dev-commit-99eef7d1f0a66457d59584439a68fd3cf5cac1cb"
+    "0.12.0-dev-commit-948dfb3cd06e16ccd15ab9c8fc37a78826cfba87"
 
 val commonVersions = CommonVersions(kotest = "6.1.11")
 val commonDependencies = CommonDependencies(commonVersions)
