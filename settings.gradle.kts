@@ -30,16 +30,22 @@ pluginManagement {
 }
 
 buildscript {
+    // Version catalog accessors are unavailable here; read from the TOML directly.
     val gradleCommonPluginsVersion =
-        "0.12.0-dev-commit-de901bb887cefa0f1e0894e8e0471a703e5e5e17"
+        Regex("""(?m)^gradle-common-plugins\s*=\s*"([^"]+)"""")
+            .find(file("gradle/libs.versions.toml").readText())!!
+            .groupValues[1]
     dependencies {
         classpath("com.huanshankeji.team:settings-gradle-plugins:$gradleCommonPluginsVersion")
     }
 }
 
 plugins {
+    // Version catalog accessors are unavailable here; read from the TOML directly.
     val gradleCommonPluginsVersion =
-        "0.12.0-dev-commit-de901bb887cefa0f1e0894e8e0471a703e5e5e17"
+        Regex("""(?m)^gradle-common-plugins\s*=\s*"([^"]+)"""")
+            .find(file("gradle/libs.versions.toml").readText())!!
+            .groupValues[1]
     id("com.huanshankeji.base-settings-conventions") version gradleCommonPluginsVersion
 }
 

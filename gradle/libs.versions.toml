@@ -1,0 +1,10 @@
+[versions]
+gradle-common-plugins = "0.12.0-dev-commit-de901bb887cefa0f1e0894e8e0471a703e5e5e17"
+
+[libraries]
+huanshankeji-team-settings-gradle-plugins = { module = "com.huanshankeji.team:settings-gradle-plugins", version.ref = "gradle-common-plugins" }
+huanshankeji-team-project-gradle-plugins = { module = "com.huanshankeji.team:project-gradle-plugins", version.ref = "gradle-common-plugins" }
+huanshankeji-kotlin-common-project-gradle-plugins = { module = "com.huanshankeji:kotlin-common-project-gradle-plugins", version.ref = "gradle-common-plugins" }
+
+[plugins]
+huanshankeji-base-settings-conventions = { id = "com.huanshankeji.base-settings-conventions", version.ref = "gradle-common-plugins" }
