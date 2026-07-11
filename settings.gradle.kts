@@ -1,3 +1,5 @@
+import com.huanshankeji.team.artifacts.mavenCentralExcludingHuanshankeji
+
 pluginManagement {
     repositories {
         mavenLocal()
@@ -27,14 +29,25 @@ pluginManagement {
     }
 }
 
-plugins {
-    val gradleCommonPluginsVersion = "0.12.0-dev-commit-ac3e42c6941a896568c6eab78cfbb9c9f0ce50bf"
-    id("com.huanshankeji.base-settings-conventions") version gradleCommonPluginsVersion
-    id("com.huanshankeji.team.gitversioning.public-open-source-dependency-repositories") version gradleCommonPluginsVersion
+buildscript {
+    val gradleCommonPluginsVersion =
+        "0.12.0-dev-commit-de901bb887cefa0f1e0894e8e0471a703e5e5e17"
+    dependencies {
+        classpath("com.huanshankeji.team:settings-gradle-plugins:$gradleCommonPluginsVersion")
+    }
 }
 
-publicOpenSourceDependencyRepositories {
-    mavenCentralExcludingHuanshankeji()
+plugins {
+    val gradleCommonPluginsVersion =
+        "0.12.0-dev-commit-de901bb887cefa0f1e0894e8e0471a703e5e5e17"
+    id("com.huanshankeji.base-settings-conventions") version gradleCommonPluginsVersion
+}
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositories {
+        mavenCentralExcludingHuanshankeji()
+    }
 }
 
 rootProject.name = "kotlin-common"
