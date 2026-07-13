@@ -3,8 +3,28 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     gradlePluginPortal()
+    exclusiveContent {
+        forRepository {
+            mavenLocal()
+        }
+        forRepository {
+            maven {
+                // Same bootstrap as settings.gradle.kts pluginManagement — buildSrc resolves
+                // gradle-common plugins as implementation deps, not via the plugins DSL.
+                url = uri("https://maven.pkg.github.com/huanshankeji/gradle-common")
+                credentials {
+                    username = providers.gradleProperty("gpr.user")
+                        .orElse(providers.gradleProperty("gprUser")).getOrNull()
+                    password = providers.gradleProperty("gpr.key")
+                        .orElse(providers.gradleProperty("gprKey")).getOrNull()
+                }
+            }
+        }
+        filter {
+            includeVersionByRegex("""com\.huanshankeji(\..+)?""", ".*", """.*-dev-commit-[0-9a-f]+.*""")
+        }
+    }
 }
 
 val gradleCommonPluginsVersion =
