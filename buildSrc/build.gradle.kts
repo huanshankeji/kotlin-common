@@ -4,13 +4,14 @@ plugins {
 
 repositories {
     gradlePluginPortal()
-    // Bootstrap: same exclusiveContent as settings.gradle.kts pluginManagement.
     exclusiveContent {
         forRepository {
             mavenLocal()
         }
         forRepository {
             maven {
+                // Same bootstrap as settings.gradle.kts pluginManagement — buildSrc resolves
+                // gradle-common plugins as implementation deps, not via the plugins DSL.
                 url = uri("https://maven.pkg.github.com/huanshankeji/gradle-common")
                 credentials {
                     username = providers.gradleProperty("gpr.user")
@@ -26,12 +27,8 @@ repositories {
     }
 }
 
-// buildSrc does not inherit root gradle.properties as Gradle properties.
 val gradleCommonPluginsVersion =
-    file("../gradle.properties").readLines()
-        .map { it.substringBefore('#').trim() }
-        .first { it.startsWith("gradleCommonPluginsVersion=") }
-        .substringAfter("=")
+    "0.12.0-dev-commit-656d3d5f54d76c571b79f96ecc236cb54b013f50"
 
 dependencies {
     implementation(kotlin("gradle-plugin", "2.4.0"))
