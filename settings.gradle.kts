@@ -4,7 +4,7 @@ pluginManagement {
     // Must apply inside this block: Kotlin DSL runs pluginManagement before top-level statements.
     apply(from = "gradle/classpath-bootstrap.gradle.kts")
     @Suppress("UNCHECKED_CAST")
-    (extra["gradleCommonDevCommitRepos"] as RepositoryHandler.() -> Unit)(repositories)
+    (extra["repositories"] as RepositoryHandler.() -> Unit)(repositories)
 }
 
 buildscript {

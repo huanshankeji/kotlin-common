@@ -6,7 +6,7 @@ plugins {
 
 apply(from = "../gradle/classpath-bootstrap.gradle.kts")
 @Suppress("UNCHECKED_CAST")
-(extra["gradleCommonDevCommitRepos"] as RepositoryHandler.() -> Unit)(repositories)
+(extra["repositories"] as RepositoryHandler.() -> Unit)(repositories)
 
 val gradleCommonPluginsVersion = extra["gradleCommonPluginsVersion"]
 
