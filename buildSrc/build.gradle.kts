@@ -1,34 +1,14 @@
+import org.gradle.api.artifacts.dsl.RepositoryHandler
+
 plugins {
     `kotlin-dsl`
 }
 
-repositories {
-    gradlePluginPortal()
-    exclusiveContent {
-        forRepository {
-            mavenLocal()
-        }
-        forRepository {
-            maven {
-                // Same bootstrap as settings.gradle.kts pluginManagement — buildSrc resolves
-                // gradle-common plugins as implementation deps, not via the plugins DSL.
-                url = uri("https://maven.pkg.github.com/huanshankeji/gradle-common")
-                credentials {
-                    username = providers.gradleProperty("gpr.user")
-                        .orElse(providers.gradleProperty("gprUser")).getOrNull()
-                    password = providers.gradleProperty("gpr.key")
-                        .orElse(providers.gradleProperty("gprKey")).getOrNull()
-                }
-            }
-        }
-        filter {
-            includeVersionByRegex("""com\.huanshankeji(\..+)?""", ".*", """.*-dev-commit-[0-9a-f]+.*""")
-        }
-    }
-}
+apply(from = "../gradle/classpath-bootstrap.gradle.kts")
+@Suppress("UNCHECKED_CAST")
+(extra["gradleCommonDevCommitRepos"] as RepositoryHandler.() -> Unit)(repositories)
 
-val gradleCommonPluginsVersion =
-    "0.12.0-dev-commit-656d3d5f54d76c571b79f96ecc236cb54b013f50"
+val gradleCommonPluginsVersion = extra["gradleCommonPluginsVersion"]
 
 dependencies {
     implementation(kotlin("gradle-plugin", "2.4.0"))
