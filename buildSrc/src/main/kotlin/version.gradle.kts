@@ -1,5 +1,5 @@
-import com.huanshankeji.gitversioning.projectVersionFromGitProvider
+import com.huanshankeji.gitversioning.devCommitVersionProvider
 
 // extracted into a separate script so the version can be set before `dokka-convention`
 
-version = providers.projectVersionFromGitProvider(projectBaseVersion).get()
+version = providers.devCommitVersionProvider(projectBaseVersion).get()
