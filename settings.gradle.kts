@@ -1,5 +1,5 @@
-import com.huanshankeji.team.artifacts.mavenCentralExcludingHuanshankeji
 import com.huanshankeji.setProjectConcatenatedNames
+import com.huanshankeji.team.artifacts.mavenCentralExcludingHuanshankeji
 
 pluginManagement {
     // Must apply inside this block: Kotlin DSL runs pluginManagement before top-level statements.
@@ -11,7 +11,6 @@ pluginManagement {
 buildscript {
     dependencies {
         classpath("com.huanshankeji.team:settings-gradle-plugins:${settings.extra["gradleCommonPluginsVersion"]}")
-        classpath("com.huanshankeji:kotlin-common-settings-gradle-plugins:${settings.extra["gradleCommonPluginsVersion"]}")
     }
 }
 
