@@ -59,15 +59,20 @@ jobs:
           # https://github.com/huanshankeji/gradle-common/pull/65
           ORG_GRADLE_PROJECT_gprUser: ${{ secrets.GPR_USER }}
           ORG_GRADLE_PROJECT_gprKey: ${{ secrets.GPR_KEY }}
+          # Keep configuration cache reusable across commits (see buildSrc version.gradle.kts).
+          # Must match projectBaseVersion in VersionsAndDependencies.kt with a -ci suffix.
+          GRADLE_CI_CONFIGURATION_CACHE_STABLE_VERSION: 0.8.0-ci
         shell: bash
         run: |
           ./gradlew check 2>&1 | tee build.log
-          echo "**Configuration cache:** $(grep -m1 -E 'Reusing configuration cache|Calculating task graph' build.log || echo 'signal not found')" >> "$GITHUB_STEP_SUMMARY"
-          if grep -q 'Downloading dependency .*konan\|downloadKotlinNativeDistribution' build.log; then
-            echo "**Kotlin/Native:** downloaded toolchain or deps this run" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "**Kotlin/Native:** no konan download lines (likely cache hit)" >> "$GITHUB_STEP_SUMMARY"
-          fi
+          {
+            echo "**Configuration cache:** $(grep -m1 -E 'Reusing configuration cache|Calculating task graph' build.log || echo 'signal not found')"
+            if grep -E '^Downloading dependency .*konan|^Extracting dependency: .*konan' build.log; then
+              echo "**Kotlin/Native:** downloaded/extracted toolchain deps this run"
+            else
+              echo "**Kotlin/Native:** no konan download/extract lines (cache hit)"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
   dependency-submission:
     if: github.ref == 'refs/heads/main'
