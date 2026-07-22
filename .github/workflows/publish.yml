@@ -6,9 +6,77 @@ on:
     branches: ["**"]
 
 jobs:
+  # Inlined from huanshankeji/.github/.github/workflows/open-source-convention-gradle-maven-publish.yml@v0.4.0
+  # so we can set cache-read-only: false and add caches that setup-gradle@v6 does not cover.
   publish:
-    uses: huanshankeji/.github/.github/workflows/open-source-convention-gradle-maven-publish.yml@v0.4.0
-    secrets: inherit
-    with:
-      jdk-versions: 11-temurin, 17-temurin
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+    # packages: write is required only when authenticating with GITHUB_TOKEN (repo-scoped);
+    # GPR_* PAT below carries its own scopes. See https://github.com/huanshankeji/gradle-common/pull/65
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up JDKs
+        uses: huanshankeji/.github/actions/setup-javas@v0.4.0
+        with:
+          jdk-versions: 11-temurin, 17-temurin
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          # Write Gradle User Home / build-cache entries from every branch.
+          cache-read-only: false
+
+      # setup-gradle caches ~/.gradle but not ~/.konan (Kotlin/Native compiler + LLVM deps).
+      - name: Cache Kotlin/Native toolchain
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-${{ runner.arch }}-konan-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties', 'buildSrc/build.gradle.kts', 'gradle/classpath-bootstrap.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-konan-
+
+      # Do not Action-cache configuration-cache here: publish leaves
+      # GRADLE_CI_CONFIGURATION_CACHE_STABLE_VERSION unset so versions stay commit-based, which
+      # invalidates configuration-cache on every push. buildSrc outputs are still reusable.
+      - name: Cache buildSrc outputs
+        uses: actions/cache@v4
+        with:
+          path: buildSrc/build
+          key: ${{ runner.os }}-${{ runner.arch }}-buildsrc-${{ hashFiles('buildSrc/**/*.kt', 'buildSrc/**/*.kts', 'buildSrc/**/*.gradle*', 'gradle/classpath-bootstrap.gradle.kts', 'gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-buildsrc-
+
+      - name: Publish with Gradle Wrapper
+        env:
+          # Org PAT (GPR_*) for GitHub Packages publish + cross-repo resolve. GITHUB_TOKEN works for
+          # same-repo publish only; cross-repo Gradle/Maven resolution in CI still needs GPR_* —
+          # Maven/Gradle packages have no cross-repo "Manage Actions access" UI.
+          # https://github.com/huanshankeji/gradle-common/pull/65
+          ORG_GRADLE_PROJECT_gprUser: ${{ secrets.GPR_USER }}
+          ORG_GRADLE_PROJECT_gprKey: ${{ secrets.GPR_KEY }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_IN_MEMORY_KEY_PASSWORD }}
+        shell: bash
+        run: |
+          set -o pipefail
+          if [ "${{ github.ref }}" = "refs/heads/release" ]; then
+            cmd=(./gradlew publishAndReleaseToMavenCentral)
+          else
+            cmd=(./gradlew publishAllPublicationsToGitHubPackagesRepository --parallel)
+          fi
+          "${cmd[@]}" 2>&1 | tee build.log
+          {
+            echo "**Configuration cache:** $(grep -m1 -E 'Reusing configuration cache|Calculating task graph' build.log || echo 'signal not found')"
+            echo "**FROM-CACHE tasks:** $(grep -c ' FROM-CACHE$' build.log || true)"
+            if grep -E '^Downloading dependency .*konan|^Extracting dependency: .*konan' build.log; then
+              echo "**Kotlin/Native:** downloaded/extracted toolchain deps this run"
+            else
+              echo "**Kotlin/Native:** no konan download/extract lines (cache hit or unused)"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
