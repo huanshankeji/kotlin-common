@@ -65,16 +65,19 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
+          # Keep the log outside the repo: writing into the checkout marks git dirty and
+          # makes devCommitVersionProvider emit a -dirty version (GitHub Packages 409s).
+          log=/tmp/publish-build.log
           if [ "${{ github.ref }}" = "refs/heads/release" ]; then
             cmd=(./gradlew publishAndReleaseToMavenCentral)
           else
             cmd=(./gradlew publishAllPublicationsToGitHubPackagesRepository --parallel)
           fi
-          "${cmd[@]}" 2>&1 | tee build.log
+          "${cmd[@]}" 2>&1 | tee "$log"
           {
-            echo "**Configuration cache:** $(grep -m1 -E 'Reusing configuration cache|Calculating task graph' build.log || echo 'signal not found')"
-            echo "**FROM-CACHE tasks:** $(grep -c ' FROM-CACHE$' build.log || true)"
-            if grep -E '^Downloading dependency .*konan|^Extracting dependency: .*konan' build.log; then
+            echo "**Configuration cache:** $(grep -m1 -E 'Reusing configuration cache|Calculating task graph|Configuration cache disabled' "$log" || echo 'signal not found')"
+            echo "**FROM-CACHE tasks:** $(grep -c ' FROM-CACHE$' "$log" || true)"
+            if grep -E '^Downloading dependency .*konan|^Extracting dependency: .*konan' "$log"; then
               echo "**Kotlin/Native:** downloaded/extracted toolchain deps this run"
             else
               echo "**Kotlin/Native:** no konan download/extract lines (cache hit or unused)"
