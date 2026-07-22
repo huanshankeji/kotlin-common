@@ -8,8 +8,7 @@ on:
 
 jobs:
   # Inlined from huanshankeji/.github/.github/workflows/gradle-ci.yml@v0.4.0 so we can
-  # set cache-read-only: false. The shared setup-javas-and-gradle action omits that input,
-  # so feature-branch runs default to read-only and never persist build/configuration cache.
+  # set cache-read-only: false and add caches that setup-gradle@v6 does not cover.
   check:
     runs-on: macos-latest
     permissions:
@@ -25,10 +24,32 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
         with:
-          # Persist configuration-cache data across CI runs.
+          # Encrypts on-disk configuration-cache entries (needed when we cache that directory).
           cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-          # Write cache entries from every branch so successive commits reuse build outputs.
+          # Write Gradle User Home / build-cache entries from every branch.
           cache-read-only: false
+
+      # setup-gradle caches ~/.gradle but not ~/.konan (Kotlin/Native compiler + LLVM deps).
+      - name: Cache Kotlin/Native toolchain
+        uses: actions/cache@v4
+        with:
+          path: ~/.konan
+          key: ${{ runner.os }}-${{ runner.arch }}-konan-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties', 'buildSrc/build.gradle.kts', 'gradle/classpath-bootstrap.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-konan-
+
+      # setup-gradle@v6 removed configuration-cache persistence. Gradle stores entries under
+      # .gradle/configuration-cache in the checkout. buildSrc/build must also be restored or
+      # configuration-cache reuse fails when buildSrc task inputs appear to have changed.
+      - name: Cache Gradle configuration cache and buildSrc
+        uses: actions/cache@v4
+        with:
+          path: |
+            .gradle/configuration-cache
+            buildSrc/build
+          key: ${{ runner.os }}-${{ runner.arch }}-configcache-check-${{ hashFiles('**/*.gradle.kts', '**/*.gradle', 'gradle.properties', 'gradle/wrapper/gradle-wrapper.properties', 'buildSrc/**/*.kt', 'gradle/classpath-bootstrap.gradle.kts') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-configcache-check-
 
       - name: Check with Gradle Wrapper
         env:
@@ -39,7 +60,14 @@ jobs:
           ORG_GRADLE_PROJECT_gprUser: ${{ secrets.GPR_USER }}
           ORG_GRADLE_PROJECT_gprKey: ${{ secrets.GPR_KEY }}
         shell: bash
-        run: ./gradlew check
+        run: |
+          ./gradlew check 2>&1 | tee build.log
+          echo "**Configuration cache:** $(grep -m1 -E 'Reusing configuration cache|Calculating task graph' build.log || echo 'signal not found')" >> "$GITHUB_STEP_SUMMARY"
+          if grep -q 'Downloading dependency .*konan\|downloadKotlinNativeDistribution' build.log; then
+            echo "**Kotlin/Native:** downloaded toolchain or deps this run" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "**Kotlin/Native:** no konan download lines (likely cache hit)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   dependency-submission:
     if: github.ref == 'refs/heads/main'
