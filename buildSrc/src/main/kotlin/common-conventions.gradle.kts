@@ -1,12 +1,14 @@
 import com.huanshankeji.team.ShreckYe
 import com.huanshankeji.team.setUpPomForTeamDefaultOpenSource
+import com.huanshankeji.gitversioning.devCommitOrReleaseVersionProvider
 
 plugins {
     id("com.huanshankeji.team.with-group")
     id("com.huanshankeji.team.gitversioning.opensourceconvention.githubpackages.publish")
-    id("version")
     id("dokka-convention")
 }
+
+version = providers.devCommitOrReleaseVersionProvider(projectBaseVersion, isRelease).get()
 
 gitVersioningOpenSourceConventionGithubPackagesPublish {
     signAllPublicationsIfRelease(isRelease)
