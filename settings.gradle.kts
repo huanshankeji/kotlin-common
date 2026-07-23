@@ -42,6 +42,10 @@ include(
     "serialization:benchmark:jvm-only",
     "vertx",
     "vertx:with-context-parameters",
+    /*
+    "vertx:kotlinx-io",
+    "vertx:okio",
+    */
 )
 
 setProjectConcatenatedNames()
