@@ -1,3 +1,30 @@
+import com.huanshankeji.setProjectConcatenatedNames
+import com.huanshankeji.team.artifacts.mavenCentralExcludingHuanshankeji
+
+pluginManagement {
+    // Must apply inside this block: Kotlin DSL runs pluginManagement before top-level statements.
+    apply(from = "gradle/classpath-bootstrap.gradle.kts")
+    @Suppress("UNCHECKED_CAST")
+    (extra["repositories"] as RepositoryHandler.() -> Unit)(repositories)
+}
+
+buildscript {
+    dependencies {
+        classpath("com.huanshankeji.team:settings-gradle-plugins:${settings.extra["gradleCommonPluginsVersion"]}")
+    }
+}
+
+plugins {
+    id("com.huanshankeji.base-settings-conventions") version (extra["gradleCommonPluginsVersion"] as String)
+}
+
+@Suppress("UnstableApiUsage")
+dependencyResolutionManagement {
+    repositories {
+        mavenCentralExcludingHuanshankeji()
+    }
+}
+
 rootProject.name = "kotlin-common"
 
 include(
@@ -21,17 +48,4 @@ include(
     */
 )
 
-fun ProjectDescriptor.setProjectConcatenatedNames(prefix: String) {
-    name = prefix + name
-    for (child in children)
-        child.setProjectConcatenatedNames("$name-")
-}
-rootProject.setProjectConcatenatedNames("")
-
-// This is needed for Kotlin Native and Dokka.
-dependencyResolutionManagement {
-    @Suppress("UnstableApiUsage")
-    repositories {
-        mavenCentral()
-    }
-}
+setProjectConcatenatedNames()

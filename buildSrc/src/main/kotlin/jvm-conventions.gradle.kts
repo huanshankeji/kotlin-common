@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
@@ -12,4 +13,7 @@ kotlin {
     compilerOptions {
         optIn.addAll(optIns)
     }
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
 }
