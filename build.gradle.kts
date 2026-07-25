@@ -1,8 +1,8 @@
 import com.huanshankeji.cpnProject
 
 plugins {
-    id("org.jetbrains.dokka")
     id("com.huanshankeji.root-project-conventions")
+    id("org.jetbrains.dokka")
 }
 
 dependencies {
