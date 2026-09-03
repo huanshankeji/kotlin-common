@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
-    id("common-conventions")
+    id("base-conventions")
     kotlin("jvm")
     `java-library`
 }
