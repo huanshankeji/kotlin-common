@@ -1,13 +1,17 @@
 import com.huanshankeji.team.ShreckYe
 import com.huanshankeji.team.setUpPomForTeamDefaultOpenSource
+import com.huanshankeji.gitversioning.devCommitOrReleaseVersionProvider
 
 plugins {
     id("com.huanshankeji.team.with-group")
-    id("maven-central")
-    id("com.huanshankeji.team.default-github-packages-maven-publish")
-    id("version")
+    id("com.huanshankeji.team.gitversioning.opensourceconvention.githubpackages.publish")
     id("dokka-convention")
-    id("com.huanshankeji.maven-central-publish-conventions")
+}
+
+version = providers.devCommitOrReleaseVersionProvider(projectBaseVersion, isRelease).get()
+
+gitVersioningOpenSourceConventionGithubPackagesPublish {
+    signAllPublicationsIfRelease(isRelease)
 }
 
 mavenPublishing.pom {

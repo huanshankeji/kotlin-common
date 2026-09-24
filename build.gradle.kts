@@ -1,12 +1,8 @@
 import com.huanshankeji.cpnProject
 
-tasks.wrapper {
-    distributionType = Wrapper.DistributionType.ALL
-}
-
 plugins {
+    id("com.huanshankeji.root-project-conventions")
     id("org.jetbrains.dokka")
-    id("org.jetbrains.kotlinx.binary-compatibility-validator") version "0.18.1"
 }
 
 dependencies {
@@ -22,23 +18,8 @@ dependencies {
         "reflect",
         "serialization",
         "vertx",
-        //"vertx:with-context-parameters",
-
         "testcontainers",
     ).forEach {
         dokka(cpnProject(project, ":$it"))
-    }
-}
-
-apiValidation {
-    @OptIn(kotlinx.validation.ExperimentalBCVApi::class)
-    klib {
-        enabled = true
-    }
-
-    ignoredProjects += "kotlin-common".let {
-        "$it-serialization-benchmark".let {
-            listOf(it, "$it-jvm-only")
-        } + "$it-vertx-with-context-parameters"
     }
 }

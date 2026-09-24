@@ -1,7 +1,8 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
-    id("common-conventions")
+    id("base-conventions")
     id("com.huanshankeji.kotlin-multiplatform-conventional-targets")
 }
 
@@ -14,9 +15,10 @@ kotlin {
         //nodejs()
     }
 
-    sourceSets {
-        all {
-            forEachOptIn(languageSettings::optIn)
-        }
+    compilerOptions {
+        optIn.addAll(optIns)
     }
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
 }

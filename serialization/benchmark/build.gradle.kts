@@ -4,7 +4,6 @@ plugins {
     //id("com.huanshankeji.kotlin-multiplatform-jvm-and-js-browser-conventions") // this causes the build to fail somehow
     kotlin("multiplatform")
     with(commonGradleClasspathDependencies.kotlin.plugin.serialization) { applyPluginWithVersion() }
-    `maven-central`
     id("com.huanshankeji.benchmark.kotlinx-benchmark-multiplatform-conventions")
 }
 

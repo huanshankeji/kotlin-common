@@ -3,7 +3,6 @@ import com.huanshankeji.cpnProject
 
 plugins {
     kotlin("jvm")
-    `maven-central`
     id("com.huanshankeji.benchmark.kotlinx-benchmark-jvm-conventions")
     id("com.google.protobuf") version DependencyVersions.protobufPlugin
 }

@@ -2,7 +2,8 @@ import com.huanshankeji.CommonDependencies
 import com.huanshankeji.CommonGradleClasspathDependencies
 import com.huanshankeji.CommonVersions
 
-val projectVersion = "0.8.0-SNAPSHOT"
+val projectBaseVersion = "0.8.0"
+val isRelease = false
 
 val commonVersions = CommonVersions(kotest = "6.1.11")
 val commonDependencies = CommonDependencies(commonVersions)

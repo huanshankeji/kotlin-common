@@ -1,13 +1,19 @@
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
-    id("common-conventions")
+    id("base-conventions")
     kotlin("jvm")
     `java-library`
 }
 
-kotlin.jvmToolchain(11)
+kotlin {
+    jvmToolchain(11)
 
-tasks.named<KotlinCompilationTask<*>>("compileKotlin").configure {
-    forEachOptIn { compilerOptions.freeCompilerArgs.add("-opt-in=$it") }
+    compilerOptions {
+        optIn.addAll(optIns)
+    }
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation()
 }
