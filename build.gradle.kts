@@ -18,6 +18,7 @@ dependencies {
         "reflect",
         "serialization",
         "vertx",
+        "testcontainers",
     ).forEach {
         dokka(cpnProject(project, ":$it"))
     }

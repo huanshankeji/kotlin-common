@@ -46,6 +46,8 @@ include(
     "vertx:kotlinx-io",
     "vertx:okio",
     */
+
+    "testcontainers",
 )
 
 setProjectConcatenatedNames()
