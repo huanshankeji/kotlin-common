@@ -1,5 +1,10 @@
 # Change log
 
+## Unreleased
+
+* bump the Gradle wrapper to 9.8.0
+* bump the buildSrc Kotlin Gradle plugin to 2.4.20 and consume the matching `gradle-common` dev-commit build so library compilation uses Kotlin 2.4.20
+
 ## v0.7.0 / 2025-10-28
 
 * ci: use our extracted composite actions by @OpenWaygate
