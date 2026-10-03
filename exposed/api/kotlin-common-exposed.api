@@ -38,6 +38,40 @@ public final class com/huanshankeji/exposed/StatementsKt {
 	public static synthetic fun updateStatementWithWhereOp$default (Lorg/jetbrains/exposed/v1/core/Table;Lorg/jetbrains/exposed/v1/core/Op;Ljava/lang/Integer;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Lorg/jetbrains/exposed/v1/core/statements/UpdateStatement;
 }
 
+public abstract interface class com/huanshankeji/exposed/datamapping/DataMapper : com/huanshankeji/exposed/datamapping/DataQueryMapper, com/huanshankeji/exposed/datamapping/NullableDataMapper, com/huanshankeji/exposed/datamapping/SimpleDataMapper {
+}
+
+public final class com/huanshankeji/exposed/datamapping/DataMapperInterfacesKt {
+	public static final fun updateBuilderSetter (Lcom/huanshankeji/exposed/datamapping/DataUpdateMapper;Ljava/lang/Object;)Lkotlin/jvm/functions/Function2;
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/DataQueryMapper : com/huanshankeji/exposed/datamapping/NullableDataQueryMapper {
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/DataUpdateMapper : com/huanshankeji/exposed/datamapping/NullableDataUpdateMapper {
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/NullableDataMapper : com/huanshankeji/exposed/datamapping/NullableDataQueryMapper, com/huanshankeji/exposed/datamapping/NullableDataUpdateMapper {
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/NullableDataQueryMapper : com/huanshankeji/exposed/datamapping/SimpleNullableDataQueryMapper {
+	public abstract fun getNeededColumns ()Ljava/util/List;
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/NullableDataUpdateMapper {
+	public abstract fun setUpdateBuilder (Ljava/lang/Object;Lorg/jetbrains/exposed/v1/core/statements/UpdateBuilder;)V
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/SimpleDataMapper : com/huanshankeji/exposed/datamapping/DataUpdateMapper, com/huanshankeji/exposed/datamapping/SimpleDataQueryMapper {
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/SimpleDataQueryMapper : com/huanshankeji/exposed/datamapping/SimpleNullableDataQueryMapper {
+}
+
+public abstract interface class com/huanshankeji/exposed/datamapping/SimpleNullableDataQueryMapper {
+	public abstract fun resultRowToData (Lorg/jetbrains/exposed/v1/core/ResultRow;)Ljava/lang/Object;
+}
+
 public final class com/huanshankeji/exposed/v1/core/LiteralsKt {
 	public static final fun getAsterisk ()Lorg/jetbrains/exposed/v1/core/LiteralOp;
 }
