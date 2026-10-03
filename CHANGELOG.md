@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased
+
+* deprecate `addCredentialsIncludeToFetch` now that [KTOR-539](https://youtrack.jetbrains.com/issue/KTOR-539) is fixed in Ktor 3.2.0; configure the JS engine with `configureRequest { credentials = "include" }` instead
+
 ## v0.7.0 / 2025-10-28
 
 * ci: use our extracted composite actions by @OpenWaygate
