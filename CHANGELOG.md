@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased (v0.8.0)
+
+* Add experimental Exposed data-mapper interfaces (`DataMapper` and the related read/write hooks) and `updateBuilderSetter` to the `exposed` module, moved from exposed-gadt-mapping.
+
 ## v0.7.0 / 2025-10-28
 
 * ci: use our extracted composite actions by @OpenWaygate
