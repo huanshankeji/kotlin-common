@@ -1,6 +1,11 @@
 package com.huanshankeji.ktor.client
 
 // see: https://youtrack.jetbrains.com/issue/KTOR-539#focus=Comments-27-4683851.0-0
+@Deprecated(
+    "KTOR-539 is fixed in Ktor 3.2.0. Instead of patching the global `fetch`, " +
+            "configure the Ktor `Js` engine: `HttpClient { engine { configureRequest { credentials = \"include\" } } }`, " +
+            "or set `fetchOptions { credentials = \"include\" }` on individual requests."
+)
 fun addCredentialsIncludeToFetch() =
     js(
         """
