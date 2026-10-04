@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased
+
+* add `kotlin-common-arrow-kotest` with `Spec.asResourceScope()` and `TestScope.asResourceScope()` to bind a Kotest spec or test scope to an Arrow `ResourceScope`
+
 ## v0.7.0 / 2025-10-28
 
 * ci: use our extracted composite actions by @OpenWaygate

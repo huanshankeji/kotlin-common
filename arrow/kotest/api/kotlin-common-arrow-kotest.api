@@ -1,0 +1,5 @@
+public final class com/huanshankeji/arrow/fx/coroutines/kotest/AsResourceScopeKt {
+	public static final fun asResourceScope (Lio/kotest/core/spec/Spec;)Larrow/fx/coroutines/ResourceScope;
+	public static final fun asResourceScope (Lio/kotest/core/test/TestScope;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
