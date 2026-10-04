@@ -1,5 +1,9 @@
 # Change log
 
+## Unreleased
+
+* add `kotlin-common-arrow-kotest`, with `Spec.toResourceScope()` turning a Kotest spec instance into an Arrow `ResourceScope` that releases installed resources when that spec instance finishes
+
 ## v0.7.0 / 2025-10-28
 
 * ci: use our extracted composite actions by @OpenWaygate

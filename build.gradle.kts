@@ -12,6 +12,7 @@ dependencies {
         "web",
 
         "arrow",
+        "arrow:kotest",
         "coroutines",
         "exposed",
         "ktor:client",
