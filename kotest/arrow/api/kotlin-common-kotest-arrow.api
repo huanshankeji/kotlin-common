@@ -1,0 +1,4 @@
+public final class com/huanshankeji/kotest/core/spec/SpecResourceScopeKt {
+	public static final fun asResourceScope (Lio/kotest/core/spec/Spec;)Larrow/fx/coroutines/ResourceScope;
+}
+

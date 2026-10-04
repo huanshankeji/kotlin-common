@@ -1,0 +1,9 @@
+// Klib ABI Dump
+// Targets: [iosArm64, iosSimulatorArm64, js, wasmJs]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <com.huanshankeji:kotlin-common-kotest-arrow>
+final fun (io.kotest.core.spec/Spec).com.huanshankeji.kotest.core.spec/asResourceScope(): arrow.fx.coroutines/ResourceScope // com.huanshankeji.kotest.core.spec/asResourceScope|asResourceScope@io.kotest.core.spec.Spec(){}[0]

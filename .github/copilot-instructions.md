@@ -101,6 +101,7 @@ Always ensure JDK 11 and JDK 17 are properly configured before building. JDK 17 
 - **arrow**: Extensions for Arrow functional programming library
 - **coroutines**: Kotlin Coroutines utilities
 - **exposed**: Database library (Exposed) extensions
+- **kotest:arrow**: Kotest and Arrow integration, such as converting a Kotest `Spec` to an Arrow `ResourceScope`
 - **ktor**: HTTP client/server framework extensions
 - **net**: Network-related utilities
 - **reflect**: Kotlin reflection utilities

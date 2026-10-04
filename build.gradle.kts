@@ -14,6 +14,7 @@ dependencies {
         "arrow",
         "coroutines",
         "exposed",
+        "kotest:arrow",
         "ktor:client",
         "reflect",
         "serialization",
