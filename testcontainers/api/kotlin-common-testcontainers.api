@@ -1,0 +1,8 @@
+public final class com/huanshankeji/testcontainers/JdbcContainersKt {
+	public static final fun LatestMssqlContainer ()Lorg/testcontainers/mssqlserver/MSSQLServerContainer;
+	public static final fun LatestMySQLContainer ()Lorg/testcontainers/mysql/MySQLContainer;
+	public static final fun LatestOracleContainer ()Lorg/testcontainers/oracle/OracleContainer;
+	public static final fun LatestPostgreSQLContainer ()Lorg/testcontainers/postgresql/PostgreSQLContainer;
+	public static final fun hostAndPort (Lorg/testcontainers/containers/ContainerState;)Lcom/huanshankeji/net/HostAndPort;
+}
+
