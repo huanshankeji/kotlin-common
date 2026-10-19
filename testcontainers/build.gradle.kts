@@ -17,11 +17,11 @@ dependencies {
     api(cpnProject(project, ":net"))
 
     with(commonDependencies.testcontainers) {
-        api(platformBom())
-        api(testcontainers)
-        "postgresqlApi"(testcontainersPostgresql)
-        "mysqlApi"(moduleWithoutVersion("testcontainers-mysql"))
-        "oracleApi"(moduleWithoutVersion("testcontainers-oracle-free"))
-        "mssqlApi"(moduleWithoutVersion("testcontainers-mssqlserver"))
+        implementation(platformBom())
+        implementation(testcontainers)
+        "postgresqlImplementation"(testcontainersPostgresql)
+        "mysqlImplementation"(moduleWithoutVersion("testcontainers-mysql"))
+        "oracleImplementation"(moduleWithoutVersion("testcontainers-oracle-free"))
+        "mssqlImplementation"(moduleWithoutVersion("testcontainers-mssqlserver"))
     }
 }
