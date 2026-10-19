@@ -1,0 +1,26 @@
+testcontainers/build.gradle.kts
+  s_863e8a2a7f3c41::t_ee9f5623446150 7,9,22
+testcontainers/src/main/kotlin/com/huanshankeji/testcontainers/JdbcContainers.kt
+  h_6630c9ca8bc8dc 32
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fd4d4a690fd73130c3bf0b1fc342156c2d4ac9ed",
+  "prompts": {},
+  "humans": {
+    "h_6630c9ca8bc8dc": {
+      "author": "Yongshun Ye <shreckye@gmail.com>"
+    }
+  },
+  "sessions": {
+    "s_863e8a2a7f3c41": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1524c-0294-7751-aa75-2325412d9018",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Yongshun Ye <shreckye@gmail.com>"
+    }
+  }
+}
