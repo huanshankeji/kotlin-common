@@ -29,6 +29,7 @@ fun LatestMssqlContainer(): MSSQLServerContainer =
     MSSQLServerContainer(DockerImageName.parse("mcr.microsoft.com/mssql/server:2022-latest"))
         .acceptLicense()
 
+
 /** `getHost()` and `getFirstMappedPort()` are declared on [ContainerState]. */
 fun ContainerState.hostAndPort(): HostAndPort =
     HostAndPort(host, firstMappedPort)

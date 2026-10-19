@@ -4,9 +4,9 @@ plugins {
     id("jvm-conventions")
 }
 
-// MySQL, Oracle, and SQL Server are feature variants so a PostgreSQL caller does not pull them.
+// Database modules are feature variants so callers only pull the ones they use.
 java {
-    listOf("mysql", "oracle", "mssql").forEach {
+    listOf("postgresql", "mysql", "oracle", "mssql").forEach {
         registerFeature(it) {
             usingSourceSet(sourceSets["main"])
         }
@@ -19,7 +19,7 @@ dependencies {
     with(commonDependencies.testcontainers) {
         api(platformBom())
         api(testcontainers)
-        api(testcontainersPostgresql)
+        "postgresqlApi"(testcontainersPostgresql)
         "mysqlApi"(moduleWithoutVersion("testcontainers-mysql"))
         "oracleApi"(moduleWithoutVersion("testcontainers-oracle-free"))
         "mssqlApi"(moduleWithoutVersion("testcontainers-mssqlserver"))
