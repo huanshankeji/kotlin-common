@@ -16,3 +16,16 @@ Currently supported targets by multiplatform libraries: JVM, JS (browser), iOS (
 ```kotlin
 "com.huanshankeji:kotlin-common-$module:$version"
 ```
+
+### Declare upstream dependencies explicitly
+
+These are **extension libraries**: consumers are expected to explicitly declare the original upstream libraries they use alongside the corresponding `kotlin-common` modules. For example:
+
+```kotlin
+dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("com.huanshankeji:kotlin-common-coroutines:$version")
+}
+```
+
+Our modules deliberately use `implementation` for upstream dependencies, even when upstream types appear in public extension receivers, parameters, or return types. They do not re-export those libraries onto consumers' compile classpaths. On the JVM, these dependencies still participate in runtime dependency resolution. Declare the upstream modules and any BOMs needed by your code in the relevant source set or configuration.
