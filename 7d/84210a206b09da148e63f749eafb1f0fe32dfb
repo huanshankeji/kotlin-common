@@ -1,0 +1,28 @@
+.github/workflows/git-ai.yaml
+  h_6630c9ca8bc8dc 1-26
+AGENTS.md
+  h_6630c9ca8bc8dc 5-14
+README.md
+  h_6630c9ca8bc8dc 8,19-31
+build.gradle.kts
+  h_6630c9ca8bc8dc 21
+settings.gradle.kts
+  h_6630c9ca8bc8dc 49-50
+testcontainers/api/kotlin-common-testcontainers.api
+  h_6630c9ca8bc8dc 1-8
+testcontainers/build.gradle.kts
+  h_6630c9ca8bc8dc 1-27
+testcontainers/src/main/kotlin/com/huanshankeji/testcontainers/JdbcContainers.kt
+  h_6630c9ca8bc8dc 1-35
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7d84210a206b09da148e63f749eafb1f0fe32dfb",
+  "prompts": {},
+  "humans": {
+    "h_6630c9ca8bc8dc": {
+      "author": "Yongshun Ye <shreckye@gmail.com>"
+    }
+  }
+}
