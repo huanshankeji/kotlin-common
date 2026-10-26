@@ -1,0 +1,14 @@
+gradle/wrapper/gradle-wrapper.properties
+  h_6630c9ca8bc8dc 4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "901dcbd43c8a91a4b16bca083463da142e10bd52",
+  "prompts": {},
+  "humans": {
+    "h_6630c9ca8bc8dc": {
+      "author": "Yongshun Ye <shreckye@gmail.com>"
+    }
+  }
+}
