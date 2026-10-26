@@ -1,0 +1,16 @@
+gradle/wrapper/gradle-wrapper.properties
+  h_6630c9ca8bc8dc 3
+gradlew.bat
+  h_6630c9ca8bc8dc 29-55,75-79,82,90-94,97,107,109
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "554c0f76cf7935e71d9c99d9c08a90c3443ba7c8",
+  "prompts": {},
+  "humans": {
+    "h_6630c9ca8bc8dc": {
+      "author": "Yongshun Ye <shreckye@gmail.com>"
+    }
+  }
+}
