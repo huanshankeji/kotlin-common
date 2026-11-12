@@ -1,12 +1,9 @@
 import com.huanshankeji.cpnProject
-import com.huanshankeji.gitversioning.devCommitOrReleaseVersionProvider
 
 plugins {
     id("com.huanshankeji.root-project-conventions")
-    id("dokka-convention")
+    id("org.jetbrains.dokka")
 }
-
-version = providers.devCommitOrReleaseVersionProvider(projectBaseVersion, isRelease).get()
 
 dependencies {
     listOf(
