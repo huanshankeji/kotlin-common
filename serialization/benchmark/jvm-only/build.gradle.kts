@@ -1,15 +1,14 @@
 import com.huanshankeji.SourceSetType
+import com.huanshankeji.benchmark.configureKotlinxBenchmarkJvm
 import com.huanshankeji.cpnProject
 
 plugins {
     kotlin("jvm")
-    id("com.huanshankeji.benchmark.kotlinx-benchmark-jvm-conventions")
+    id("org.jetbrains.kotlinx.benchmark")
     id("com.google.protobuf") version DependencyVersions.protobufPlugin
 }
 
-kotlinxBenchmarkConventions {
-    sourceSetType.set(SourceSetType.Main)
-}
+configureKotlinxBenchmarkJvm(SourceSetType.Main)
 
 dependencies {
     implementation(cpnProject(project, ":serialization:benchmark"))
