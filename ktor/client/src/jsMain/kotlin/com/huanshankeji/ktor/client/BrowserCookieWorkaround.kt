@@ -1,6 +1,9 @@
 package com.huanshankeji.ktor.client
 
 // see: https://youtrack.jetbrains.com/issue/KTOR-539#focus=Comments-27-4683851.0-0
+@Deprecated(
+    "Since Ktor 3.2.0, use HttpClient(Js) { engine { configureRequest { credentials = \"include\" } } } instead."
+)
 fun addCredentialsIncludeToFetch() =
     js(
         """
