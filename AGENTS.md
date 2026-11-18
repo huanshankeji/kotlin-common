@@ -1,5 +1,7 @@
 # Repository Guidelines
 
+Before working in this repository, **load and read** the [Huanshankeji general agent instructions](https://github.com/huanshankeji/.github/blob/main/docs/general-agent-instructions.md) as the required organization-wide baseline. A skipped or failed load, or an unread document, is a blocking error until the document is in context and has been read.
+
 ## Project Structure
 
 `core/` contains Kotlin and standard-library extensions. `net/` and `web/` hold shared networking and web utilities. Integrations live in their own modules, such as `ktor/client/`, `serialization/`, `vertx/`, and `testcontainers/`. Serialization benchmarks and Protobuf schemas live under `serialization/benchmark/`.
@@ -15,11 +17,19 @@ Use the Gradle wrapper from the repository root. Run Gradle with JDK 17 and make
 - `./gradlew publishToMavenLocal` publishes artifacts for testing in downstream projects.
 - `./gradlew :dokkaGeneratePublicationHtml` generates API documentation.
 
-## Kotlin Style and Dependencies
+## Kotlin Style
 
 Use four spaces, match package directories under `com.huanshankeji`, and use `UpperCamelCase` for types and `lowerCamelCase` for functions and properties. Follow the [organization’s Kotlin style guide](https://github.com/huanshankeji/.github/blob/main/docs/kotlin-code-style.md) when formatting in IntelliJ IDEA.
 
-Declare upstream libraries and BOMs with `implementation` or the matching feature’s `Implementation` configuration, even when public signatures use upstream types. Consumers declare those dependencies explicitly. See [README.md](README.md#declare-upstream-dependencies-explicitly).
+## Dependency Policy
+
+This project provides **extension libraries**. Consumers are expected to explicitly declare the original upstream libraries they use, alongside our extension modules.
+
+- Declare upstream library dependencies with `implementation`, including when upstream types appear in public extension receivers, parameters, return types, or supertypes. The upstream type alone does not justify exposing the dependency through `api`.
+- Apply the same rule to upstream BOMs and feature variants. Use `implementation(platform(...))` and the feature's `Implementation` configuration, such as `postgresqlImplementation` or `vertxWebImplementation`.
+- Dependencies between this project's own modules may use `api` when intentionally re-exporting our own public types. For example, `testcontainers` exposes `:net` because `hostAndPort()` returns `HostAndPort`.
+
+`implementation` keeps upstream dependencies off consumers' compile classpaths. On the JVM they still participate in runtime dependency resolution. Consumers declare the upstream modules and any BOMs needed to compile their code. See [README.md](README.md#declare-upstream-dependencies-explicitly) for examples and [Gradle's API and implementation separation](https://docs.gradle.org/current/userguide/java_library_plugin.html#sec:java_library_separation) for the configuration semantics.
 
 ## Testing
 
