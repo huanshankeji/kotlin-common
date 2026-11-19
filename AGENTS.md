@@ -10,10 +10,11 @@ Put portable Kotlin code in `src/commonMain/kotlin` and platform-specific code i
 
 ## Build and Development
 
-Use the Gradle wrapper from the repository root. Run Gradle with JDK 17 and make JDK 11 available for compilation. CI runs on macOS, which supports the iOS targets. See [CONTRIBUTING.md](CONTRIBUTING.md) for GitHub Packages credentials when resolving `*-dev-commit-*` dependencies.
+Use the Gradle wrapper from the repository root. Run Gradle with JDK 17 and make JDK 11 available for compilation. [CI](.github/workflows/ci.yml) runs on macOS, which supports the iOS targets. For unpublished sibling library changes, follow the [organization’s local development workflow](https://github.com/huanshankeji/.github/blob/main/docs/dev-instructions.md#local-development-workflow). See [CONTRIBUTING.md](CONTRIBUTING.md) for GitHub Packages credentials when resolving `*-dev-commit-*` dependencies.
 
 - `./gradlew build` builds and verifies the libraries.
 - `./gradlew check` runs verification, including tests and ABI checks where configured.
+- Run `./gradlew checkKotlinAbi` to compare the current ABI with the tracked reference snapshots. For intentional ABI changes, run `./gradlew updateKotlinAbi` and review the generated diff before including the updated snapshots. See [Kotlin’s ABI validation guide](https://kotlinlang.org/docs/gradle-binary-compatibility-validation.html).
 - `./gradlew publishToMavenLocal` publishes artifacts for testing in downstream projects.
 - `./gradlew :dokkaGeneratePublicationHtml` generates API documentation.
 
@@ -35,10 +36,8 @@ This project provides **extension libraries**. Consumers are expected to explici
 
 Name test classes `*Test` and give test methods descriptive names, such as `testConversionBetweenLongAndBigEndianBytes`. Use `kotlin.test` for assertions and Kotest for property tests in `core`. Cover shared behavior in `src/commonTest/kotlin` and platform behavior in the corresponding target test source set. JVM-only modules use `src/test/kotlin`.
 
-- `./gradlew :kotlin-common-core:jvmTest` runs the JVM suite. Use `jsBrowserTest` or `wasmJsBrowserTest` for the browser targets.
+- In multiplatform modules, use the relevant target task, such as `./gradlew :kotlin-common-core:jvmTest`. Use `jsBrowserTest` or `wasmJsBrowserTest` for browser targets and `allTests` for the configured targets supported by the host.
 - `./gradlew :kotlin-common-vertx:test` runs the JVM-only Vert.x suite.
-
-Review changes to the public API before regenerating the snapshots with [`./gradlew updateKotlinAbi`](https://kotlinlang.org/docs/gradle-binary-compatibility-validation.html#update-reference-abi-dump).
 
 ## Commits and Pull Requests
 
